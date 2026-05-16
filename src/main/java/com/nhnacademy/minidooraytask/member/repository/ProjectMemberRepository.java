@@ -20,9 +20,12 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
         Optional<ProjectMember> findByProjectIdAndAccountId(@Param("projectId") Long projectId,
                                                             @Param("accountId") Long accountId);
 
+//        List<ProjectMember> findProjectMemberByAccountIdAndProject_Id(Long accountId, Long projectId);
+
         // 소프트 삭제
         @Modifying
         @Query("UPDATE ProjectMember m SET m.isDeleted = true WHERE m.id = :memberId")
         void softDeleteById(@Param("memberId") Long memberId);
 
+        boolean existsProjectMemberByProject_IdAndAccountId(Long projectId, Long accountId);
 }
