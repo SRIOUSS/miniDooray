@@ -37,11 +37,25 @@ public class Project {
     @Column(name = "create_account_id", nullable = false)
     private Long createAccountId;
 
-    //생성자
+    //프로젝트를 처음 만들 때
     public Project(String title, String description, Long createAccountId) {
         this.title = title;
         this.description = description;
         this.createAccountId = createAccountId;
         this.status = ProjectStatus.ACTIVE;
+    }
+
+    //존재하는 프로젝트 수정
+    public void updateProjectInfo(String title, String description, ProjectStatus status) {
+
+        if (title != null) {
+            this.title = title;
+        }
+        if (description != null) {
+            this.description = description;
+        }
+        if (status != null) {
+            this.status = status;
+        }
     }
 }

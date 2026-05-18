@@ -42,4 +42,9 @@ public class Comment {
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    //댓글 수정
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

@@ -9,11 +9,10 @@ import java.util.List;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-    //특정 프로젝트(:projectId)에 포함된 모든 작업(Task)들과 연결된 태그(Tag) 목록을 가져오기
-    @Query("SELECT t FROM Tag t JOIN TaskTag tt ON tt.tag = t JOIN Task ta ON tt.task = ta WHERE ta.id = :taskId")
-    List<Tag> findAllByTaskId(@Param("projectId") Long taskId);
+    // 해당 프로젝트에 포함된 모든 Task들이 사용하는 태그 목록 조회
+    @Query("SELECT DISTINCT t FROM Tag t JOIN TaskTag tt ON tt.tag = t JOIN tt.task ta WHERE ta.project.id = :projectId")
+    List<Tag> findAllByProjectId(@Param("projectId") Long projectId);
 
-    boolean existsTagsByIdAndName(Long id, String name);
-
-    boolean existsTagById(Long id);
+    // 태그 이름으로만 중복 검사
+    boolean existsByName(String name);
 }

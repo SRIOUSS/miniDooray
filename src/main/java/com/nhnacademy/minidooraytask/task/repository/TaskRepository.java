@@ -3,9 +3,16 @@ package com.nhnacademy.minidooraytask.task.repository;
 import com.nhnacademy.minidooraytask.task.domain.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    //GET
+    // 특정 프로젝트에 속한 모든 Task 목록 조회
+    List<Task> findAllByProject_Id(Long projectId);
+
+    // 특정 프로젝트에 속한 특정 Task 상세 조회 (검증용)
+    Optional<Task> findByIdAndProject_Id(Long taskId, Long projectId);
 
 
 }

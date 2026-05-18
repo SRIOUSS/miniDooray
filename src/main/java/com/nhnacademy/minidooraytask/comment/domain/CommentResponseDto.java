@@ -7,7 +7,7 @@ public record CommentResponseDto(
         long taskId,
         long memberId,
         String content,
-        LocalDateTime createAt,
-        LocalDateTime updateAt
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
 ) {
 }

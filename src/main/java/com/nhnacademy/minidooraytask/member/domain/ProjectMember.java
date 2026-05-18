@@ -42,6 +42,12 @@ public class ProjectMember {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 
+    public ProjectMember(Project project, Long accountId, MembersAuth auth) {
+        this.project = project;
+        this.accountId = accountId;
+        this.auth = auth;
+    }
+
     // 소프트 삭제 메서드
     public void delete() {
         this.isDeleted = true;
@@ -52,6 +58,11 @@ public class ProjectMember {
         this.project = project;
         this.accountId = accountId;
         this.auth = MembersAuth.MEMBER;
+        this.isDeleted = false;
+    }
+
+    //삭제 복구
+    public void restore() {
         this.isDeleted = false;
     }
 }

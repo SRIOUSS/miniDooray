@@ -1,7 +1,6 @@
 package com.nhnacademy.minidooraytask.member.repository;
 
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
-import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,21 +10,14 @@ import java.util.Optional;
 
 public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Long> {
 
-        // 프로젝트의 멤버 목록 조회 (삭제 안된 멤버만)
+        // 프로젝트의 멤버 목록 조회
         @Query("SELECT m FROM ProjectMember m WHERE m.project.id = :projectId AND m.isDeleted = false")
         List<ProjectMember> findAllByProjectId(@Param("projectId") Long projectId);
 
-        // 멤버 추가 시 이미 존재하는지 확인
-        @Query("SELECT m FROM ProjectMember m WHERE m.project.id = :projectId AND m.accountId = :accountId")
-        Optional<ProjectMember> findByProjectIdAndAccountId(@Param("projectId") Long projectId,
-                                                            @Param("accountId") Long accountId);
+        // 특정 멤버 조회
+        Optional<ProjectMember> findByProject_IdAndAccountId(Long projectId, Long accountId);
 
-//        List<ProjectMember> findProjectMemberByAccountIdAndProject_Id(Long accountId, Long projectId);
-
-        // 소프트 삭제
-        @Modifying
-        @Query("UPDATE ProjectMember m SET m.isDeleted = true WHERE m.id = :memberId")
-        void softDeleteById(@Param("memberId") Long memberId);
-
+        // 해당 프로젝트에 해당 멤버가 있는지 확인
         boolean existsProjectMemberByProject_IdAndAccountId(Long projectId, Long accountId);
+
 }
