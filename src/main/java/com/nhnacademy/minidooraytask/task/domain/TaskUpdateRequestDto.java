@@ -7,5 +7,4 @@ public record TaskUpdateRequestDto(
         String content,
         Long milestoneId,
         List<Long> tagIds
-) {
-}
+) {}

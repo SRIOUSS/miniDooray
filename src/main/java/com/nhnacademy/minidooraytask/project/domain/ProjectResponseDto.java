@@ -1,6 +1,5 @@
 package com.nhnacademy.minidooraytask.project.domain;
 
-import com.nhnacademy.minidooraytask.project.respository.ProjectRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

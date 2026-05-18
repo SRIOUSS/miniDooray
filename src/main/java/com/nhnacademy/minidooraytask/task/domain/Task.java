@@ -47,4 +47,22 @@ public class Task {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    //생성자
+    public Task(Project project, ProjectMember projectMember, String title, String content) {
+        this.project = project;
+        this.projectMember = projectMember;
+        this.title = title;
+        this.content = content;
+    }
+
+    // Task 내용 수정
+    public void updateTask(String title, String content) {
+        if (title != null) {
+            this.title = title;
+        }
+        if (content != null) {
+            this.content = content;
+        }
+    }
 }

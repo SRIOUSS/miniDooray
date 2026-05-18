@@ -1,6 +1,5 @@
 package com.nhnacademy.minidooraytask.tag.domain;
 
-
 import com.nhnacademy.minidooraytask.task.domain.Task;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -27,4 +26,9 @@ public class TaskTag {
     @JoinColumn(name = "tag_id")
     private Tag tag;
 
+    //생성자
+    public TaskTag(Task task, Tag tag) {
+        this.task = task;
+        this.tag = tag;
+    }
 }
