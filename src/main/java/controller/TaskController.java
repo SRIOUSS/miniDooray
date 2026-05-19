@@ -1,6 +1,7 @@
 package controller;
 
 import com.nhnacademy.minidooraytask.task.domain.*;
+import com.nhnacademy.minidooraytask.task.service.TaskFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +13,16 @@ import java.util.List;
 @RequestMapping("/projects/{projectId}/tasks")
 public class TaskController {
 
+    private final TaskFacade taskFacade;
+
+    //조회시, 필요한 관계가 있으면 같이 겸사겸사 기져오기
     @GetMapping
     public ResponseEntity<TaskInfoListDto> getTaskResponseDtoList(@PathVariable long projectId,
                                                                   @RequestHeader("X-Account-Id") Long accountId) {
-        TaskInfoListDto responseDto = null;
+        TaskInfoListDto responseDto = taskFacade.getTaskInfoList(projectId, accountId);
         return ResponseEntity.ok().body(responseDto);
     }
+
 
     @GetMapping("/{taskId}")
     public ResponseEntity<TaskViewDto> getTaskResponseDto(@PathVariable long projectId,
@@ -28,17 +33,20 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createTask(@PathVariable long projectId,
+    public ResponseEntity<TaskRequestDto> createTask(@PathVariable long projectId,
                                            @RequestHeader("X-Account-Id") Long accountId,
                                            @RequestBody TaskRequestDto requestDto) {
+
+        taskFacade.createTask(projectId, accountId, requestDto);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{taskId}")
-    public ResponseEntity<Void> updateTask(@PathVariable long projectId,
+    public ResponseEntity<TaskRequestDto> updateTask(@PathVariable long projectId,
                                            @PathVariable long taskId,
                                            @RequestHeader("X-Account-Id") Long accountId,
                                            @RequestBody TaskRequestDto requestDto) {
+
         return ResponseEntity.ok().build();
     }
 

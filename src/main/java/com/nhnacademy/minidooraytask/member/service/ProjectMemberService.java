@@ -50,6 +50,17 @@ public class ProjectMemberService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public ProjectMember getActiveMember(Long projectId, Long accountId) {
+
+        return projectMemberRepository.findByProject_IdAndAccountId(projectId, accountId)
+                .filter(member -> !member.isDeleted())
+                .orElseThrow(() -> {
+                    log.debug("[project-member service] 권한이 없는 멤버입니다 - projectId:{}, accountId:{}", projectId, accountId);
+                    return new ProjectMemberIsNotExistException("[project-member service] 권한이 없는 멤버입니다");
+                });
+    }
+
     // 멤버 권한 확인
     @Transactional(readOnly = true)
     public void checkAdminAuth(MemberRequestDto memberRequestDto) {
@@ -195,5 +206,15 @@ public class ProjectMemberService {
         }
 
         member.delete();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProjectMember> getProjectMemberByAccountId(long accountId) {
+        return projectMemberRepository.findAllById(accountId);
+    }
+
+    @Transactional(readOnly = true)
+    public ProjectMember getProjectMemberByProjectIdAndAccountId(long projectId, long accountId) {
+        return projectMemberRepository.findByProject_IdAndAccountId(projectId, accountId).orElseGet(null);
     }
 }

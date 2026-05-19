@@ -1,12 +1,15 @@
 package com.nhnacademy.minidooraytask.project.domain;
 
 
+import com.nhnacademy.minidooraytask.task.domain.Task;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -37,12 +40,17 @@ public class Project {
     @Column(name = "create_account_id", nullable = false)
     private Long createAccountId;
 
+    @OneToMany
+    private List<Task> taskList;
+
     //프로젝트를 처음 만들 때
     public Project(String title, String description, Long createAccountId) {
         this.title = title;
         this.description = description;
         this.createAccountId = createAccountId;
         this.status = ProjectStatus.ACTIVE;
+
+        this.taskList = new ArrayList<>();
     }
 
     //존재하는 프로젝트 수정

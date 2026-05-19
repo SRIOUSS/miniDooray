@@ -1,7 +1,9 @@
 package com.nhnacademy.minidooraytask.member.domain;
 
+import com.nhnacademy.minidooraytask.comment.domain.Comment;
 import com.nhnacademy.minidooraytask.member.exception.ProjectMemberInvalidException;
 import com.nhnacademy.minidooraytask.project.domain.Project;
+import com.nhnacademy.minidooraytask.task.domain.Task;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -11,6 +13,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -44,10 +48,20 @@ public class ProjectMember {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 
+    @OneToMany
+    private List<Task> taskList;
+
+    @OneToMany
+    private List<Comment> commentList;
+
     public ProjectMember(Project project, Long accountId, MembersAuth auth) {
         this.project = project;
         this.accountId = accountId;
         this.auth = auth;
+        this.isDeleted = false;
+
+        this.taskList = new ArrayList<>();
+        this.commentList = new ArrayList<>();
     }
 
     // 소프트 삭제 메서드
@@ -57,10 +71,7 @@ public class ProjectMember {
 
     //생성자
     public ProjectMember(Project project, Long accountId) {
-        this.project = project;
-        this.accountId = accountId;
-        this.auth = MembersAuth.MEMBER;
-        this.isDeleted = false;
+        this(project, accountId, MembersAuth.MEMBER);
     }
 
     //삭제 복구

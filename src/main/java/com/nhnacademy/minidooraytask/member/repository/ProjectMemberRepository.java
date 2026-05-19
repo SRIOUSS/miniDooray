@@ -12,9 +12,9 @@ import java.util.Optional;
 
 public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Long> {
 
-        // 프로젝트의 멤버 목록 조회
-        @Query("SELECT m FROM ProjectMember m WHERE m.project.id = :projectId AND m.isDeleted = false")
-        List<ProjectMember> findByProjectId(@Param("projectId") Long projectId);
+       
+//       @Query("SELECT m FROM ProjectMember m WHERE m.project.id = :projectId AND m.isDeleted = false")
+//        List<ProjectMember> findByProjectId(@Param("projectId") Long projectId);
 
         // projectId, accountId로 특정 멤버 조회
         Optional<ProjectMember> findByProject_IdAndAccountId(Long projectId, Long accountId);
@@ -32,4 +32,8 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
         ProjectMember findProjectMemberById(Long id);
 
         boolean existsProjectMemberByIdAndAccountId(Long id, Long accountId);
+
+        List<ProjectMember> findAllById(Long id);
+
+
 }

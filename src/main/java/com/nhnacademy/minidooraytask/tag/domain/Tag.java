@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -20,8 +23,12 @@ public class Tag {
     @Column(nullable = false, length = 20)
     private String name;
 
+    @OneToMany
+    private List<TaskTag> taskTagList;
+
     public Tag(String name) {
         this.name = name;
+        this.taskTagList = new ArrayList<>();
     }
 
     public void update(String name) {

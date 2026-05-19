@@ -44,7 +44,7 @@ public class ProjectService {
     @Transactional
     public Project exGetProjectById(Long projectId) {
         return projectRepository.findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 프로젝트입니다. projectId: " + projectId));
+                .orElseThrow(() -> new ProjectNotFoundException("존재하지 않는 프로젝트입니다. projectId: " + projectId));
     }
 
     // POST 프로젝트 생성, 관리자 등록

@@ -14,9 +14,9 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Query("SELECT p FROM Project p JOIN ProjectMember m ON p = m.project WHERE m.accountId = :accountId")
     List<Project> findAllByAccountIdByQuery(Long accountId);
 
-    //프로젝트 상세 조회
-    @Query("SELECT p FROM Project p WHERE p.id = :projectId")
-    Optional<Project> findByProjectId(@Param("projectId") Long projectId);
+//    //프로젝트 상세 조회
+//    @Query("SELECT p FROM Project p WHERE p.id = :projectId")
+//    Optional<Project> findByProjectId(@Param("projectId") Long projectId);
 
     @Override
     Optional<Project> findById(Long aLong);
