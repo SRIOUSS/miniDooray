@@ -42,7 +42,7 @@ public class RedisConfig {
         return builder -> {
             BasicPolymorphicTypeValidator.Builder validatorBuilder =
                     BasicPolymorphicTypeValidator.builder()
-                            .allowIfSubType("com.nhnacademy.minidooraygateway")
+                            .allowIfSubType("com.nhnacademy.minidoorayfe")
                             .allowIfSubType("java.lang")
                             .allowIfSubType("java.util");
 

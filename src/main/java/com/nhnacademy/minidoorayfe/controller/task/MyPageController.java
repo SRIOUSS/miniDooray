@@ -1,7 +1,7 @@
 package com.nhnacademy.minidoorayfe.controller.task;
 
-import com.nhnacademy.minidooraygateway.api.TaskApiClient;
-import com.nhnacademy.minidooraygateway.dto.auth.SessionAccountDto;
+import com.nhnacademy.minidoorayfe.api.TaskApiClient;
+import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +18,7 @@ public class MyPageController {
 
     // 마이페이지에서 내가 작성한 Task 목록 (GET)
     @GetMapping("/tasks")
-    public String getMyTasks(@ModelAttribute("sessionAccount")SessionAccountDto sessionAccountDto,
+    public String getMyTasks(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
                              Model model) {
 
         model.addAttribute("tasks", this.taskApiClient.getMyTasks(sessionAccountDto.getAccountId()));

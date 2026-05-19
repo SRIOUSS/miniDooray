@@ -1,6 +1,6 @@
 package com.nhnacademy.minidoorayfe.dto.project;
 
-import com.nhnacademy.minidooraygateway.dto.task.TaskInfoDto;
+import com.nhnacademy.minidoorayfe.dto.task.TaskInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

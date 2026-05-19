@@ -1,6 +1,6 @@
 package com.nhnacademy.minidoorayfe.advice;
 
-import com.nhnacademy.minidooraygateway.dto.auth.SessionAccountDto;
+import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ControllerAdvice;

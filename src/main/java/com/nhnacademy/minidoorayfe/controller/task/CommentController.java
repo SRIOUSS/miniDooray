@@ -1,8 +1,8 @@
 package com.nhnacademy.minidoorayfe.controller.task;
 
-import com.nhnacademy.minidooraygateway.api.TaskApiClient;
-import com.nhnacademy.minidooraygateway.dto.auth.SessionAccountDto;
-import com.nhnacademy.minidooraygateway.dto.comment.CommentRequestDto;
+import com.nhnacademy.minidoorayfe.api.TaskApiClient;
+import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
+import com.nhnacademy.minidoorayfe.dto.comment.CommentRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

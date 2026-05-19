@@ -1,6 +1,6 @@
 package com.nhnacademy.minidoorayfe.dto.task;
 
-import com.nhnacademy.minidooraygateway.dto.milestone.MilestoneStatus;
+import com.nhnacademy.minidoorayfe.dto.milestone.MilestoneStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

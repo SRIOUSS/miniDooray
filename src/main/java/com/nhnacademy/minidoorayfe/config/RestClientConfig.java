@@ -1,6 +1,5 @@
 package com.nhnacademy.minidoorayfe.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -10,12 +9,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
-import java.util.Base64;
+import java.time.Duration;
 
 @Configuration
 public class RestClientConfig {
 
-    @Bean("accountRestClient")
+    @Bean("gatewayRestClient")
     public RestClient accountRestClient() {
 
         return RestClient.builder()
@@ -25,7 +24,7 @@ public class RestClientConfig {
                 .defaultStatusHandler(
                         status -> status.equals(HttpStatus.NOT_FOUND),
                         ((request, response) -> {
-                            throw new UsernameNotFoundException("unexist user");
+                            throw new UsernameNotFoundException("존재하지 않는 리소스");
                         })
                 )
                 .defaultStatusHandler(
@@ -33,28 +32,6 @@ public class RestClientConfig {
                         (req, res) -> {
                             throw new RestClientException("Account API 호출 실패: " + res.getStatusCode());
                         })
-                .build();
-    }
-
-    @Bean("taskRestClient")
-    public RestClient taskRestClient() {
-
-        return RestClient.builder()
-                .requestFactory(requestFactory())
-                .defaultHeader("Content-Type", "application/json")
-
-                .defaultStatusHandler(
-                        status -> status.equals(HttpStatus.NOT_FOUND),
-                        (req, res) -> {
-                            throw new RestClientException("존재하지 않는 리소스");
-                        }
-                )
-                .defaultStatusHandler(
-                        HttpStatusCode::isError,
-                        (req, res) -> {
-                            throw new RestClientException("Task API 호출 실패: " + res.getStatusCode());
-                        }
-                )
                 .build();
     }
 

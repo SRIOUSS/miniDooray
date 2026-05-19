@@ -8,6 +8,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Setter
 @ConfigurationProperties(prefix = "api")
 public class ApiProperties {
-    private String accountUrl;
-    private String taskUrl;
+    private String gatewayUrl;
 }

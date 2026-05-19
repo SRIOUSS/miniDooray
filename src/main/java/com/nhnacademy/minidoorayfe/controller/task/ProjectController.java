@@ -1,9 +1,9 @@
 package com.nhnacademy.minidoorayfe.controller.task;
 
-import com.nhnacademy.minidooraygateway.api.TaskApiClient;
-import com.nhnacademy.minidooraygateway.dto.auth.SessionAccountDto;
-import com.nhnacademy.minidooraygateway.dto.member.MemberRequestDto;
-import com.nhnacademy.minidooraygateway.dto.project.ProjectRequestDto;
+import com.nhnacademy.minidoorayfe.api.TaskApiClient;
+import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
+import com.nhnacademy.minidoorayfe.dto.member.MemberRequestDto;
+import com.nhnacademy.minidoorayfe.dto.project.ProjectRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

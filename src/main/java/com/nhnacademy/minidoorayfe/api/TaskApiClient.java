@@ -1,16 +1,16 @@
 package com.nhnacademy.minidoorayfe.api;
 
-import com.nhnacademy.minidooraygateway.dto.comment.CommentListDto;
-import com.nhnacademy.minidooraygateway.dto.comment.CommentRequestDto;
-import com.nhnacademy.minidooraygateway.dto.member.MemberInfoListDto;
-import com.nhnacademy.minidooraygateway.dto.member.MemberRequestDto;
-import com.nhnacademy.minidooraygateway.dto.milestone.MilestoneRequestDto;
-import com.nhnacademy.minidooraygateway.dto.project.ProjectRequestDto;
-import com.nhnacademy.minidooraygateway.dto.project.ProjectViewDto;
-import com.nhnacademy.minidooraygateway.dto.task.TaskInfoListDto;
-import com.nhnacademy.minidooraygateway.dto.task.TaskRequestDto;
-import com.nhnacademy.minidooraygateway.dto.task.TaskViewDto;
-import com.nhnacademy.minidooraygateway.properties.ApiProperties;
+import com.nhnacademy.minidoorayfe.dto.comment.CommentListDto;
+import com.nhnacademy.minidoorayfe.dto.comment.CommentRequestDto;
+import com.nhnacademy.minidoorayfe.dto.member.MemberInfoListDto;
+import com.nhnacademy.minidoorayfe.dto.member.MemberRequestDto;
+import com.nhnacademy.minidoorayfe.dto.milestone.MilestoneRequestDto;
+import com.nhnacademy.minidoorayfe.dto.project.ProjectRequestDto;
+import com.nhnacademy.minidoorayfe.dto.project.ProjectViewDto;
+import com.nhnacademy.minidoorayfe.dto.task.TaskInfoListDto;
+import com.nhnacademy.minidoorayfe.dto.task.TaskRequestDto;
+import com.nhnacademy.minidoorayfe.dto.task.TaskViewDto;
+import com.nhnacademy.minidoorayfe.properties.ApiProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ public class TaskApiClient {
     private final RestClient restClient;
     private final ApiProperties properties;
 
-    public TaskApiClient(@Qualifier("taskRestClient") RestClient restClient,
+    public TaskApiClient(@Qualifier("gatewayRestClient") RestClient restClient,
                          ApiProperties properties) {
         this.restClient = restClient;
         this.properties = properties;
@@ -36,7 +36,7 @@ public class TaskApiClient {
     public ProjectViewDto getProjects(Long accountId) {
 
         return this.restClient.get()
-                .uri(this.properties.getTaskUrl() + "/projects")
+                .uri(this.properties.getGatewayUrl() + "/projects")
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .retrieve()
                 .body(ProjectViewDto.class);
@@ -46,7 +46,7 @@ public class TaskApiClient {
     public void createProject(ProjectRequestDto dto, Long accountId) {
 
         this.restClient.post()
-                .uri(this.properties.getTaskUrl() + "/projects")
+                .uri(this.properties.getGatewayUrl() + "/projects")
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(dto)
@@ -58,7 +58,7 @@ public class TaskApiClient {
     public void updateProject(Long projectId, ProjectRequestDto dto, Long accountId) {
 
         this.restClient.post()
-                .uri(this.properties.getTaskUrl() + "/projects/{projectId}", projectId)
+                .uri(this.properties.getGatewayUrl() + "/projects/{projectId}", projectId)
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(dto)
@@ -70,7 +70,7 @@ public class TaskApiClient {
     public void deleteProject(Long projectId, Long accountId) {
 
         this.restClient.delete()
-                .uri(this.properties.getTaskUrl() + "/projects/{projectId}", projectId)
+                .uri(this.properties.getGatewayUrl() + "/projects/{projectId}", projectId)
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .retrieve()
                 .toBodilessEntity();
@@ -83,7 +83,7 @@ public class TaskApiClient {
     public MemberInfoListDto getMembers(Long projectId, Long accountId) {
 
         return this.restClient.get()
-                .uri(this.properties.getTaskUrl() + "/projects/{projectId}/members", projectId)
+                .uri(this.properties.getGatewayUrl() + "/projects/{projectId}/members", projectId)
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .retrieve()
                 .body(MemberInfoListDto.class);
@@ -93,7 +93,7 @@ public class TaskApiClient {
     public void addMember(Long projectId, Long accountId, MemberRequestDto dto) {
 
         this.restClient.post()
-                .uri(this.properties.getTaskUrl() + "/projects/{projectId}/members", projectId)
+                .uri(this.properties.getGatewayUrl() + "/projects/{projectId}/members", projectId)
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(dto)
@@ -105,7 +105,7 @@ public class TaskApiClient {
     public void updateMemberAuth(Long projectId, Long memberId, MemberRequestDto dto, Long accountId) {
 
         this.restClient.put()
-                .uri(this.properties.getTaskUrl() + "/projects/{projectId}/members/{memberId}", projectId, memberId)
+                .uri(this.properties.getGatewayUrl() + "/projects/{projectId}/members/{memberId}", projectId, memberId)
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(dto)
@@ -117,7 +117,7 @@ public class TaskApiClient {
     public void deleteMember(Long projectId, Long accountId, Long memberId) {
 
         this.restClient.delete()
-                .uri(this.properties.getTaskUrl() + "/projects/{projectId}/members/{memberId}", projectId, memberId)
+                .uri(this.properties.getGatewayUrl() + "/projects/{projectId}/members/{memberId}", projectId, memberId)
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .retrieve()
                 .toBodilessEntity();
@@ -129,7 +129,7 @@ public class TaskApiClient {
     public TaskInfoListDto getTasks(Long projectId, Long accountId) {
 
         return this.restClient.get()
-                .uri(this.properties.getTaskUrl() + "/projects/{projectId}/tasks", projectId)
+                .uri(this.properties.getGatewayUrl() + "/projects/{projectId}/tasks", projectId)
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .retrieve().body(TaskInfoListDto.class);
     }
@@ -138,7 +138,7 @@ public class TaskApiClient {
     public TaskViewDto getTask(Long projectId, Long taskId, Long accountId) {
 
         return this.restClient.get()
-                .uri(this.properties.getTaskUrl() + "/projects/{projectId}/tasks/{taskId}", projectId, taskId)
+                .uri(this.properties.getGatewayUrl() + "/projects/{projectId}/tasks/{taskId}", projectId, taskId)
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .retrieve()
                 .body(TaskViewDto.class);
@@ -148,7 +148,7 @@ public class TaskApiClient {
     public void createTask(Long projectId, Long accountId, TaskRequestDto dto) {
 
         this.restClient.post()
-                .uri(this.properties.getTaskUrl() + "/projects/{projectId}/tasks", projectId)
+                .uri(this.properties.getGatewayUrl() + "/projects/{projectId}/tasks", projectId)
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(dto)
@@ -160,7 +160,7 @@ public class TaskApiClient {
     public void updateTask(Long projectId, Long taskId, Long accountId, TaskRequestDto dto) {
 
         this.restClient.put()
-                .uri(this.properties.getTaskUrl() + "/projects/{projectId}/tasks/{taskId}", projectId, taskId)
+                .uri(this.properties.getGatewayUrl() + "/projects/{projectId}/tasks/{taskId}", projectId, taskId)
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(dto)
@@ -172,7 +172,7 @@ public class TaskApiClient {
     public void deleteTask(Long projectId, Long taskId, Long accountId) {
 
         this.restClient.delete()
-                .uri(this.properties.getTaskUrl() + "/projects/{projectId}/tasks/{taskId}", projectId, taskId)
+                .uri(this.properties.getGatewayUrl() + "/projects/{projectId}/tasks/{taskId}", projectId, taskId)
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .retrieve()
                 .toBodilessEntity();
@@ -182,7 +182,7 @@ public class TaskApiClient {
     public TaskInfoListDto getMyTasks(Long accountId) {
 
         return this.restClient.get()
-                .uri(this.properties.getTaskUrl() + "/mypage/tasks")
+                .uri(this.properties.getGatewayUrl() + "/mypage/tasks")
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .retrieve()
                 .body(TaskInfoListDto.class);
@@ -192,28 +192,28 @@ public class TaskApiClient {
 
     // 댓글 생성 (POST)
     public void createComment(Long taskId, Long accountId, CommentRequestDto dto) {
-        String url = "%s/tasks/%s/comments".formatted(properties.getTaskUrl(), taskId);
+        String url = "%s/tasks/%s/comments".formatted(properties.getGatewayUrl(), taskId);
         restClient.post().uri(url).header(ACCOUNT_ID_HEADER, String.valueOf(accountId)).contentType(MediaType.APPLICATION_JSON)
                 .body(dto).retrieve().toBodilessEntity();
     }
 
     // 댓글 수정 (POST)
     public void updateComment(Long taskId, Long accountId, Long commentId, CommentRequestDto dto) {
-        String url = "%s/tasks/%s/comments/%s".formatted(properties.getTaskUrl(), taskId, commentId);
+        String url = "%s/tasks/%s/comments/%s".formatted(properties.getGatewayUrl(), taskId, commentId);
         restClient.post().uri(url).header(ACCOUNT_ID_HEADER, String.valueOf(accountId)).contentType(MediaType.APPLICATION_JSON)
                 .body(dto).retrieve().toBodilessEntity();
     }
 
     // 댓글 삭제 (DELETE)
     public void deleteComment(Long taskId, Long accountId, Long commentId) {
-        String url = "%s/tasks/%s/comments/%s".formatted(properties.getTaskUrl(), taskId, commentId);
+        String url = "%s/tasks/%s/comments/%s".formatted(properties.getGatewayUrl(), taskId, commentId);
         restClient.delete().uri(url).header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .retrieve().toBodilessEntity();
     }
 
     // 마이페이지에서 내가 작성한 Comment 목록 (GET)
     public CommentListDto getMyComments(Long accountId) {
-        String url = "%s/mypage/comments".formatted(properties.getTaskUrl());
+        String url = "%s/mypage/comments".formatted(properties.getGatewayUrl());
         return restClient.get().uri(url).header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .retrieve().body(CommentListDto.class);
     }
@@ -222,21 +222,21 @@ public class TaskApiClient {
 
     // 마일스톤 생성 (POST)
     public void createMilestone(Long taskId, Long accountId, MilestoneRequestDto dto) {
-        String url = "%s/tasks/%s/milestones".formatted(properties.getTaskUrl(), taskId);
+        String url = "%s/tasks/%s/milestones".formatted(properties.getGatewayUrl(), taskId);
         restClient.post().uri(url).header(ACCOUNT_ID_HEADER, String.valueOf(accountId)).contentType(MediaType.APPLICATION_JSON)
                 .body(dto).retrieve().toBodilessEntity();
     }
 
     // 마일스톤 수정 (PUT)
     public void updateMilestone(Long taskId, Long accountId, MilestoneRequestDto dto) {
-        String url = "%s/tasks/%s/milestones".formatted(properties.getTaskUrl(), taskId);
+        String url = "%s/tasks/%s/milestones".formatted(properties.getGatewayUrl(), taskId);
         restClient.put().uri(url).header(ACCOUNT_ID_HEADER, String.valueOf(accountId)).contentType(MediaType.APPLICATION_JSON)
                 .body(dto).retrieve().toBodilessEntity();
     }
 
     // 마일스톤 삭제 (DELETE)
     public void deleteMilestone(Long taskId, Long accountId) {
-        String url = "%s/tasks/%s/milestones".formatted(properties.getTaskUrl(), taskId);
+        String url = "%s/tasks/%s/milestones".formatted(properties.getGatewayUrl(), taskId);
         restClient.delete().uri(url).header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .retrieve().toBodilessEntity();
     }

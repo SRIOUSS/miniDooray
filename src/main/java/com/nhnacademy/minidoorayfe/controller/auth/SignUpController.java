@@ -1,8 +1,8 @@
 package com.nhnacademy.minidoorayfe.controller.auth;
 
-import com.nhnacademy.minidooraygateway.api.AccountApiClient;
-import com.nhnacademy.minidooraygateway.dto.auth.AccountRegisterRequestDto;
-import com.nhnacademy.minidooraygateway.dto.auth.SignFormDto;
+import com.nhnacademy.minidoorayfe.api.AccountApiClient;
+import com.nhnacademy.minidoorayfe.dto.auth.AccountRegisterRequestDto;
+import com.nhnacademy.minidoorayfe.dto.auth.SignFormDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class SignUpController {
 
     private final AccountApiClient accountApiClient;
-    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/signup")
     public String signUpPage(Model model) {
@@ -35,7 +34,7 @@ public class SignUpController {
 
         AccountRegisterRequestDto encodedDto = new AccountRegisterRequestDto(
                 signFormDto.getUserId(),
-                passwordEncoder.encode(signFormDto.getUserPassword()),
+                signFormDto.getUserPassword(),
                 signFormDto.getUserName(),
                 signFormDto.getUserEmail()
         );

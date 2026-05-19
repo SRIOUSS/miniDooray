@@ -1,7 +1,7 @@
 package com.nhnacademy.minidoorayfe.dto.task;
 
-import com.nhnacademy.minidooraygateway.dto.milestone.MilestoneResponseDto;
-import com.nhnacademy.minidooraygateway.dto.tag.TagResponseDto;
+import com.nhnacademy.minidoorayfe.dto.milestone.MilestoneResponseDto;
+import com.nhnacademy.minidoorayfe.dto.tag.TagResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
