@@ -1,3 +1,9 @@
 spring:
   application:
-    name: miniDoory-Gateway
+    name: miniDooray-Gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          x-forwarded:
+            enabled: true

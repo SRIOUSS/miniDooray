@@ -1,4 +1,4 @@
-package com.nhnacademy.minidoorygateway.config;
+package com.nhnacademy.minidooraygateway.config;
 
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;

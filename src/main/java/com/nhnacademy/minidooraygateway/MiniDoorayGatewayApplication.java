@@ -1,13 +1,13 @@
-package com.nhnacademy.minidoorygateway;
+package com.nhnacademy.minidooraygateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MiniDooryGatewayApplication {
+public class MiniDoorayGatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MiniDooryGatewayApplication.class, args);
+        SpringApplication.run(MiniDoorayGatewayApplication.class, args);
     }
 
 }

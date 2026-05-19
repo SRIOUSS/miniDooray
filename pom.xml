@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.nhnacademy</groupId>
-    <artifactId>miniDoory-Gateway</artifactId>
+    <artifactId>miniDooray-Gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>miniDoory-Gateway</name>
-    <description>miniDoory-Gateway</description>
+    <description>miniDooray-Gateway</description>
     <url/>
     <licenses>
         <license/>
