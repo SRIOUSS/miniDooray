@@ -7,3 +7,5 @@ spring:
         webflux:
           x-forwarded:
             enabled: true
+server:
+  port: 8000
