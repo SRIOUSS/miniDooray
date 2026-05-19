@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>태스크 목록</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="nav">
+  <a th:href="@{/projects}">프로젝트</a>
+  <a th:href="@{/mypage/tasks}">내 태스크</a>
+  <a th:href="@{/mypage/comments}">내 댓글</a>
+  <a th:href="@{/logout}">로그아웃</a>
+</nav>
+
+<div class="container">
+  <h1>태스크 목록</h1>
+
+  <a th:href="@{/projects/{projectId}/tasks/new(projectId=${projectId})}">태스크 생성</a>
+  <a th:href="@{/projects/{projectId}(projectId=${projectId})}">프로젝트로 돌아가기</a>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>제목</th>
+      <th>상태</th>
+      <th>관리</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="task : ${tasks.taskInfoDtoList}">
+      <td th:text="${task.id}"></td>
+      <td>
+        <a th:href="@{/projects/{projectId}/tasks/{taskId}(projectId=${projectId}, taskId=${task.id})}"
+           th:text="${task.title}"></a>
+      </td>
+      <td th:text="${task.status}"></td>
+      <td>
+        <a th:href="@{/projects/{projectId}/tasks/{taskId}/edit(projectId=${projectId}, taskId=${task.id})}">수정</a>
+        <form th:action="@{/projects/{projectId}/tasks/{taskId}(projectId=${projectId}, taskId=${task.id})}"
+              method="post">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit">삭제</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

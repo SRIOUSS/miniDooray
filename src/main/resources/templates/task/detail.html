@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>태스크 상세</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="nav">
+  <a th:href="@{/projects}">프로젝트</a>
+  <a th:href="@{/mypage/tasks}">내 태스크</a>
+  <a th:href="@{/mypage/comments}">내 댓글</a>
+  <a th:href="@{/logout}">로그아웃</a>
+</nav>
+
+<div class="container">
+
+  <!-- 태스크 정보 -->
+  <h1 th:text="${task.taskResponseDto.title}"></h1>
+  <p th:text="${task.taskResponseDto.content}"></p>
+  <p>생성일: <span th:text="${task.taskResponseDto.createdAt}"></span></p>
+  <p>수정일: <span th:text="${task.taskResponseDto.updatedAt}"></span></p>
+
+  <a th:href="@{/projects/{projectId}/tasks/{taskId}/edit(projectId=${projectId}, taskId=${task.taskResponseDto.taskId})}">수정</a>
+  <form th:action="@{/projects/{projectId}/tasks/{taskId}(projectId=${projectId}, taskId=${task.taskResponseDto.taskId})}"
+        method="post">
+    <input type="hidden" name="_method" value="DELETE">
+    <button type="submit">삭제</button>
+  </form>
+
+  <!-- 태그 목록 -->
+  <h2>태그</h2>
+  <ul>
+    <li th:each="tag : ${task.taskResponseDto.tagResponseList}" th:text="${tag.name}"></li>
+  </ul>
+
+  <!-- 마일스톤 -->
+  <h2>마일스톤</h2>
+  <div th:if="${task.taskResponseDto.milestone != null}">
+    <p>제목: <span th:text="${task.taskResponseDto.milestone.title}"></span></p>
+    <p>설명: <span th:text="${task.taskResponseDto.milestone.description}"></span></p>
+    <p>상태: <span th:text="${task.taskResponseDto.milestone.status}"></span></p>
+    <p>마감일: <span th:text="${task.taskResponseDto.milestone.dueDate}"></span></p>
+
+    <!-- 마일스톤 수정 -->
+    <form th:action="@{/projects/{projectId}/tasks/{taskId}/milestones(projectId=${projectId}, taskId=${task.taskResponseDto.taskId})}"
+          th:object="${milestoneRequestDto}"
+          method="post">
+      <input type="hidden" name="_method" value="PUT">
+      <input type="text" th:field="*{title}" placeholder="제목">
+      <input type="text" th:field="*{description}" placeholder="설명">
+      <select th:field="*{status}">
+        <option value="PLANNED">PLANNED</option>
+        <option value="IN_PROGRESS">IN_PROGRESS</option>
+        <option value="COMPLETED">COMPLETED</option>
+        <option value="CANCELLED">CANCELLED</option>
+      </select>
+      <input type="datetime-local" th:field="*{dueDate}">
+      <button type="submit" class="btn-primary">마일스톤 수정</button>
+    </form>
+
+    <!-- 마일스톤 삭제 -->
+    <form th:action="@{/projects/{projectId}/tasks/{taskId}/milestones(projectId=${projectId}, taskId=${task.taskResponseDto.taskId})}"
+          method="post">
+      <input type="hidden" name="_method" value="DELETE">
+      <button type="submit">마일스톤 삭제</button>
+    </form>
+  </div>
+
+  <!-- 마일스톤 생성 -->
+  <div th:if="${task.taskResponseDto.milestone == null}">
+    <h2>마일스톤 생성</h2>
+    <form th:action="@{/projects/{projectId}/tasks/{taskId}/milestones(projectId=${projectId}, taskId=${task.taskResponseDto.taskId})}"
+          th:object="${milestoneRequestDto}"
+          method="post">
+      <input type="text" th:field="*{title}" placeholder="제목">
+      <input type="text" th:field="*{description}" placeholder="설명">
+      <select th:field="*{status}">
+        <option value="PLANNED">PLANNED</option>
+        <option value="IN_PROGRESS">IN_PROGRESS</option>
+        <option value="COMPLETED">COMPLETED</option>
+        <option value="CANCELLED">CANCELLED</option>
+      </select>
+      <input type="datetime-local" th:field="*{dueDate}">
+      <button type="submit" class="btn-primary">마일스톤 생성</button>
+    </form>
+  </div>
+
+  <!-- 댓글 목록 -->
+  <h2>댓글</h2>
+  <ul>
+    <li th:each="comment : ${task.taskResponseDto.commentList}">
+      <p th:text="${comment.content}"></p>
+      <p>작성자: <span th:text="${comment.userId}"></span></p>
+      <p>작성일: <span th:text="${comment.createdAt}"></span></p>
+
+      <!-- 댓글 수정 -->
+      <form th:action="@{/projects/{projectId}/tasks/{taskId}/comments/{commentId}(projectId=${projectId}, taskId=${task.taskResponseDto.taskId}, commentId=${comment.id})}"
+            th:object="${commentRequestDto}"
+            method="post">
+        <input type="hidden" name="_method" value="PUT">
+        <input type="text" th:field="*{content}" placeholder="댓글 수정">
+        <button type="submit" class="btn-primary">수정</button>
+      </form>
+
+      <!-- 댓글 삭제 -->
+      <form th:action="@{/projects/{projectId}/tasks/{taskId}/comments/{commentId}(projectId=${projectId}, taskId=${task.taskResponseDto.taskId}, commentId=${comment.id})}"
+            method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">삭제</button>
+      </form>
+    </li>
+  </ul>
+
+  <!-- 댓글 생성 -->
+  <h2>댓글 작성</h2>
+  <form th:action="@{/projects/{projectId}/tasks/{taskId}/comments(projectId=${projectId}, taskId=${task.taskResponseDto.taskId})}"
+        th:object="${commentRequestDto}"
+        method="post">
+    <textarea th:field="*{content}" placeholder="댓글 내용"></textarea>
+    <button type="submit" class="btn-primary">댓글 작성</button>
+  </form>
+
+  <a th:href="@{/projects/{projectId}/tasks(projectId=${projectId})}">목록으로</a>
+
+</div>
+
+</body>
+</html>

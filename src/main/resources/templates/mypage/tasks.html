@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>내 태스크</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="nav">
+  <a th:href="@{/projects}">프로젝트</a>
+  <a th:href="@{/mypage/tasks}">내 태스크</a>
+  <a th:href="@{/mypage/comments}">내 댓글</a>
+  <a th:href="@{/logout}">로그아웃</a>
+</nav>
+
+<div class="container">
+  <h1>내 태스크</h1>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>제목</th>
+      <th>상태</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${#lists.isEmpty(tasks.taskInfoDtoList)}">
+      <td colspan="3">작성한 태스크가 없습니다.</td>
+    </tr>
+    <tr th:each="task : ${tasks.taskInfoDtoList}">
+      <td th:text="${task.id}"></td>
+      <td th:text="${task.title}"></td>
+      <td th:text="${task.status}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

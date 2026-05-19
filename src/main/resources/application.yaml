@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: miniDooray-Gateway
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+
+  session:
+    store-type: redis
+    timeout: 3600
+
+gateway-url: http://localhost:8000
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        secure: true
+        same-site: strict
