@@ -1,6 +1,7 @@
 package com.nhnacademy.minidooraytask.comment.service;
 
 import com.nhnacademy.minidooraytask.comment.domain.Comment;
+import com.nhnacademy.minidooraytask.comment.domain.CommentListDto;
 import com.nhnacademy.minidooraytask.comment.domain.CommentRequestDto;
 import com.nhnacademy.minidooraytask.comment.domain.CommentResponseDto;
 import com.nhnacademy.minidooraytask.comment.exception.CommentNotAuthorizedException;
@@ -32,26 +33,27 @@ public class CommentService {
     private final ProjectRepository projectRepository;
 
     @Transactional(readOnly = true)
-    public List<CommentResponseDto> getComments(Long projectId, Long taskId) {
+    public CommentListDto getCommentsByAccountId(Long accountId) {
 
-        //해당 프로젝트 존재 확인
-        projectRepository.findByProjectId(projectId)
-                .orElseThrow(() ->{
-                    log.debug("[comment service] 존재하지 않는 프로젝트 입니다 - projectId : {}",projectId);
-                    return new ProjectNotFoundException("[comment service] 존재하지 않는 프로젝트 입니다" );
-                });
+//        //해당 프로젝트 존재 확인
+//        projectRepository.findByProjectId(projectId)
+//                .orElseThrow(() ->{
+//                    log.debug("[comment service] 존재하지 않는 프로젝트 입니다 - projectId : {}",projectId);
+//                    return new ProjectNotFoundException("[comment service] 존재하지 않는 프로젝트 입니다" );
+//                });
 
-        return commentRepository.findAllByTask_Id(taskId)
-                .stream()
-                .map(comment -> new CommentResponseDto(
-                        comment.getId(),
-                        comment.getTask().getId(),
-                        comment.getProjectMember().getId(),
-                        comment.getContent(),
-                        comment.getCreatedAt(),
-                        comment.getUpdatedAt()
-                ))
-                .toList();
+//        return List<CommentResponseDto> commentResponseDtoList = commentRepository.findByProjectMember_AccountId(accountId)
+//                .stream()
+//                .map(comment -> new CommentResponseDto(
+//                        comment.getId(),
+//                        comment.getTask().getId(),
+//                        comment.getProjectMember().toString(),
+//                        comment.getContent(),
+//                        comment.getCreatedAt(),
+//                        comment.getUpdatedAt()
+//                ))
+//                .toList();
+        return null;
     }
 
     //[댓글 생성]
@@ -79,8 +81,8 @@ public class CommentService {
 
         return new CommentResponseDto(
                 saveC.getId(),
-                saveC.getTask().getId(),
-                saveC.getProjectMember().getId(),
+                accountId,
+                "userId",
                 saveC.getContent(),
                 saveC.getCreatedAt(),
                 saveC.getUpdatedAt()

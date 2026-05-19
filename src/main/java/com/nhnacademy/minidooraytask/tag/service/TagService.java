@@ -39,7 +39,7 @@ public class TagService {
         verifyProjectMember(projectId, accountId);
 
         return tagRepository.findAllByProjectId(projectId).stream()
-                .map(TagResponseDto::from)
+                .map(t -> new TagResponseDto(t.getId(), t.getName()))
                 .toList();
     }
 
@@ -57,7 +57,7 @@ public class TagService {
         Tag tag = new Tag(request.name());
         Tag savedTag = tagRepository.save(tag);
 
-        return TagResponseDto.from(savedTag);
+        return new TagResponseDto(savedTag.getId(), savedTag.getName());
     }
 
     // 태그 수정

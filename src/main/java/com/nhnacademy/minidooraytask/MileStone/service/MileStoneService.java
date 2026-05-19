@@ -25,9 +25,8 @@ public class MileStoneService {
     public MilestoneResponseDto getMileStoneByTaskId(long taskId) {
         MileStone mileStone = mileStoneRepository.findMileStoneByTask_Id(taskId);
 
-        return new MilestoneResponseDto(mileStone.getId(), mileStone.getTask().getId(), mileStone.getTitle(),
-                mileStone.getDescription(), mileStone.getStatus(), mileStone.getDueDate(), mileStone.getCreatedAt(),
-                mileStone.getUpdatedAt());
+        return new MilestoneResponseDto(mileStone.getId(), mileStone.getTitle(), mileStone.getDescription(),
+                mileStone.getStatus(), mileStone.getDueDate(), mileStone.getCreatedAt(), mileStone.getUpdatedAt());
     }
 
     @Transactional(readOnly = true)
@@ -36,9 +35,8 @@ public class MileStoneService {
 
         return mileStoneList.stream()
                 .map(ms ->
-                        new MilestoneResponseDto(ms.getId(), ms.getTask().getId(), ms.getTitle(),
-                                ms.getDescription(), ms.getStatus(), ms.getDueDate(), ms.getCreatedAt(),
-                                ms.getUpdatedAt()))
+                        new MilestoneResponseDto(ms.getId(), ms.getTitle(), ms.getDescription(), ms.getStatus(),
+                                ms.getDueDate(), ms.getCreatedAt(), ms.getUpdatedAt()))
                 .toList();
     }
 

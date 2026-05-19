@@ -3,11 +3,10 @@ package com.nhnacademy.minidooraytask.comment.domain;
 import java.time.LocalDateTime;
 
 public record CommentResponseDto(
-        long commentId,
-        long taskId,
-        long memberId,
+        Long id,
+        Long accountId,
+        String userId,
         String content,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
-) {
-}
+) {}

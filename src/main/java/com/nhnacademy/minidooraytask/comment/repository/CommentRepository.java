@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     //GET
-    List<Comment> findAllByTask_Id(Long taskId);
+    List<Comment> findByProjectMember_AccountId(Long accountId);
 
     //댓글이 해당 task에 속하는지 확인
     Optional<Comment> findByIdAndTask_Id(Long id, Long taskId);

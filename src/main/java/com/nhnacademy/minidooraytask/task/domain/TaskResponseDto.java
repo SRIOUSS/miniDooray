@@ -14,7 +14,7 @@ public record TaskResponseDto(
         String content,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
-        MilestoneResponseDto milestone,
+        MilestoneResponseDto milestoneResponseDto,
         List<TagResponseDto> tags
 ) {
 }

@@ -1,8 +1,6 @@
 package controller;
 
-import com.nhnacademy.minidooraytask.task.domain.TaskCreateRequestDto;
-import com.nhnacademy.minidooraytask.task.domain.TaskResponseDto;
-import com.nhnacademy.minidooraytask.task.domain.TaskUpdateRequestDto;
+import com.nhnacademy.minidooraytask.task.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,34 +13,39 @@ import java.util.List;
 public class TaskController {
 
     @GetMapping
-    public ResponseEntity<List<TaskResponseDto>> getTaskResponseDtoList(@PathVariable long projectId) {
-        List<TaskResponseDto> requestDtoList = List.of();
-        return ResponseEntity.ok().body(requestDtoList);
+    public ResponseEntity<TaskInfoListDto> getTaskResponseDtoList(@PathVariable long projectId,
+                                                                  @RequestHeader("X-Account-Id") Long accountId) {
+        TaskInfoListDto responseDto = null;
+        return ResponseEntity.ok().body(responseDto);
     }
 
     @GetMapping("/{taskId}")
-    public ResponseEntity<TaskResponseDto> getTaskResponseDto(@PathVariable long projectId,
-                                                              @PathVariable long taskId) {
-        TaskResponseDto responseDto = null;
+    public ResponseEntity<TaskViewDto> getTaskResponseDto(@PathVariable long projectId,
+                                                          @PathVariable long taskId,
+                                                          @RequestHeader("X-Account-Id") Long accountId) {
+        TaskViewDto responseDto = null;
         return ResponseEntity.ok().body(responseDto);
     }
 
     @PostMapping
     public ResponseEntity<Void> createTask(@PathVariable long projectId,
-                                           @RequestBody TaskCreateRequestDto requestDto) {
+                                           @RequestHeader("X-Account-Id") Long accountId,
+                                           @RequestBody TaskRequestDto requestDto) {
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{taskId}")
     public ResponseEntity<Void> updateTask(@PathVariable long projectId,
                                            @PathVariable long taskId,
-                                           @RequestBody TaskUpdateRequestDto requestDto) {
+                                           @RequestHeader("X-Account-Id") Long accountId,
+                                           @RequestBody TaskRequestDto requestDto) {
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{taskId}")
     public ResponseEntity<Void> deleteTask(@PathVariable long projectId,
-                                           @PathVariable long taskId) {
+                                           @PathVariable long taskId,
+                                           @RequestHeader("X-Account-Id") Long accountId) {
         return ResponseEntity.ok().build();
     }
 

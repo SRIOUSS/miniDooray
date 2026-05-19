@@ -2,13 +2,10 @@ package com.nhnacademy.minidooraytask.MileStone.domain;
 
 import java.time.LocalDateTime;
 
-public record MilestoneResponseDto(
-        long id,
+public record MilestoneRequestDto(
         String title,
         String description,
         MileStoneStatus status,
-        LocalDateTime dueDate,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        LocalDateTime dueDate
 ) {
 }

@@ -1,5 +1,6 @@
 package com.nhnacademy.minidooraytask.member.domain;
 
+import com.nhnacademy.minidooraytask.member.exception.ProjectMemberInvalidException;
 import com.nhnacademy.minidooraytask.project.domain.Project;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,6 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -64,5 +66,12 @@ public class ProjectMember {
     //삭제 복구
     public void restore() {
         this.isDeleted = false;
+    }
+
+    public void setAuth(MembersAuth auth) {
+        if(Objects.isNull(auth)) {
+            throw new ProjectMemberInvalidException("[ProjectMember] 잘못된 auth 입력");
+        }
+        this.auth = auth;
     }
 }
