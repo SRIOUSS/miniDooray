@@ -20,7 +20,7 @@ public class AccountApiClient {
     }
 
     public boolean checkUserId(String userId) {
-        String url = "%s/accounts/check-userId?userId=%s"
+        String url = "%s/account-api/accounts/check-userId?userId=%s"
                 .formatted(properties.getGatewayUrl(), userId);
         return Boolean.TRUE.equals(restClient.get().uri(url).retrieve()
                 .body(Boolean.class));
@@ -28,7 +28,7 @@ public class AccountApiClient {
 
 
     public void register(AccountRegisterRequestDto accountRegisterRequestDto) {
-        String url = "%s/accounts/register".formatted(properties.getGatewayUrl());
+        String url = "%s/account-api/accounts/register".formatted(properties.getGatewayUrl());
         restClient.post()
                 .uri(url)
                 .contentType(MediaType.APPLICATION_JSON)
