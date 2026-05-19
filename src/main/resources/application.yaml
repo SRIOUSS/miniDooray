@@ -20,7 +20,8 @@ spring:
     store-type: redis
     timeout: 3600
 
-gateway-url: http://localhost:8000
+api:
+  gateway-url: http://localhost:8000
 
 server:
   servlet:
@@ -29,3 +30,5 @@ server:
         http-only: true
         secure: true
         same-site: strict
+
+  port: 8080
