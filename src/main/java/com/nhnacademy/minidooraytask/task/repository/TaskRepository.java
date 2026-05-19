@@ -20,4 +20,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     boolean existsByIdAndAccountId(long taskId, long accountId);
 
     Task findTaskById(Long id);
+
+
 }

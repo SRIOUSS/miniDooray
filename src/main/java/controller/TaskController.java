@@ -2,6 +2,7 @@ package controller;
 
 import com.nhnacademy.minidooraytask.task.domain.*;
 import com.nhnacademy.minidooraytask.task.service.TaskFacade;
+import com.nhnacademy.minidooraytask.task.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 public class TaskController {
 
     private final TaskFacade taskFacade;
+    private final TaskService taskService;
 
     //조회시, 필요한 관계가 있으면 같이 겸사겸사 기져오기
     @GetMapping
@@ -42,18 +44,21 @@ public class TaskController {
     }
 
     @PutMapping("/{taskId}")
-    public ResponseEntity<TaskRequestDto> updateTask(@PathVariable long projectId,
+    public ResponseEntity<TaskResponseDto> updateTask(@PathVariable long projectId,
                                            @PathVariable long taskId,
                                            @RequestHeader("X-Account-Id") Long accountId,
-                                           @RequestBody TaskRequestDto requestDto) {
+                                           @RequestBody TaskRequestDto taskRequestDto) {
 
-        return ResponseEntity.ok().build();
+        TaskResponseDto responseDto = taskFacade.updateTask(projectId, taskId, accountId, taskRequestDto);
+        return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping("/{taskId}")
     public ResponseEntity<Void> deleteTask(@PathVariable long projectId,
                                            @PathVariable long taskId,
                                            @RequestHeader("X-Account-Id") Long accountId) {
+
+        taskFacade.deleteTask(projectId,accountId,taskId);
         return ResponseEntity.ok().build();
     }
 

@@ -11,6 +11,7 @@ import com.nhnacademy.minidooraytask.project.service.ProjectService;
 import com.nhnacademy.minidooraytask.tag.domain.Tag;
 import com.nhnacademy.minidooraytask.tag.domain.TagResponseDto;
 import com.nhnacademy.minidooraytask.tag.domain.TaskTag;
+import com.nhnacademy.minidooraytask.tag.service.TagService;
 import com.nhnacademy.minidooraytask.task.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,7 @@ public class TaskFacade {
     private final TaskService taskService;
     private final ProjectService projectService;
     private final ProjectMemberService projectMemberService;
+    private final TagService tagService;
 
     @Transactional
     public TaskInfoListDto getTaskInfoList(long projectId, long accountId) {
@@ -102,7 +104,7 @@ public class TaskFacade {
         //projecId, accountId로 member가 존제하는지
         Project project = projectService.exGetProjectById(projectId);
 
-        //요청자가 삭제되지 않은 정상 멤버인지 확인하고 그 멤버 객체 가져
+        //요청자가 삭제되지 않은 정상 멤버인지 확인하고 그 멤버 객체 가져오기
         ProjectMember activeMember = projectMemberService.getActiveMember(projectId, accountId);
 
         taskService.createTask(project, activeMember, taskRequestDto);
@@ -110,7 +112,7 @@ public class TaskFacade {
     }
 
     @Transactional
-    public void updateTask(Long projectId, Long taskId, Long accountId, TaskRequestDto taskrequestDto) {
+    public TaskResponseDto updateTask(Long projectId, Long taskId, Long accountId, TaskRequestDto taskrequestDto) {
 
         //권한이 있는 멤버인지(삭제된 멤버가 아닌지)
         ProjectMember activeMember = projectMemberService.getActiveMember(projectId, accountId);
@@ -118,9 +120,34 @@ public class TaskFacade {
         //작성자 확인
         taskService.checkTaskMaker(activeMember.getId(), taskId);
 
-        //태그가있는지없는지 없으면 만들기(태크서비스) 업데이트하는 테스크 객체랑 taskrequestDto 태그리스트 같이 넘기기
+        Task verifiedTask = taskService.getTaskById(taskId);
 
+        //태그가있는지없는지 없으면 만들기(태그서비스) 업데이트하는 테스크 객체랑 taskrequestDto 태그리스트 같이 넘기기
+        //꺼낸 태그들의 리스트
+        List<Tag> pullTags = new ArrayList<>();
 
+        if (taskrequestDto.tagNameList() != null) {
+            for (String tagName : taskrequestDto.tagNameList()) {
+                Tag tag = tagService.findOrCreateTag(tagName);
+                pullTags.add(tag);
+            }
+        }
+
+        Task updatedTask = taskService.updateTask(verifiedTask, taskrequestDto, pullTags);
+
+        return taskService.buildTaskResponseDto(updatedTask);
     }
 
+    @Transactional
+    public void deleteTask(Long projectId, Long taskId, Long accountId) {
+
+        // 프로젝트에 속한 삭제안된 멤버
+        ProjectMember activeMember = projectMemberService.getActiveMember(projectId, accountId);
+
+        // 해당 테스크의 진짜 작성자가 맞는지
+        taskService.checkTaskMaker(activeMember.getId(), taskId);
+
+        Task verifiedTask = taskService.getTaskById(taskId);
+        taskService.deleteTask(verifiedTask);
+    }
 }

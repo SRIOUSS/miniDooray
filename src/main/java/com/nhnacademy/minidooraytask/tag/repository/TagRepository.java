@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
@@ -15,4 +16,7 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     // 태그 이름으로만 중복 검사
     boolean existsByName(String name);
+
+    // 태그이름으로 실제 Tag 객체 가져오기
+    Optional<Tag> findByName(String name);
 }

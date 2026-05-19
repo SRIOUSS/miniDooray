@@ -26,6 +26,12 @@ public class TagService {
     private final ProjectMemberRepository projectMemberRepository;
     private final TaskTagRepository taskTagRepository; // ★ 자식(연결 고리) 데이터를 지우기 위해 의존성 주입 추가
 
+    @Transactional
+    public Tag findOrCreateTag(String tagName) {
+        return tagRepository.findByName(tagName)
+                .orElseGet(() -> tagRepository.save(new Tag(tagName)));
+    }
+
     // 권한 검증 공통 로직
     private void verifyProjectMember(Long projectId, Long accountId) {
         projectMemberRepository.findByProject_IdAndAccountId(projectId, accountId)

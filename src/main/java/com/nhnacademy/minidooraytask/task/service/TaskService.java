@@ -1,5 +1,6 @@
 package com.nhnacademy.minidooraytask.task.service;
 
+import com.nhnacademy.minidooraytask.MileStone.domain.MileStone;
 import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneResponseDto;
 import com.nhnacademy.minidooraytask.MileStone.repository.MileStoneRepository;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
@@ -7,7 +8,9 @@ import com.nhnacademy.minidooraytask.member.exception.ProjectMemberIsNotExistExc
 import com.nhnacademy.minidooraytask.member.repository.ProjectMemberRepository;
 import com.nhnacademy.minidooraytask.project.domain.Project;
 import com.nhnacademy.minidooraytask.project.respository.ProjectRepository;
+import com.nhnacademy.minidooraytask.tag.domain.Tag;
 import com.nhnacademy.minidooraytask.tag.domain.TagResponseDto;
+import com.nhnacademy.minidooraytask.tag.domain.TaskTag;
 import com.nhnacademy.minidooraytask.tag.repository.TagRepository;
 import com.nhnacademy.minidooraytask.tag.repository.TaskTagRepository;
 import com.nhnacademy.minidooraytask.task.domain.Task;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -77,79 +81,55 @@ public class TaskService {
 
     // [Task 수정]
     @Transactional
-    public Task updateTask(Long projectId, Long taskId, Long accountId, TaskUpdateRequestDto request) {
+    public Task updateTask(Task task, TaskRequestDto taskRequestDto, List<Tag> tags) {
 
 
-//       Task task =  updateTask(projectId,taskId, accountId, request);
-//        log.debug("[task service] task 수정 완료 - taskId:{}", taskId);
-//
-//        taskTagRepository.deleteAllByTask_Id(taskId);
-//
-//        if (request.tagIds() != null && !request.tagIds().isEmpty()) {
-//            List<Tag> tags = tagRepository.findAllById(request.tagIds());
-//            if (tags.size() != request.tagIds().size()) {
-//                log.debug("[task service] 존재하지 않는 태그가 포함되어 있습니다 - tagIds:{}", request.tagIds());
-//                throw new TagIsNotExistException("[task service] 존재하지 않는 태그가 포함되어 있습니다");
-//            }
-//            List<TaskTag> taskTags = tags.stream()
-//                    .map(tag -> new TaskTag(task, tag))
-//                    .collect(Collectors.toList());
-//            taskTagRepository.saveAll(taskTags);
-//        }
-        return null;
+       task.updateTask(taskRequestDto.title(), taskRequestDto.content());
+        log.debug("[task service] task 수정 완료 - taskId:{}", task.getId());
+
+        taskTagRepository.deleteAllByTask_Id(task.getId());
+
+        //파사드가 보낸 실제 Tag 객체들을 사용해 TaskTag 새로 조립
+        if (tags != null && !tags.isEmpty()) {
+            List<TaskTag> taskTags = tags.stream()
+                    .map(tag -> new TaskTag(task, tag))
+                    .collect(Collectors.toList());
+
+            taskTagRepository.saveAll(taskTags);
+        }
+
+        return task;
     }
 
     // [Task 삭제]
+    // TaskFacade.java 내부에 추가할 삭제 메서드 힌트
+
     @Transactional
-    public void deleteTask(Long projectId, Long taskId, Long accountId) {
-
-        projectMemberRepository.findByProject_IdAndAccountId(projectId, accountId)
-                .filter(member -> !member.isDeleted())
-                .orElseThrow(() -> {
-                    log.debug("[task service] 삭제 권한이 없는 멤버입니다 - projectId:{}, accountId:{}", projectId, accountId);
-                    return new ProjectMemberIsNotExistException("[task service] 삭제 권한이 없는 멤버입니다");
-                });
-
-        Task task = taskRepository.findByIdAndProject_Id(taskId, projectId)
-                .orElseThrow(() -> {
-                    log.debug("[task service] 존재하지 않는 task입니다 - taskId:{}, projectId:{}", taskId, projectId);
-                    return new TaskNotFoundException("[task service] 존재하지 않는 task입니다");
-                });
-
-        taskTagRepository.deleteAllByTask_Id(taskId);
+    public void deleteTask(Task task) {
 
         taskRepository.delete(task);
-        log.debug("[task service] task 삭제 완료 - taskId:{}", taskId);
+
+        log.debug("[task service] task 삭제 완료 - taskId:{}", task.getId());
     }
 
     // [TaskResponseDto 조립 메서드]
-    private TaskResponseDto buildTaskResponseDto(Task task) {
+    public TaskResponseDto buildTaskResponseDto(Task task) {
 
-//        Milestone milestone = milestoneRepository.findMileStoneByTask_Id(task.getId());
+        MileStone mileStone = task.getMilestone();
         MilestoneResponseDto milestoneResponseDto = null;
+        if (mileStone != null) {
+            milestoneResponseDto = new MilestoneResponseDto(
+                    mileStone.getId(), mileStone.getTitle(), mileStone.getDescription(),
+                    mileStone.getStatus(), mileStone.getDueDate(), mileStone.getCreatedAt(), mileStone.getUpdatedAt()
+            );
+        }
 
-//        if (milestone != null) {
-//            milestoneResponseDto = new MilestoneResponseDto(
-//                    milestone.getId(),
-//                    milestone.getTask().getId(),
-//                    milestone.getTitle(),
-//                    milestone.getDescription(),
-//                    milestone.getStatus(),
-//                    milestone.getDueDate(),
-//                    milestone.getCreatedAt(),
-//                    milestone.getUpdatedAt()
-//            );
-//        }
-
-        List<TagResponseDto> tagResponseDtos = taskTagRepository.findAllByTask_Id(task.getId())
-                .stream()
-                .map(taskTag -> new TagResponseDto(
-                        taskTag.getTag().getId(),
-                        taskTag.getTag().getName()
-                ))
+        List<TagResponseDto> tagResponseDtoList = task.getTaskTagList().stream()
+                .map(TaskTag::getTag)
+                .map(t -> new TagResponseDto(t.getId(), t.getName()))
                 .toList();
 
-        return new TaskResponseDto(
+        TaskResponseDto response = new TaskResponseDto(
                 task.getId(),
                 task.getProject().getId(),
                 task.getProjectMember().getId(),
@@ -158,8 +138,10 @@ public class TaskService {
                 task.getCreatedAt(),
                 task.getUpdatedAt(),
                 milestoneResponseDto,
-                tagResponseDtos
+                tagResponseDtoList
         );
+
+        return response;
     }
 
 
