@@ -1,6 +1,6 @@
 spring:
   application:
-    name: miniDooray-Gateway
+    name: miniDooray-FE
   mvc:
     hiddenmethod:
       filter:
@@ -28,7 +28,7 @@ server:
     session:
       cookie:
         http-only: true
-        secure: true
-        same-site: strict
+        secure: false
+        same-site: lax
 
   port: 8080

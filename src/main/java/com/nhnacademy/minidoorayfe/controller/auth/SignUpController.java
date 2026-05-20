@@ -4,7 +4,6 @@ import com.nhnacademy.minidoorayfe.api.AccountApiClient;
 import com.nhnacademy.minidoorayfe.dto.auth.AccountRegisterRequestDto;
 import com.nhnacademy.minidoorayfe.dto.auth.SignFormDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

@@ -9,7 +9,6 @@ import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializ
 
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.security.jackson.SecurityJacksonModules;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 
@@ -46,9 +45,7 @@ public class RedisConfig {
                             .allowIfSubType("java.lang")
                             .allowIfSubType("java.util");
 
-            builder.addModules(
-                    SecurityJacksonModules.getModules(getClass().getClassLoader(), validatorBuilder)
-            );
+            builder.activateDefaultTyping(validatorBuilder.build());
         };
     }
 }
