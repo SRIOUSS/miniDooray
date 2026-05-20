@@ -1,6 +1,6 @@
 package com.nhnacademy.minidoorayfe.api;
 
-import com.nhnacademy.minidoorayfe.dto.auth.AccountRegisterRequestDto;
+import com.nhnacademy.minidoorayfe.dto.auth.SignFormDto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -22,11 +22,11 @@ public class AccountApiClient {
     }
 
 
-    public void register(AccountRegisterRequestDto accountRegisterRequestDto) {
+    public void register(SignFormDto signFormDto) {
         String url = "/account-api/v1/accounts/register";
         restClient.post()
                 .uri(url)
-                .body(accountRegisterRequestDto)
+                .body(signFormDto)
                 .retrieve()
                 .toBodilessEntity(); // body 없이 상태 코드만
     }

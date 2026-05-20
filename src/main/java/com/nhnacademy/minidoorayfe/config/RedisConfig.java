@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer;
-
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import tools.jackson.databind.DefaultTyping;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 
@@ -39,13 +39,18 @@ public class RedisConfig {
     @Bean
     public JsonMapperBuilderCustomizer jsonMapperBuilderCustomizer() {
         return builder -> {
-            BasicPolymorphicTypeValidator.Builder validatorBuilder =
+            BasicPolymorphicTypeValidator ptv =
                     BasicPolymorphicTypeValidator.builder()
                             .allowIfSubType("com.nhnacademy.minidoorayfe")
                             .allowIfSubType("java.lang")
-                            .allowIfSubType("java.util");
+                            .allowIfSubType("java.util")
+                            .build();
 
-            builder.activateDefaultTyping(validatorBuilder.build());
+            builder.activateDefaultTypingAsProperty(
+                    ptv,
+                    DefaultTyping.NON_FINAL,
+                    "@class"
+            );
         };
     }
 }

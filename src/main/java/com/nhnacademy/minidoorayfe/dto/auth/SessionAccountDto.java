@@ -11,7 +11,6 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public class SessionAccountDto implements Serializable {
 
     // 로그인 성공 시 '세션에 저장되는 인증 정보'

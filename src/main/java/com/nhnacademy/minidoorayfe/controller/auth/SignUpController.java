@@ -1,7 +1,6 @@
 package com.nhnacademy.minidoorayfe.controller.auth;
 
 import com.nhnacademy.minidoorayfe.api.AccountApiClient;
-import com.nhnacademy.minidoorayfe.dto.auth.AccountRegisterRequestDto;
 import com.nhnacademy.minidoorayfe.dto.auth.SignFormDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -30,15 +29,7 @@ public class SignUpController {
         if (bindingResult.hasErrors()) {
             return "auth/signup";
         }
-
-        AccountRegisterRequestDto encodedDto = new AccountRegisterRequestDto(
-                signFormDto.getUserId(),
-                signFormDto.getUserPassword(),
-                signFormDto.getUserName(),
-                signFormDto.getUserEmail()
-        );
-
-        accountApiClient.register(encodedDto);
+        accountApiClient.register(signFormDto);
         return "redirect:/login";
     }
 }

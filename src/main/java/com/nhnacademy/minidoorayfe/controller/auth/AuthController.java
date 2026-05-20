@@ -1,7 +1,6 @@
 package com.nhnacademy.minidoorayfe.controller.auth;
 
 import com.nhnacademy.minidoorayfe.advice.SessionConstants;
-import com.nhnacademy.minidoorayfe.api.AccountApiClient;
 import com.nhnacademy.minidoorayfe.api.AuthApiClient;
 import com.nhnacademy.minidoorayfe.dto.auth.LoginFormDto;
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
