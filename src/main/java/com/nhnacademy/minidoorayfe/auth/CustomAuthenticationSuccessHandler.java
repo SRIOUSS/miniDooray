@@ -3,6 +3,7 @@ package com.nhnacademy.minidoorayfe.auth;
 import com.nhnacademy.minidoorayfe.advice.SessionConstants;
 import com.nhnacademy.minidoorayfe.dto.auth.AccountResponseDto;
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -26,7 +27,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     public void onAuthenticationSuccess(@NonNull HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication
-    ) throws IOException {
+    ) throws IOException, ServletException {
 
         AccountResponseDto accountResponseDto = (AccountResponseDto) authentication.getPrincipal();
 
@@ -35,6 +36,11 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 accountResponseDto.getAccountId(),
                 accountResponseDto.getUserId()
         );
+
+        HttpSession oldSession = request.getSession(false);
+        if (oldSession != null) {
+            oldSession.invalidate();
+        }
 
         HttpSession session = request.getSession();
         session.setAttribute(SessionConstants.SESSION_KEY, sessionAccount);
@@ -45,7 +51,8 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         log.info("Login Success: {}", accountResponseDto.getUserId());
 
-        response.sendRedirect("/projects");
-
+//        response.sendRedirect("/projects");
+        setDefaultTargetUrl("/projects");
+        super.onAuthenticationSuccess(request, response, authentication);
     }
 }

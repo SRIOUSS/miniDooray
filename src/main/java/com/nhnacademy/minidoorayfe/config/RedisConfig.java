@@ -9,11 +9,16 @@ import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializ
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.security.jackson.SecurityJacksonModules;
+import org.springframework.session.config.SessionRepositoryCustomizer;
+import org.springframework.session.data.redis.RedisIndexedSessionRepository;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisIndexedHttpSession;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import tools.jackson.databind.DefaultTyping;
+
 @Configuration
+@EnableRedisIndexedHttpSession
 public class RedisConfig {
 
     @Bean
@@ -57,18 +62,31 @@ public class RedisConfig {
 
     @Bean
     public ObjectMapper redisObjectMapper() {
-        BasicPolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
-                .allowIfSubType("com.nhnacademy.minidoorayfe.")
-                .allowIfSubType("org.springframework.security.")
-                .allowIfSubType("java.lang.")
-                .allowIfSubType("java.util.")
-                .allowIfSubType("java.time.")
-                .build();
+        BasicPolymorphicTypeValidator.Builder validatorBuilder =
+                BasicPolymorphicTypeValidator.builder()
+                        .allowIfSubType("com.nhnacademy.minidoorayfe.")
+                        .allowIfSubType("org.springframework.security.")
+                        .allowIfSubType("org.springframework.")
+                        .allowIfSubType("java.lang.")
+                        .allowIfSubType("java.util.")
+                        .allowIfSubType("java.time.")
+                        .allowIfSubType("[");
 
         return JsonMapper.builder()
-                .activateDefaultTypingAsProperty(ptv, DefaultTyping.NON_CONCRETE_AND_ARRAYS, "@class")
                 .addModules(SecurityJacksonModules.getModules(
-                        RedisConfig.class.getClassLoader()))
+                        RedisConfig.class.getClassLoader(),
+                        validatorBuilder))
                 .build();
+
+    }
+
+    @Bean
+    public SessionRepositoryCustomizer<RedisIndexedSessionRepository> sessionRepositoryCustomizer(
+            RedisSerializer<Object> springSessionDefaultRedisSerializer) {
+        return repository -> {
+            System.out.println("=== Serializer 주입 확인: " + springSessionDefaultRedisSerializer.getClass().getName());
+
+            repository.setDefaultSerializer(springSessionDefaultRedisSerializer);
+        };
     }
 }

@@ -21,19 +21,12 @@ import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@EnableRedisIndexedHttpSession
 public class SecurityConfig {
 
     private final CustomAuthenticationProvider provider;
     private final CustomAuthenticationSuccessHandler loginSuccessHandler;
     private final CustomAuthenticationFailHandler loginFailHandler;
-    private final RedisIndexedSessionRepository sessionRepository;
     private final IpBlackListFilter ipBlackListFilter;
-
-    @Bean
-    public SpringSessionBackedSessionRegistry<RedisIndexedSessionRepository.RedisSession> sessionRegistry() {
-        return new SpringSessionBackedSessionRegistry<>(sessionRepository);
-    }
 
     @Bean
     public HttpSessionEventPublisher httpSessionEventPublisher() {
@@ -48,7 +41,7 @@ public class SecurityConfig {
 
         httpSecurity.authenticationProvider(provider)
                 .addFilterBefore(ipBlackListFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/login", "/signup", "/error").permitAll()
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/projects/**","/login", "/signup", "/error").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -67,18 +60,18 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/login")
                 )
                 // Session Fixation Attack 방지
-                .sessionManagement(session -> session.
-                        sessionFixation()
-                        .newSession()
-                        .maximumSessions(1)
-                        .maxSessionsPreventsLogin(false)
-                        .sessionRegistry(sessionRegistry()))
+//                .sessionManagement(session -> session.
+//                        sessionFixation()
+//                        .newSession()
+//                        .maximumSessions(1)
+//                        .maxSessionsPreventsLogin(false)
+//                        .sessionRegistry(sessionRegistry()))
 
-                .headers(headers -> headers
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::deny) // Clickjacking 방지
-                        .contentSecurityPolicy(csp -> csp
-                                .policyDirectives("default-src 'self'; style-src 'self'; script-src 'self' 'unsafe-inline';"))
-                )
+//                .headers(headers -> headers
+//                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::deny) // Clickjacking 방지
+//                        .contentSecurityPolicy(csp -> csp
+//                                .policyDirectives("default-src 'self'; style-src 'self'; script-src 'self' 'unsafe-inline';"))
+//                )
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(csrfTokenRepository)
                         .csrfTokenRequestHandler(requestHandler)
