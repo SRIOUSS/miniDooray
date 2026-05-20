@@ -1,6 +1,6 @@
 package com.nhnacademy.minidoorayfe.auth;
 
-import com.nhnacademy.minidoorayfe.advice.SessionConstants;
+import com.nhnacademy.minidoorayfe.resolver.SessionConstants;
 import com.nhnacademy.minidoorayfe.dto.auth.AccountResponseDto;
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
 import jakarta.servlet.ServletException;

@@ -3,6 +3,7 @@ package com.nhnacademy.minidoorayfe.controller.task;
 import com.nhnacademy.minidoorayfe.api.TaskApiClient;
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
 import com.nhnacademy.minidoorayfe.dto.task.TaskRequestDto;
+import com.nhnacademy.minidoorayfe.resolver.SessionIdentity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +18,7 @@ public class TaskController {
 
     // 태스크 목록
     @GetMapping
-    public String getTasks(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String getTasks(@SessionIdentity SessionAccountDto sessionAccountDto,
                            @PathVariable Long projectId,
                            Model model) {
 
@@ -29,7 +30,7 @@ public class TaskController {
 
     // 태스크 상세
     @GetMapping("/{taskId}")
-    public String getTask(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String getTask(@SessionIdentity SessionAccountDto sessionAccountDto,
                           @PathVariable Long projectId,
                           @PathVariable Long taskId,
                           Model model) {
@@ -53,7 +54,7 @@ public class TaskController {
 
     // 태스크 생성
     @PostMapping
-    public String createTask(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String createTask(@SessionIdentity SessionAccountDto sessionAccountDto,
                              @PathVariable Long projectId,
                              @ModelAttribute TaskRequestDto dto) {
 
@@ -64,7 +65,7 @@ public class TaskController {
 
     // 태스크 수정 폼
     @GetMapping("/{taskId}/edit")
-    public String updateTaskForm(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String updateTaskForm(@SessionIdentity SessionAccountDto sessionAccountDto,
                                  @PathVariable Long projectId,
                                  @PathVariable Long taskId,
                                  Model model) {
@@ -78,7 +79,7 @@ public class TaskController {
 
     // 태스크 수정
     @PutMapping("/{taskId}")
-    public String updateTask(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String updateTask(@SessionIdentity SessionAccountDto sessionAccountDto,
                              @PathVariable Long projectId,
                              @PathVariable Long taskId,
                              @ModelAttribute TaskRequestDto dto) {
@@ -90,7 +91,7 @@ public class TaskController {
 
     // 태스크 삭제
     @DeleteMapping("/{taskId}")
-    public String deleteTask(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String deleteTask(@SessionIdentity SessionAccountDto sessionAccountDto,
                              @PathVariable Long projectId,
                              @PathVariable Long taskId) {
 

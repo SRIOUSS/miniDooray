@@ -1,6 +1,6 @@
 package com.nhnacademy.minidoorayfe.config;
 
-import com.nhnacademy.minidoorayfe.advice.SessionArgumentResolver;
+import com.nhnacademy.minidoorayfe.resolver.SessionArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

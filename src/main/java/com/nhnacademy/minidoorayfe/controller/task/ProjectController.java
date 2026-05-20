@@ -1,6 +1,6 @@
 package com.nhnacademy.minidoorayfe.controller.task;
 
-import com.nhnacademy.minidoorayfe.advice.SessionIdentity;
+import com.nhnacademy.minidoorayfe.resolver.SessionIdentity;
 import com.nhnacademy.minidoorayfe.api.TaskApiClient;
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
 import com.nhnacademy.minidoorayfe.dto.member.MemberRequestDto;
@@ -19,22 +19,13 @@ public class ProjectController {
 
     // 프로젝트 목록
     @GetMapping
-    public String getProjects(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String getProjects(@SessionIdentity SessionAccountDto sessionAccountDto,
                               Model model) {
 
         model.addAttribute("projectView", this.taskApiClient.getProjects(sessionAccountDto.getAccountId()));
 
         return "project/list";
     }
-
-//    @GetMapping
-//    public String getProjects(@SessionIdentity SessionAccountDto sessionAccountDto,
-//                              Model model) {
-//
-//        model.addAttribute("projectView", this.taskApiClient.getProjects(sessionAccountDto.getAccountId()));
-//
-//        return "project/list";
-//    }
 
     // 프로젝트 생성 폼
     @GetMapping("/new")
@@ -47,7 +38,7 @@ public class ProjectController {
 
     // 프로젝트 생성
     @PostMapping
-    public String createProject(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String createProject(@SessionIdentity SessionAccountDto sessionAccountDto,
                                 @ModelAttribute ProjectRequestDto dto) {
 
         this.taskApiClient.createProject(dto, sessionAccountDto.getAccountId());
@@ -57,7 +48,7 @@ public class ProjectController {
 
     // 프로젝트 상세
     @GetMapping("/{projectId}")
-    public String getProject(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String getProject(@SessionIdentity SessionAccountDto sessionAccountDto,
                              @PathVariable Long projectId,
                              Model model) {
 
@@ -70,7 +61,7 @@ public class ProjectController {
 
     // 프로젝트 수정 폼
     @GetMapping("/{projectId}/edit")
-    public String updateProjectForm(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String updateProjectForm(@SessionIdentity SessionAccountDto sessionAccountDto,
                                     @PathVariable Long projectId,
                                     Model model) {
 
@@ -83,7 +74,7 @@ public class ProjectController {
 
     // 프로젝트 수정
     @PutMapping("/{projectId}")
-    public String updateProject(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String updateProject(@SessionIdentity SessionAccountDto sessionAccountDto,
                                 @PathVariable Long projectId,
                                 @ModelAttribute ProjectRequestDto dto) {
 
@@ -94,7 +85,7 @@ public class ProjectController {
 
     // 프로젝트 삭제
     @DeleteMapping("/{projectId}")
-    public String deleteProject(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String deleteProject(@SessionIdentity SessionAccountDto sessionAccountDto,
                                 @PathVariable Long projectId) {
 
         this.taskApiClient.deleteProject(projectId, sessionAccountDto.getAccountId());
@@ -115,7 +106,7 @@ public class ProjectController {
 
     // 멤버 추가
     @PostMapping("/{projectId}/members")
-    public String addMember(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String addMember(@SessionIdentity SessionAccountDto sessionAccountDto,
                             @PathVariable Long projectId,
                             @ModelAttribute MemberRequestDto dto) {
 
@@ -126,7 +117,7 @@ public class ProjectController {
 
     // 멤버 권한 변경
     @PutMapping("/{projectId}/members/{memberId}")
-    public String updateMemberAuth(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String updateMemberAuth(@SessionIdentity SessionAccountDto sessionAccountDto,
                                    @PathVariable Long projectId,
                                    @PathVariable Long memberId,
                                    @ModelAttribute MemberRequestDto dto) {
@@ -138,7 +129,7 @@ public class ProjectController {
 
     // 멤버 삭제
     @DeleteMapping("/{projectId}/members/{memberId}")
-    public String deleteMember(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String deleteMember(@SessionIdentity SessionAccountDto sessionAccountDto,
                                @PathVariable Long projectId,
                                @PathVariable Long memberId) {
 

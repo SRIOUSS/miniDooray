@@ -1,13 +1,13 @@
 package com.nhnacademy.minidoorayfe.dto.task;
 
 import com.nhnacademy.minidoorayfe.dto.milestone.MilestoneStatus;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class TaskInfoDto {
 
     private long id;

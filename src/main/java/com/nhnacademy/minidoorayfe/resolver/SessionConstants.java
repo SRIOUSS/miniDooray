@@ -1,4 +1,4 @@
-package com.nhnacademy.minidoorayfe.advice;
+package com.nhnacademy.minidoorayfe.resolver;
 
 public class SessionConstants {
 

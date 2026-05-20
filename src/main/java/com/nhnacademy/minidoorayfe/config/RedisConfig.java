@@ -1,6 +1,5 @@
 package com.nhnacademy.minidoorayfe.config;
 
-import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -15,7 +14,6 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
-import tools.jackson.databind.DefaultTyping;
 
 @Configuration
 @EnableRedisIndexedHttpSession
@@ -39,26 +37,6 @@ public class RedisConfig {
     public RedisSerializer<Object> springSessionDefaultRedisSerializer(ObjectMapper redisObjectMapper) {
         return new GenericJacksonJsonRedisSerializer(redisObjectMapper);
     }
-
-//    @Bean
-//    public JsonMapperBuilderCustomizer jsonMapperBuilderCustomizer() {
-//        return builder -> {
-//            BasicPolymorphicTypeValidator.Builder validatorBuilder =
-//                    BasicPolymorphicTypeValidator.builder()
-//                            .allowIfSubType("com.nhnacademy.minidoorayfe.")
-//                            .allowIfSubType("org.springframework.security.")
-//                            .allowIfSubType("java.lang")
-//                            .allowIfSubType("java.util");
-//       builder.activateDefaultTypingAsProperty(
-//                validatorBuilder,
-//                DefaultTyping.NON_FINAL,
-//                "@class"
-//        );
-//            builder.addModules(
-//                    SecurityJacksonModules.getModules(getClass().getClassLoader(), validatorBuilder)
-//            );
-//        };
-//    }
 
     @Bean
     public ObjectMapper redisObjectMapper() {

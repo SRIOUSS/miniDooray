@@ -2,6 +2,7 @@ package com.nhnacademy.minidoorayfe.controller.task;
 
 import com.nhnacademy.minidoorayfe.api.TaskApiClient;
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
+import com.nhnacademy.minidoorayfe.resolver.SessionIdentity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +19,7 @@ public class MyPageController {
 
     // 마이페이지에서 내가 작성한 Task 목록 (GET)
     @GetMapping("/tasks")
-    public String getMyTasks(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String getMyTasks(@SessionIdentity SessionAccountDto sessionAccountDto,
                              Model model) {
 
         model.addAttribute("tasks", this.taskApiClient.getMyTasks(sessionAccountDto.getAccountId()));
@@ -28,7 +29,7 @@ public class MyPageController {
 
     // 마이페이지에서 내가 작성한 Comment 목록 (GET)
     @GetMapping("/comments")
-    public String getMyComments(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String getMyComments(@SessionIdentity SessionAccountDto sessionAccountDto,
                                 Model model) {
 
         model.addAttribute("comments", this.taskApiClient.getMyComments(sessionAccountDto.getAccountId()));

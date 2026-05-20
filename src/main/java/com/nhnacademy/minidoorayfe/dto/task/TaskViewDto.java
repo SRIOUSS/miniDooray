@@ -2,15 +2,15 @@ package com.nhnacademy.minidoorayfe.dto.task;
 
 import com.nhnacademy.minidoorayfe.dto.comment.CommentResponseDto;
 import com.nhnacademy.minidoorayfe.dto.project.ProjectInfoDto;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class TaskViewDto {
 
     private TaskResponseDto taskResponseDto;

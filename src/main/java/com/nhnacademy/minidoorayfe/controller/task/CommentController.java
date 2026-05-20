@@ -3,6 +3,7 @@ package com.nhnacademy.minidoorayfe.controller.task;
 import com.nhnacademy.minidoorayfe.api.TaskApiClient;
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
 import com.nhnacademy.minidoorayfe.dto.comment.CommentRequestDto;
+import com.nhnacademy.minidoorayfe.resolver.SessionIdentity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class CommentController {
 
     // 댓글 생성
     @PostMapping
-    public String createComment(@ModelAttribute("sessionAccount")SessionAccountDto sessionAccountDto,
+    public String createComment(@SessionIdentity SessionAccountDto sessionAccountDto,
                                 @PathVariable Long projectId,
                                 @PathVariable Long taskId,
                                 @ModelAttribute CommentRequestDto dto) {
@@ -33,7 +34,7 @@ public class CommentController {
 
     // 댓글 수정
     @PutMapping("/{commentId}")
-    public String updateComment(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String updateComment(@SessionIdentity SessionAccountDto sessionAccountDto,
                                 @PathVariable Long projectId,
                                 @PathVariable Long taskId,
                                 @PathVariable Long commentId,
@@ -46,7 +47,7 @@ public class CommentController {
 
     // 댓글 삭제
     @DeleteMapping("/{commentId}")
-    public String deleteComment(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String deleteComment(@SessionIdentity SessionAccountDto sessionAccountDto,
                                 @PathVariable Long projectId,
                                 @PathVariable Long taskId,
                                 @PathVariable Long commentId) {

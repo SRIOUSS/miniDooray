@@ -1,4 +1,4 @@
-package com.nhnacademy.minidoorayfe.advice;
+package com.nhnacademy.minidoorayfe.resolver;
 
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
 import jakarta.servlet.http.HttpServletRequest;

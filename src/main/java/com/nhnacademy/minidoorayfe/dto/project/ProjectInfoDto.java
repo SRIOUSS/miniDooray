@@ -1,15 +1,15 @@
 package com.nhnacademy.minidoorayfe.dto.project;
 
 import com.nhnacademy.minidoorayfe.dto.milestone.MilestoneStatus;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProjectInfoDto {
 
     private long id;

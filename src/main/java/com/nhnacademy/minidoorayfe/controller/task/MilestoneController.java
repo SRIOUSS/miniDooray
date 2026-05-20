@@ -3,6 +3,7 @@ package com.nhnacademy.minidoorayfe.controller.task;
 import com.nhnacademy.minidoorayfe.api.TaskApiClient;
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
 import com.nhnacademy.minidoorayfe.dto.milestone.MilestoneRequestDto;
+import com.nhnacademy.minidoorayfe.resolver.SessionIdentity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class MilestoneController {
 
     // 마일스톤 생성
     @PostMapping
-    public String createMilestone(@ModelAttribute("sessionAccount")SessionAccountDto sessionAccountDto,
+    public String createMilestone(@SessionIdentity SessionAccountDto sessionAccountDto,
                                   @PathVariable Long projectId,
                                   @PathVariable Long taskId,
                                   @ModelAttribute MilestoneRequestDto dto) {
@@ -30,7 +31,7 @@ public class MilestoneController {
 
     // 마일스톤 수정
     @PutMapping
-    public String updateMilestone(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String updateMilestone(@SessionIdentity SessionAccountDto sessionAccountDto,
                                   @PathVariable Long projectId,
                                   @PathVariable Long taskId,
                                   @ModelAttribute MilestoneRequestDto dto) {
@@ -42,7 +43,7 @@ public class MilestoneController {
 
     // 마일스톤 삭제
     @DeleteMapping
-    public String deleteMilestone(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
+    public String deleteMilestone(@SessionIdentity SessionAccountDto sessionAccountDto,
                                   @PathVariable Long projectId,
                                   @PathVariable Long taskId) {
 

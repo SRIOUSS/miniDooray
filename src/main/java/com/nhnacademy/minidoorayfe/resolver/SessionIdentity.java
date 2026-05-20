@@ -1,4 +1,4 @@
-package com.nhnacademy.minidoorayfe.advice;
+package com.nhnacademy.minidoorayfe.resolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

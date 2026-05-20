@@ -1,11 +1,11 @@
 package com.nhnacademy.minidoorayfe.dto.member;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
 public class MemberRequestDto {
     private long accountId;
