@@ -13,7 +13,6 @@ public class RouterConfig {
         return builder.routes()
                 .route(p -> p.path("/account-api/**").uri("http://localhost:8081"))
                 .route(p -> p.path("/task-api/**").uri("http://localhost:8082"))
-                .route(p -> p.path("/auth-api/**").uri("http://localhost:8083"))
                 .build();
     }
 }
