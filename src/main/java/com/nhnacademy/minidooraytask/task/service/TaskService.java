@@ -30,11 +30,6 @@ import java.util.List;
 public class TaskService {
 
     private final TaskRepository taskRepository;
-    private final TaskTagRepository taskTagRepository;
-    private final TagRepository tagRepository;
-    private final MileStoneRepository milestoneRepository;
-    private final ProjectRepository projectRepository;
-    private final ProjectMemberRepository projectMemberRepository;
 
     // [특정 프로젝트 Task 목록 조회]
     @Transactional(readOnly = true)

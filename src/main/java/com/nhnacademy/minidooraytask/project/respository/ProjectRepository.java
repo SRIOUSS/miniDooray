@@ -18,7 +18,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 //    Optional<Project> findByProjectId(@Param("projectId") Long projectId);
 
     @Override
-    Optional<Project> findById(Long aLong);
+    Optional<Project> findById(Long id);
 
-    boolean existByIdAndCreateAccountId(Long projectId, Long createAccountId);
+    boolean existsProjectByIdAndCreateAccountId(Long id, Long createAccountId);
 }
