@@ -21,9 +21,11 @@ class ProjectMemberTest {
     @MockitoBean
     private ProjectMemberRepository projectMemberRepository;
 
-//
-//    @Test
-//    @DisplayName("프로젝트 member의 유무 확인 - ")
-//    void get
 
+    @Test
+    @DisplayName("프로젝트 member의 유무 확인 - 성공")
+    void getProjectSingle_success() {
+        Long projectId = 1;
+        Project project1 =  mock(Project.class);
+    }
 }
