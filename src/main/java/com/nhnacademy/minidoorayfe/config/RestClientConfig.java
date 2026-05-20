@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
@@ -25,13 +24,13 @@ public class RestClientConfig {
                 .defaultStatusHandler(
                         status -> status.equals(HttpStatus.NOT_FOUND),
                         ((request, response) -> {
-                            throw new UsernameNotFoundException("존재하지 않는 리소스");
+                            throw new RestClientException("존재하지 않는 리소스");
                         })
                 )
                 .defaultStatusHandler(
                         HttpStatusCode::isError,
                         (req, res) -> {
-                            throw new RestClientException("Account API 호출 실패: " + res.getStatusCode());
+                            throw new RestClientException("Gateway API 호출 실패: " + res.getStatusCode());
                         })
                 .build();
     }
