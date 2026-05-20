@@ -2,6 +2,7 @@ package com.nhnacademy.minidoorayfe.controller.auth;
 
 import com.nhnacademy.minidoorayfe.advice.SessionConstants;
 import com.nhnacademy.minidoorayfe.api.AccountApiClient;
+import com.nhnacademy.minidoorayfe.api.AuthApiClient;
 import com.nhnacademy.minidoorayfe.dto.auth.LoginFormDto;
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
 import jakarta.servlet.http.HttpSession;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AccountApiClient accountApiClient;
+    private final AuthApiClient authApiClient;
 
     @GetMapping("/login")
     public String loginPage() {
@@ -24,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public String loginPost(@ModelAttribute LoginFormDto dto, HttpSession session) {
-        SessionAccountDto account = accountApiClient.login(dto);
+        SessionAccountDto account = this.authApiClient.login(dto);
         session.setAttribute(SessionConstants.SESSION_KEY, account);
         return "redirect:/projects";
     }

@@ -1,5 +1,6 @@
 package com.nhnacademy.minidoorayfe.config;
 
+import com.nhnacademy.minidoorayfe.properties.ApiProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -15,12 +16,12 @@ import java.time.Duration;
 public class RestClientConfig {
 
     @Bean("gatewayRestClient")
-    public RestClient accountRestClient() {
+    public RestClient accountRestClient(ApiProperties apiProperties) { // TODO ApiPropertis 주입함
 
         return RestClient.builder()
+                .baseUrl(apiProperties.getGatewayUrl()) // TODO 추가함
                 .requestFactory(requestFactory())
                 .defaultHeader("Content-Type", "application/json")
-
                 .defaultStatusHandler(
                         status -> status.equals(HttpStatus.NOT_FOUND),
                         ((request, response) -> {
