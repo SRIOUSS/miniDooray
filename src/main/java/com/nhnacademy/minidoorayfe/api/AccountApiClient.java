@@ -23,7 +23,7 @@ public class AccountApiClient {
     }
 
     public AccountResponseDto findByUserId(String userId) {
-        String url = "/accounts/login?userId=%s".formatted(userId);
+        String url = "/account-api/v1/accounts/login?userId=%s".formatted(userId);
         return restClient.get().uri(url).retrieve()
                 .body(AccountResponseDto.class); // 응답 body를 AccountResponseDto로 역직렬화해서 반환
     }
@@ -37,3 +37,4 @@ public class AccountApiClient {
                 .toBodilessEntity(); // body 없이 상태 코드만
     }
 }
+// http:/localhost:8000/accounts-api/v1/login?userId=%s

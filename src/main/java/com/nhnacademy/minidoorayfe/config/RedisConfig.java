@@ -8,14 +8,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import tools.jackson.databind.DefaultTyping;
+import org.springframework.security.jackson.SecurityJacksonModules;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 
 @Configuration
 public class RedisConfig {
-
-    // api에서 어떻게 들어오는지에 따라서 JsonMapperBuilderCustomizer.class 를 사용해서 설정 추가해줘야 할지도
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory, JsonMapper jsonMapper) {
@@ -39,17 +37,15 @@ public class RedisConfig {
     @Bean
     public JsonMapperBuilderCustomizer jsonMapperBuilderCustomizer() {
         return builder -> {
-            BasicPolymorphicTypeValidator ptv =
+            BasicPolymorphicTypeValidator.Builder validatorBuilder =
                     BasicPolymorphicTypeValidator.builder()
-                            .allowIfSubType("com.nhnacademy.minidoorayfe")
+                            .allowIfSubType("com.nhnacademy.minidoorayfe.")
+                            .allowIfSubType("org.springframework.security.")
                             .allowIfSubType("java.lang")
-                            .allowIfSubType("java.util")
-                            .build();
+                            .allowIfSubType("java.util");
 
-            builder.activateDefaultTypingAsProperty(
-                    ptv,
-                    DefaultTyping.NON_FINAL,
-                    "@class"
+            builder.addModules(
+                    SecurityJacksonModules.getModules(getClass().getClassLoader(), validatorBuilder)
             );
         };
     }

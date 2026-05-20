@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 import tools.jackson.databind.DeserializationFeature;
@@ -36,7 +37,7 @@ public class RestClientConfig {
                 .defaultStatusHandler(
                         status -> status.equals(HttpStatus.NOT_FOUND),
                         ((request, response) -> {
-                            throw new RestClientException("존재하지 않는 리소스");
+                            throw new UsernameNotFoundException("존재하지 않는 리소스");
                         })
                 )
                 .defaultStatusHandler(
