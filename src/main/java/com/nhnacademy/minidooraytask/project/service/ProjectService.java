@@ -10,7 +10,6 @@ import com.nhnacademy.minidooraytask.project.domain.ProjectUpdateRequestDto;
 import com.nhnacademy.minidooraytask.project.exception.NoAuthoProjectException;
 import com.nhnacademy.minidooraytask.project.exception.ProjectNotFoundException;
 import com.nhnacademy.minidooraytask.project.respository.ProjectRepository;
-import com.nhnacademy.minidooraytask.task.domain.Task;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -48,7 +47,7 @@ public class ProjectService {
     //프로젝트 관리자인지 확인(project 삭제시 필요)
     @Transactional(readOnly = true)
     public void checkProjectAdmin(Long projectId, Long accountId) {
-        if( !(projectRepository.existByIdAndCreateAccountId(projectId, accountId))) {
+        if( !(projectRepository.existsProjectByIdAndCreateAccountId(projectId, accountId))) {
             log.debug("[project service] 해당 accountId는 project에 권한이 존재하지 않습니다 - projectId : {}, accountId : {}", projectId, accountId);
             throw new NoAuthoProjectException("[project service] 해당 accountId는 project에 권한이 존재하지 않습니다");
         }
