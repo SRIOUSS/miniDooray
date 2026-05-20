@@ -1,4 +1,4 @@
-package controller;
+package com.nhnacademy.minidooraytask.controller;
 
 import com.nhnacademy.minidooraytask.member.domain.*;
 import com.nhnacademy.minidooraytask.member.service.ProjectMemberFacade;

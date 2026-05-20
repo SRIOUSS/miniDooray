@@ -1,5 +1,4 @@
-package controller;
-
+package com.nhnacademy.minidooraytask.controller;
 
 import com.nhnacademy.minidooraytask.project.domain.ProjectRequestDto;
 import com.nhnacademy.minidooraytask.project.domain.ProjectViewDto;

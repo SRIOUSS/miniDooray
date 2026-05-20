@@ -1,4 +1,4 @@
-package controller;
+package com.nhnacademy.minidooraytask.controller;
 
 import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneRequestDto;
 import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneUpdateRequestDto;

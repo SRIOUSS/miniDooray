@@ -1,4 +1,4 @@
-package controller;
+package com.nhnacademy.minidooraytask.controller;
 
 import com.nhnacademy.minidooraytask.task.domain.*;
 import com.nhnacademy.minidooraytask.task.service.TaskFacade;

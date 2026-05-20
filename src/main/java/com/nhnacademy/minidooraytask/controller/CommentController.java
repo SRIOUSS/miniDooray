@@ -1,4 +1,4 @@
-package controller;
+package com.nhnacademy.minidooraytask.controller;
 
 import com.nhnacademy.minidooraytask.comment.domain.CommentListDto;
 import com.nhnacademy.minidooraytask.comment.domain.CommentRequestDto;
