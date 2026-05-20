@@ -1,26 +1,26 @@
 package controller;
 
 
-import ch.qos.logback.core.model.processor.PhaseIndicator;
-import com.nhnacademy.minidooraytask.project.domain.*;
+import com.nhnacademy.minidooraytask.project.domain.ProjectRequestDto;
+import com.nhnacademy.minidooraytask.project.domain.ProjectViewDto;
+import com.nhnacademy.minidooraytask.project.service.ProjectFacade;
 import com.nhnacademy.minidooraytask.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/task-api/projects")
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final ProjectFacade projectFacade;
 
     //내 프로젝트 목록 조회
     @GetMapping
     public ResponseEntity<ProjectViewDto> getMyProjects(@RequestHeader("X-Account-Id") long accountId) {
-        ProjectViewDto responseDto = null;
+        ProjectViewDto responseDto = projectFacade.getProjectView(accountId);
         return ResponseEntity.ok().body(responseDto);
     }
 
@@ -29,16 +29,17 @@ public class ProjectController {
     @PostMapping
     public ResponseEntity<Void> createProject(@RequestHeader("X-Account-Id") long accountId,
                                               @RequestBody ProjectRequestDto requestDto) {
-//        projectService.createProject(accountId, request);
+        projectService.createProject(accountId, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 
     // PUT - 프로젝트 수정
     @PutMapping("/{projectId}")
-    public ResponseEntity<Void> updateProject(@RequestHeader("X-Account-Id") long accountId,
-                                                    @RequestBody ProjectRequestDto requestDto) {
-//        projectService.updateProjectStatus(projectId, requestDto);
+    public ResponseEntity<Void> updateProject(@PathVariable long projectId,
+                                              @RequestHeader("X-Account-Id") long accountId,
+                                              @RequestBody ProjectRequestDto requestDto) {
+        projectService.updateProject(projectId, requestDto);
         return ResponseEntity.ok().build();
     }
 
@@ -46,7 +47,7 @@ public class ProjectController {
     @DeleteMapping("/{projectId}")
     public ResponseEntity<Void> deleteProject(@PathVariable long projectId,
                                               @RequestHeader("X-Account-Id") Long accountId) {
-
+        projectService.deleteProject(projectId, accountId);
         return ResponseEntity.ok().build();
     }
 }

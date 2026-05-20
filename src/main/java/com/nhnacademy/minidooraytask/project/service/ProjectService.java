@@ -4,9 +4,8 @@ import com.nhnacademy.minidooraytask.member.domain.MembersAuth;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
 import com.nhnacademy.minidooraytask.member.repository.ProjectMemberRepository;
 import com.nhnacademy.minidooraytask.project.domain.Project;
-import com.nhnacademy.minidooraytask.project.domain.ProjectCreateRequestDto;
+import com.nhnacademy.minidooraytask.project.domain.ProjectRequestDto;
 import com.nhnacademy.minidooraytask.project.domain.ProjectResponseDto;
-import com.nhnacademy.minidooraytask.project.domain.ProjectUpdateRequestDto;
 import com.nhnacademy.minidooraytask.project.exception.NoAuthoProjectException;
 import com.nhnacademy.minidooraytask.project.exception.ProjectNotFoundException;
 import com.nhnacademy.minidooraytask.project.respository.ProjectRepository;
@@ -70,11 +69,11 @@ public class ProjectService {
 
     // POST 프로젝트 생성, 관리자 등록
     @Transactional
-    public ProjectResponseDto createProject(Long accountId, ProjectCreateRequestDto request) {
+    public ProjectResponseDto createProject(Long accountId, ProjectRequestDto request) {
 
         Project project = new Project(
-                request.getTitle(),
-                request.getDescription(),
+                request.title(),
+                request.description(),
                 accountId
         );
 
@@ -95,7 +94,7 @@ public class ProjectService {
 
     // PUT - 프로젝트 수정
     @Transactional
-    public void updateProject(Long projectId, ProjectUpdateRequestDto requestDto) {
+    public void updateProject(Long projectId, ProjectRequestDto requestDto) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> {
                     log.debug("[project service] 존재하지 않는 프로젝트 업데이트입니다 - projectId : {}", projectId);
