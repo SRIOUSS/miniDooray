@@ -1,5 +1,6 @@
 package com.nhnacademy.minidoorayfe.api;
 
+import com.nhnacademy.minidoorayfe.dto.auth.AccountResponseDto;
 import com.nhnacademy.minidoorayfe.dto.auth.SignFormDto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,11 @@ public class AccountApiClient {
                 .body(Boolean.class));
     }
 
+    public AccountResponseDto findByUserId(String userId) {
+        String url = "/accounts/login?userId=%s".formatted(userId);
+        return restClient.get().uri(url).retrieve()
+                .body(AccountResponseDto.class); // 응답 body를 AccountResponseDto로 역직렬화해서 반환
+    }
 
     public void register(SignFormDto signFormDto) {
         String url = "/account-api/v1/accounts/register";

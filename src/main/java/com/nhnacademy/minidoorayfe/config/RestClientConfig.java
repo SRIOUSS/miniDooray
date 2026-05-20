@@ -18,7 +18,7 @@ import java.time.Duration;
 public class RestClientConfig {
 
     @Bean("gatewayRestClient")
-    public RestClient accountRestClient(ApiProperties apiProperties) { // TODO ApiPropertis 주입함
+    public RestClient accountRestClient(ApiProperties apiProperties) { // TODO ApiProperties 주입함
 
         JsonMapper restClientMapper = JsonMapper.builder()
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
@@ -53,6 +53,4 @@ public class RestClientConfig {
         factory.setReadTimeout(Duration.ofSeconds(5));
         return factory;
     }
-
 }
-
