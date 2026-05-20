@@ -18,23 +18,23 @@ public class ProjectController {
     private final TaskApiClient taskApiClient;
 
     // 프로젝트 목록
-//    @GetMapping
-//    public String getProjects(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
-//                              Model model) {
-//
-//        model.addAttribute("projectView", this.taskApiClient.getProjects(sessionAccountDto.getAccountId()));
-//
-//        return "project/list";
-//    }
-
     @GetMapping
-    public String getProjects(@SessionIdentity SessionAccountDto sessionAccountDto,
+    public String getProjects(@ModelAttribute("sessionAccount") SessionAccountDto sessionAccountDto,
                               Model model) {
 
         model.addAttribute("projectView", this.taskApiClient.getProjects(sessionAccountDto.getAccountId()));
 
         return "project/list";
     }
+
+//    @GetMapping
+//    public String getProjects(@SessionIdentity SessionAccountDto sessionAccountDto,
+//                              Model model) {
+//
+//        model.addAttribute("projectView", this.taskApiClient.getProjects(sessionAccountDto.getAccountId()));
+//
+//        return "project/list";
+//    }
 
     // 프로젝트 생성 폼
     @GetMapping("/new")
