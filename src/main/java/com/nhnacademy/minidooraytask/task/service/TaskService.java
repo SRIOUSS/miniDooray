@@ -8,7 +8,6 @@ import com.nhnacademy.minidooraytask.member.exception.ProjectMemberIsNotExistExc
 import com.nhnacademy.minidooraytask.member.repository.ProjectMemberRepository;
 import com.nhnacademy.minidooraytask.project.domain.Project;
 import com.nhnacademy.minidooraytask.project.respository.ProjectRepository;
-import com.nhnacademy.minidooraytask.tag.domain.Tag;
 import com.nhnacademy.minidooraytask.tag.domain.TagResponseDto;
 import com.nhnacademy.minidooraytask.tag.domain.TaskTag;
 import com.nhnacademy.minidooraytask.tag.repository.TagRepository;
@@ -16,7 +15,6 @@ import com.nhnacademy.minidooraytask.tag.repository.TaskTagRepository;
 import com.nhnacademy.minidooraytask.task.domain.Task;
 import com.nhnacademy.minidooraytask.task.domain.TaskRequestDto;
 import com.nhnacademy.minidooraytask.task.domain.TaskResponseDto;
-import com.nhnacademy.minidooraytask.task.domain.TaskUpdateRequestDto;
 import com.nhnacademy.minidooraytask.task.exception.TaskNotFoundException;
 import com.nhnacademy.minidooraytask.task.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -58,9 +55,25 @@ public class TaskService {
     //테스크 작성자인지 확인
     @Transactional(readOnly = true)
     public void checkTaskMaker(Long memberId, Long taskId) {
-        if(taskRepository.findByIdAndProject_Id(taskId,memberId).isEmpty()) {
+        if(!(taskRepository.existsByIdAndAccountId(taskId,memberId))) {
             log.debug("[task service] 해당 테스크의 작성자가 아닙니다 - taskId:{}, memberId:{}", taskId, memberId);
             throw new TaskNotFoundException("[task service] 존재하지 않는 task입니다");
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public void checkTaskMakerByAccountId(long accountId, long taskId) {
+        if(!(taskRepository.existsTaskByProjectMember_AccountIdAndId(accountId, taskId))) {
+            log.debug("[task service] 해당 테스크의 작성자가 아닙니다 - taskId:{}, accountId:{}", taskId, accountId);
+            throw new TaskNotFoundException("[task service] 존재하지 않는 task입니다");
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public void checkProjectMember(long taskId, long accountId) {
+        if(taskRepository.existsByIdAndProject_ProjectMemberListIsAccountId(taskId, accountId)) {
+            log.debug("[task service] 존재하지 않는 멤버입니다 - taskId:{}, projectId:{}", taskId, accountId);
+            throw new ProjectMemberIsNotExistException("[task service] 존재하지 않는 멤버입니다");
         }
     }
 
@@ -72,31 +85,27 @@ public class TaskService {
 
     // [Task 생성]
     @Transactional
-    public void createTask(Project project, ProjectMember projectMember, TaskRequestDto request) {
+    public Task createTask(Project project, ProjectMember projectMember, TaskRequestDto request) {
 
         Task task = new Task(project, projectMember, request.title(), request.content());
         Task savedTask = taskRepository.save(task);
         log.debug("[task service] task 생성 완료 - taskId:{}, projectId:{}", savedTask.getId(), project.getId());
+
+        return savedTask;
     }
 
     // [Task 수정]
     @Transactional
-    public Task updateTask(Task task, TaskRequestDto taskRequestDto, List<Tag> tags) {
+    public Task updateTask(Task task, TaskRequestDto taskRequestDto) {
 
-
-       task.updateTask(taskRequestDto.title(), taskRequestDto.content());
-        log.debug("[task service] task 수정 완료 - taskId:{}", task.getId());
-
-        taskTagRepository.deleteAllByTask_Id(task.getId());
-
-        //파사드가 보낸 실제 Tag 객체들을 사용해 TaskTag 새로 조립
-        if (tags != null && !tags.isEmpty()) {
-            List<TaskTag> taskTags = tags.stream()
-                    .map(tag -> new TaskTag(task, tag))
-                    .collect(Collectors.toList());
-
-            taskTagRepository.saveAll(taskTags);
+        if(!taskRequestDto.title().equals(task.getTitle())) {
+            task.setTitle(taskRequestDto.title());
         }
+        if(!taskRequestDto.content().equals(task.getContent())) {
+            task.setContent(taskRequestDto.content());
+        }
+
+        taskRepository.save(task);
 
         return task;
     }

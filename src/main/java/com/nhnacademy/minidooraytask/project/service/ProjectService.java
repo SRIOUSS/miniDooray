@@ -7,8 +7,10 @@ import com.nhnacademy.minidooraytask.project.domain.Project;
 import com.nhnacademy.minidooraytask.project.domain.ProjectCreateRequestDto;
 import com.nhnacademy.minidooraytask.project.domain.ProjectResponseDto;
 import com.nhnacademy.minidooraytask.project.domain.ProjectUpdateRequestDto;
+import com.nhnacademy.minidooraytask.project.exception.NoAuthoProjectException;
 import com.nhnacademy.minidooraytask.project.exception.ProjectNotFoundException;
 import com.nhnacademy.minidooraytask.project.respository.ProjectRepository;
+import com.nhnacademy.minidooraytask.task.domain.Task;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,17 @@ import java.util.List;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMemberRepository projectMemberRepository; // 1. 멤버 저장을 위해 리포지토리 주입 추가
+    private final ProjectMemberRepository projectMemberRepository;
+
+    //프로젝트 단건 조회
+    @Transactional(readOnly = true)
+    public Project getProject(Long projectId) {
+        return projectRepository.findById(projectId)
+                .orElseThrow(() -> {
+                    log.debug("[project service] 존재하지 않는 proeject입니다 - projectId:{}", projectId);
+                    return new ProjectNotFoundException("[project service] 존재하지 않는 proeject입니다");
+                });
+    }
 
     // 내 프로젝트 목록 조회
     @Transactional(readOnly = true)
@@ -32,6 +44,16 @@ public class ProjectService {
                 .map(ProjectResponseDto::from)
                 .toList();
     }
+
+    //프로젝트 관리자인지 확인(project 삭제시 필요)
+    @Transactional(readOnly = true)
+    public void checkProjectAdmin(Long projectId, Long accountId) {
+        if( !(projectRepository.existByIdAndCreateAccountId(projectId, accountId))) {
+            log.debug("[project service] 해당 accountId는 project에 권한이 존재하지 않습니다 - projectId : {}, accountId : {}", projectId, accountId);
+            throw new NoAuthoProjectException("[project service] 해당 accountId는 project에 권한이 존재하지 않습니다");
+        }
+    }
+
 
     // GET - 특정 프로젝트 상세 조회
     @Transactional(readOnly = true)
@@ -77,10 +99,24 @@ public class ProjectService {
     public void updateProject(Long projectId, ProjectUpdateRequestDto requestDto) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> {
-                    log.debug("[project service] 존재하지 않는 프로젝트입니다 - projectId : {}", projectId);
+                    log.debug("[project service] 존재하지 않는 프로젝트 업데이트입니다 - projectId : {}", projectId);
                     return new ProjectNotFoundException("[project service] 존재하지 않는 프로젝트입니다");
                 });
 
         project.updateProjectInfo(requestDto.title(), requestDto.description(), requestDto.status());
+        projectRepository.save(project);
+    }
+
+    @Transactional
+    public void deleteProject(Long projectId, Long accountId) {
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> {
+                    log.debug("[project service] 존재하지 않는 프로젝트 삭제입니다 - projectId : {}", projectId);
+                    return new ProjectNotFoundException("[project service] 존재하지 않는 프로젝트입니다");
+                });
+
+        project.isDelete();
+        projectRepository.save(project);
     }
 }

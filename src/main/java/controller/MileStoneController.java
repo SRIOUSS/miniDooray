@@ -2,6 +2,7 @@ package controller;
 
 import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneRequestDto;
 import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneUpdateRequestDto;
+import com.nhnacademy.minidooraytask.MileStone.service.MileStoneFacade;
 import com.nhnacademy.minidooraytask.MileStone.service.MileStoneService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -9,15 +10,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/tasks/{taskId}/milestone")
+@RequestMapping("/task-api/tasks/{taskId}/milestone")
 public class MileStoneController {
-    private final MileStoneService mileStoneService;
+    private final MileStoneFacade mileStoneFacade;
 
     @PostMapping
     public ResponseEntity<Void> createMileStone(@PathVariable long taskId,
                                                 @RequestHeader("X-Account-Id") long accountId,
                                                 @RequestBody MilestoneRequestDto requestDto) {
-//        mileStoneService.createMileStone(null, requestDto);
+        mileStoneFacade.createMilestone(taskId, accountId, requestDto);
         return ResponseEntity.ok().build();
     }
 
@@ -25,14 +26,14 @@ public class MileStoneController {
     public ResponseEntity<Void> updateMileStone(@PathVariable long taskId,
                                                 @RequestHeader("X-Account-Id") long accountId,
                                                 @RequestBody MilestoneRequestDto requestDto) {
-//        mileStoneService.updateMileStone(taskId, requestDto);
+        mileStoneFacade.updateMilestone(taskId, accountId, requestDto);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
     public ResponseEntity<Void> deleteMileStone(@PathVariable long taskId,
                                                 @RequestHeader("X-Account-Id") long accountId) {
-        mileStoneService.deleteMileStone(taskId);
+        mileStoneFacade.deleteMilestone(taskId, accountId);
         return ResponseEntity.ok().build();
     }
 }

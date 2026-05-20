@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/projects")
+@RequestMapping("/task-api/projects")
 public class ProjectController {
 
     private final ProjectService projectService;
@@ -34,11 +34,19 @@ public class ProjectController {
     }
 
 
-    // PATCH - 프로젝트 상태 변경
-    @PatchMapping("/{projectId}/status")
-    public ResponseEntity<Void> updateProjectStatus(@RequestHeader("X-Account-Id") long projectId,
-                                                    @RequestBody ProjectUpdateRequestDto requestDto) {
+    // PUT - 프로젝트 수정
+    @PutMapping("/{projectId}")
+    public ResponseEntity<Void> updateProject(@RequestHeader("X-Account-Id") long accountId,
+                                                    @RequestBody ProjectRequestDto requestDto) {
 //        projectService.updateProjectStatus(projectId, requestDto);
+        return ResponseEntity.ok().build();
+    }
+
+    // DELETE - 특정 프로젝트 삭제 (소프트 삭제)
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<Void> deleteProject(@PathVariable long projectId,
+                                              @RequestHeader("X-Account-Id") Long accountId) {
+
         return ResponseEntity.ok().build();
     }
 }

@@ -35,5 +35,6 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
 
         List<ProjectMember> findAllById(Long id);
 
-
+        @Query("SELECT pm FROM Project p JOIN Task t ON t.project.id = p.id JOIN ProjectMember pm ON pm.project.id = p.id WHERE t.id = ?1 AND pm.accountId = ?2")
+        ProjectMember findProjectMemberByTaskIdAndAccountId(Long taskId, Long accountId);
 }

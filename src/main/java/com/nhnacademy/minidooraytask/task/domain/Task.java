@@ -2,10 +2,12 @@ package com.nhnacademy.minidooraytask.task.domain;
 
 
 import com.nhnacademy.minidooraytask.MileStone.domain.MileStone;
+import com.nhnacademy.minidooraytask.comment.domain.Comment;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
 import com.nhnacademy.minidooraytask.project.domain.Project;
 import com.nhnacademy.minidooraytask.tag.domain.Tag;
 import com.nhnacademy.minidooraytask.tag.domain.TaskTag;
+import com.nhnacademy.minidooraytask.task.exception.TaskValidInputException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -59,6 +62,9 @@ public class Task {
     @OneToMany
     private List<TaskTag> taskTagList;
 
+    @OneToMany
+    private List<Comment> commentList;
+
     //생성자
     public Task(Project project, ProjectMember projectMember, String title, String content) {
         this.project = project;
@@ -67,6 +73,7 @@ public class Task {
         this.content = content;
 
         this.taskTagList = new ArrayList<>();
+        this.commentList = new ArrayList<>();
     }
 
     // Task 내용 수정
@@ -77,5 +84,19 @@ public class Task {
         if (content != null) {
             this.content = content;
         }
+    }
+
+    public void setTitle(String title) {
+        if(Objects.isNull(title) || title.isBlank()) {
+            throw new TaskValidInputException("[task] 입력값이 null");
+        }
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        if(Objects.isNull(title) || title.isBlank()) {
+            throw new TaskValidInputException("[task] 입력값이 null");
+        }
+        this.content = content;
     }
 }

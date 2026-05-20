@@ -1,6 +1,7 @@
 package com.nhnacademy.minidooraytask.comment.domain;
 
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
+import com.nhnacademy.minidooraytask.project.domain.ProjectRequestDto;
 import com.nhnacademy.minidooraytask.task.domain.Task;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Entity
@@ -43,8 +43,22 @@ public class Comment {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    public Comment(Task task, ProjectMember projectMember, String content) {
+        this.task = task;
+        this.projectMember = projectMember;
+        this.content = content;
+
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public static Comment create(Task task, ProjectMember projectMember, CommentRequestDto requestDto) {
+        return new Comment(task, projectMember, requestDto.content());
+    }
+
     //댓글 수정
     public void updateContent(String content) {
         this.content = content;
+
+        this.updatedAt = LocalDateTime.now();
     }
 }

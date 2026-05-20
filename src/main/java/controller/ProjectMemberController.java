@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/projects/{projectId}/members")
+@RequestMapping("/task-api/projects/{projectId}/members")
 public class ProjectMemberController {
 
     private final ProjectMemberFacade projectMemberFacade;

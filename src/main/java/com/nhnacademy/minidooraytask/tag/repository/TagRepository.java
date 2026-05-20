@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +20,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     // 태그이름으로 실제 Tag 객체 가져오기
     Optional<Tag> findByName(String name);
+
+    List<Tag> findAllByNameIn(Collection<String> names);
 }

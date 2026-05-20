@@ -17,9 +17,13 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     //테스크 작성자인지 확인
     @Query("SELECT 1 FROM Task t JOIN ProjectMember m ON t.projectMember.id = m.id WHERE m.accountId = ?1")
-    boolean existsByIdAndAccountId(long taskId, long accountId);
+    boolean existsByIdAndAccountId(long taskId, long memberId);
 
     Task findTaskById(Long id);
 
 
+    boolean existsTaskByProjectMember_AccountIdAndId(Long projectMemberAccountId, Long id);
+
+    @Query("SELECT 1 FROM Project p JOIN Task t ON t.project.id = p.id JOIN ProjectMember pm ON pm.project.id = p.id WHERE t.id = ?1 AND pm.accountId = ?2")
+    boolean existsByIdAndProject_ProjectMemberListIsAccountId(Long id, Long accountId);
 }

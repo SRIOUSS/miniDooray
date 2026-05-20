@@ -7,7 +7,6 @@ import com.nhnacademy.minidooraytask.member.exception.AlreadyProjectMemberExistE
 import com.nhnacademy.minidooraytask.member.exception.ProjectMemberIsNotExistException;
 import com.nhnacademy.minidooraytask.member.repository.ProjectMemberRepository;
 import com.nhnacademy.minidooraytask.project.domain.Project;
-import com.nhnacademy.minidooraytask.project.exception.ProjectNotFoundException;
 import com.nhnacademy.minidooraytask.project.respository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -86,16 +85,28 @@ public class ProjectMemberService {
         }
     }
 
+    @Transactional
+    public ProjectMember getMemberByTaskId(long taskId, long accountId) {
+        return projectMemberRepository.findProjectMemberByTaskIdAndAccountId(taskId, accountId);
+    }
+
     @Transactional(readOnly = true)
     public boolean isMemberIdEqualAccountId(long memberId, long accountId) {
         return projectMemberRepository.existsProjectMemberByIdAndAccountId(memberId, accountId);
     }
+
 
     @Transactional(readOnly = true)
     public Long getProjectMemberIdByUserId(String userId) {
         AccountResp accountResp = client.getAccountByUserId(userId);
 
         return Objects.nonNull(accountResp) ? accountResp.id() : null;
+    }
+
+    @Transactional(readOnly = true)
+    public String getUserIdByAccountId(long accountId) {
+        AccountResp account = client.getAccountById(accountId);
+        return account.userId();
     }
 
     @Transactional(readOnly = true)

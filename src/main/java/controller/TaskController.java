@@ -11,11 +11,10 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/projects/{projectId}/tasks")
+@RequestMapping("/task-api/projects/{projectId}/tasks")
 public class TaskController {
 
     private final TaskFacade taskFacade;
-    private final TaskService taskService;
 
     //조회시, 필요한 관계가 있으면 같이 겸사겸사 기져오기
     @GetMapping
@@ -30,7 +29,8 @@ public class TaskController {
     public ResponseEntity<TaskViewDto> getTaskResponseDto(@PathVariable long projectId,
                                                           @PathVariable long taskId,
                                                           @RequestHeader("X-Account-Id") Long accountId) {
-        TaskViewDto responseDto = null;
+
+        TaskViewDto responseDto = taskFacade.getSpecificTask(taskId,projectId,accountId);
         return ResponseEntity.ok().body(responseDto);
     }
 

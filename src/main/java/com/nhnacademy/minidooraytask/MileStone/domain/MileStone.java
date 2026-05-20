@@ -4,7 +4,6 @@ import com.nhnacademy.minidooraytask.MileStone.exception.MileStoneInvalidInputEx
 import com.nhnacademy.minidooraytask.task.domain.Task;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -58,7 +57,7 @@ public class MileStone {
         this.createdAt = LocalDateTime.now();
     }
 
-    public static MileStone create(Task task, MilestoneCreateRequestDto requestDto) {
+    public static MileStone create(Task task, MilestoneRequestDto requestDto) {
         return new MileStone(task, requestDto.title(), requestDto.description(),
                 requestDto.status(), requestDto.dueDate());
     }

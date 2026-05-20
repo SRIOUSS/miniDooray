@@ -3,6 +3,8 @@ package com.nhnacademy.minidooraytask.task.service;
 import com.nhnacademy.minidooraytask.MileStone.domain.MileStone;
 import com.nhnacademy.minidooraytask.MileStone.domain.MileStoneStatus;
 import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneResponseDto;
+import com.nhnacademy.minidooraytask.comment.domain.Comment;
+import com.nhnacademy.minidooraytask.comment.domain.CommentResponseDto;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
 import com.nhnacademy.minidooraytask.member.service.ProjectMemberService;
 import com.nhnacademy.minidooraytask.project.domain.Project;
@@ -36,6 +38,7 @@ public class TaskFacade {
         return createTaskInfoListDto(projectMemberService.getProjectMemberByAccountId(accountId)).get(projectId);
     }
 
+    //특정 파사드 정보
     @Transactional
     public TaskViewDto getSpecificTask(Long taskId, Long projectId, long accountId) {
         projectMemberService.checkIncludedMember(projectId, accountId);
@@ -43,11 +46,14 @@ public class TaskFacade {
         Task task = taskService.getTaskById(taskId);
 
         MileStone mileStone = task.getMilestone();
-        MilestoneResponseDto milestoneResponseDto = new MilestoneResponseDto(mileStone.getId(),
-                mileStone.getTitle(), mileStone.getDescription(), mileStone.getStatus(), mileStone.getDueDate(),
-                mileStone.getCreatedAt(), mileStone.getUpdatedAt());
+        MilestoneResponseDto milestoneResponseDto = null;
+        if(Objects.nonNull(mileStone)) {
+            milestoneResponseDto = new MilestoneResponseDto(mileStone.getId(),
+                    mileStone.getTitle(), mileStone.getDescription(), mileStone.getStatus(), mileStone.getDueDate(),
+                    mileStone.getCreatedAt(), mileStone.getUpdatedAt());
+        }
 
-        List<TagResponseDto> tagResponseDtoList = task.getTaskTagList().stream()
+        List<TagResponseDto> tagResponseDtoList = Optional.ofNullable(task.getTaskTagList()).orElse(Collections.emptyList()).stream()
                 .map(TaskTag::getTag)
                 .map(t ->
                         new TagResponseDto(t.getId(), t.getName()))
@@ -62,13 +68,33 @@ public class TaskFacade {
 
         Project project = task.getProject();
         List<MileStoneStatus> mileStoneStatusList = project.getTaskList().stream()
+                .filter(t -> Objects.nonNull(t.getMilestone()))
                 .map(t -> t.getMilestone().getStatus())
                 .toList();
 
         ProjectInfoDto projectInfoDto = new ProjectInfoDto(project.getId(), project.getTitle(),
                 project.getStatus(), mileStoneStatusList);
 
-        return new TaskViewDto(taskResponseDto, taskInfoListDto, projectInfoDto);
+        List<Comment> commentList = task.getCommentList();
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+
+        if(Objects.nonNull(commentList) && !commentList.isEmpty()) {
+            Set<Long> collect = commentList.stream().map(c -> c.getProjectMember().getId()).collect(Collectors.toSet());
+            Map<String, ProjectMember> memberUserIdMap = projectMemberService.getMemberMapWithUserIdByMemberId(collect.stream().toList());
+
+            for (String userId : memberUserIdMap.keySet()) {
+                ProjectMember member = memberUserIdMap.get(userId);
+                List<CommentResponseDto> comments = commentList.stream()
+                        .filter(c -> c.getProjectMember().getId().equals(member.getId()))
+                        .map(c ->
+                                new CommentResponseDto(c.getId(), member.getAccountId(), userId, c.getContent(), c.getCreatedAt(), c.getUpdatedAt()))
+                        .toList();
+
+                commentResponseDtoList.addAll(comments);
+            }
+        }
+
+        return new TaskViewDto(taskResponseDto, taskInfoListDto, projectInfoDto, commentResponseDtoList);
     }
 
     public Map<Long, TaskInfoListDto> createTaskInfoListDto(List<ProjectMember> projectMemberList) {
@@ -77,22 +103,24 @@ public class TaskFacade {
                 .flatMap(Collection::stream)
                 .toList();
 
-        Map<Long, MileStoneStatus> mileStoneStatusMapeMap = tasks.stream()
-                .map(Task::getMilestone)
-                .collect(Collectors.toMap(ms -> ms.getTask().getId(), MileStone::getStatus));
-
-        Set<Long> projectIds = tasks.stream()
-                .map(t -> t.getProject().getId())
-                .collect(Collectors.toSet());
-
         Map<Long, TaskInfoListDto> taskListMap = new HashMap<>();
-        for(Long id : projectIds) {
-            List<TaskInfoDto> taskInfoList = tasks.stream()
-                    .filter(t -> t.getProject().getId().equals(id))
-                    .map(t -> new TaskInfoDto(t.getId(), t.getTitle(), mileStoneStatusMapeMap.get(t.getId())))
-                    .toList();
+        if(!tasks.isEmpty()) {
+            Map<Long, MileStoneStatus> mileStoneStatusMapeMap = tasks.stream()
+                    .map(Task::getMilestone)
+                    .collect(Collectors.toMap(ms -> ms.getTask().getId(), MileStone::getStatus));
 
-            taskListMap.put(id, new TaskInfoListDto(taskInfoList));
+            Set<Long> projectIds = tasks.stream()
+                    .map(t -> t.getProject().getId())
+                    .collect(Collectors.toSet());
+
+            for (Long id : projectIds) {
+                List<TaskInfoDto> taskInfoList = tasks.stream()
+                        .filter(t -> t.getProject().getId().equals(id))
+                        .map(t -> new TaskInfoDto(t.getId(), t.getTitle(), mileStoneStatusMapeMap.get(t.getId())))
+                        .toList();
+
+                taskListMap.put(id, new TaskInfoListDto(taskInfoList));
+            }
         }
 
         return taskListMap;
@@ -107,7 +135,9 @@ public class TaskFacade {
         //요청자가 삭제되지 않은 정상 멤버인지 확인하고 그 멤버 객체 가져오기
         ProjectMember activeMember = projectMemberService.getActiveMember(projectId, accountId);
 
-        taskService.createTask(project, activeMember, taskRequestDto);
+        Task task = taskService.createTask(project, activeMember, taskRequestDto);
+
+        tagService.connectTag(task, taskRequestDto.tagNameList());
 
     }
 
@@ -124,17 +154,10 @@ public class TaskFacade {
 
         //태그가있는지없는지 없으면 만들기(태그서비스) 업데이트하는 테스크 객체랑 taskrequestDto 태그리스트 같이 넘기기
         //꺼낸 태그들의 리스트
-        List<Tag> pullTags = new ArrayList<>();
 
-        if (taskrequestDto.tagNameList() != null) {
-            for (String tagName : taskrequestDto.tagNameList()) {
-                Tag tag = tagService.findOrCreateTag(tagName);
-                pullTags.add(tag);
-            }
-        }
+        Task updatedTask = taskService.updateTask(verifiedTask, taskrequestDto);
 
-        Task updatedTask = taskService.updateTask(verifiedTask, taskrequestDto, pullTags);
-
+        tagService.connectTag(updatedTask, taskrequestDto.tagNameList());
 
         return taskService.buildTaskResponseDto(updatedTask);
     }

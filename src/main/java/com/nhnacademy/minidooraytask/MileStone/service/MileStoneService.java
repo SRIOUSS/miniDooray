@@ -62,7 +62,7 @@ public class MileStoneService {
     }
 
     @Transactional
-    public void createMileStone(Task task, MilestoneCreateRequestDto requestDto) {
+    public void createMileStone(Task task, MilestoneRequestDto requestDto) {
         if(mileStoneRepository.existsMileStoneByTask_Id(task.getId())) {
             log.debug("[mile-stone service] 이미 존재하는 마일스톤 등록 시도입니다 - taskId;{}", task.getId());
             throw new MileStoneIsExistException("[mile-stone service] 이미 존재하는 마일스톤 등록 시도입니다");
@@ -73,7 +73,7 @@ public class MileStoneService {
     }
 
     @Transactional
-    public void updateMileStone(long taskId, MilestoneUpdateRequestDto requestDto) {
+    public void updateMileStone(long taskId, MilestoneRequestDto requestDto) {
         if(!mileStoneRepository.existsMileStoneByTask_Id(taskId)) {
             log.debug("[mile-ston service] 존재하지 않은 마일스톤 수정 요청입니다 - taskId:{}", taskId);
             throw new MileStoneIsNotExistException("[mile-ston service] 존재하지 않은 마일스톤 수정 요청입니다");
