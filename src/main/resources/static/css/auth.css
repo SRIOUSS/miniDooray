@@ -1,28 +1,27 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+/* =============================================
+   miniDooray - auth.css
+   로그인 / 회원가입 전용 스타일
+   (공통 스타일은 base.css 참고)
+   ============================================= */
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #f5f5f5;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
     padding: 2rem 0;
 }
 
+/* ---------- 카드 ---------- */
 .card {
     background: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 2.5rem 2rem;
     width: 360px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
+/* ---------- 로고 ---------- */
 .logo-area {
     text-align: center;
     margin-bottom: 1.75rem;
@@ -58,10 +57,7 @@ body {
     letter-spacing: -0.5px;
 }
 
-.logo-text span {
-    color: #3366FF;
-}
-
+/* ---------- 페이지 타이틀 ---------- */
 .page-title {
     font-size: 20px;
     font-weight: 500;
@@ -77,77 +73,14 @@ body {
     margin-bottom: 1.5rem;
 }
 
-.form-group {
-    margin-bottom: 12px;
-}
-
-.label {
-    font-size: 12px;
-    color: #555;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.required {
-    color: #3366FF;
-}
-
-.form-input {
-    width: 100%;
-    padding: 10px 12px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: #fff;
-    color: #222;
-    outline: none;
-    transition: border-color 0.15s;
-}
-
-.form-input::placeholder {
-    color: #bbb;
-    font-size: 13px;
-}
-
-.form-input:focus {
-    border-color: #3366FF;
-    box-shadow: 0 0 0 3px rgba(51,102,255,0.1);
-}
-
-.form-input.error {
-    border-color: #e03131;
-}
-
-.error-msg {
-    font-size: 12px;
-    color: #e03131;
-    margin-top: 4px;
-}
-
-.hint {
-    font-size: 11px;
-    color: #aaa;
-    margin-top: 4px;
-}
-
+/* ---------- 버튼 (auth 전용 너비) ---------- */
 .btn-primary {
     width: 100%;
     padding: 10px;
-    background: #3366FF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
     margin-top: 8px;
-    transition: background 0.15s;
 }
 
-.btn-primary:hover {
-    background: #1a4fd6;
-}
-
+/* ---------- 하단 링크 ---------- */
 .links {
     display: flex;
     justify-content: center;
@@ -158,7 +91,6 @@ body {
 .links a {
     font-size: 12px;
     color: #888;
-    text-decoration: none;
 }
 
 .links a:hover {
@@ -178,7 +110,6 @@ body {
 
 .bottom-link a {
     color: #3366FF;
-    text-decoration: none;
 }
 
 .bottom-link a:hover {

@@ -2,12 +2,16 @@ package com.nhnacademy.minidoorayfe.controller.task;
 
 import com.nhnacademy.minidoorayfe.api.TaskApiClient;
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
+import com.nhnacademy.minidoorayfe.dto.tag.TagResponseDto;
 import com.nhnacademy.minidoorayfe.dto.task.TaskRequestDto;
+import com.nhnacademy.minidoorayfe.dto.task.TaskViewDto;
 import com.nhnacademy.minidoorayfe.resolver.SessionIdentity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -70,9 +74,15 @@ public class TaskController {
                                  @PathVariable Long taskId,
                                  Model model) {
 
+        TaskViewDto task = taskApiClient.getTask(projectId, taskId, sessionAccountDto.getAccountId());
+        String tagNames = task.getTaskResponseDto().getTagResponseDtoList().stream()
+                .map(tag -> "#" + tag.getName())
+                .collect(Collectors.joining(", "));
+
         model.addAttribute("projectId", projectId);
         model.addAttribute("task", this.taskApiClient.getTask(projectId, taskId, sessionAccountDto.getAccountId()));
         model.addAttribute("taskRequestDto", new TaskRequestDto());
+        model.addAttribute("tagNames", tagNames);
 
         return "task/edit";
     }
