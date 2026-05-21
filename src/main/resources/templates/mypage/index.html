@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지 - miniDooray</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<!--/* @thymesVar id="tasks" type="com.nhnacademy.minidoorayfe.dto.task.TaskInfoListDto" */-->
+<!--/* @thymesVar id="comments" type="com.nhnacademy.minidoorayfe.dto.comment.CommentListDto" */-->
+
+<nav class="nav">
+    <a th:href="@{/projects}" class="nav-logo">
+        <div class="nav-logo-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+        </div>
+        <span class="nav-logo-text">miniDooray</span>
+    </a>
+    <a th:href="@{/projects}">프로젝트</a>
+    <a th:href="@{/mypage}">마이페이지</a>
+    <a th:href="@{/logout}" class="nav-logout">로그아웃</a>
+</nav>
+
+<div class="container">
+    <div class="page-header">
+        <h1>마이페이지</h1>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+
+        <!-- 내 태스크 카드 -->
+        <div class="card" style="margin-bottom:0;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+                <h2 style="margin:0; border:none; padding:0;">내 태스크</h2>
+                <span style="font-size:22px; font-weight:700; color:#3366FF;"
+                      th:text="${tasks.taskInfoDtoList.size()}">0</span>
+            </div>
+            <p style="font-size:13px; color:#888; margin-bottom:1.5rem; line-height:1.5;">
+                내가 담당한 태스크 목록을 확인하고 관리하세요.
+            </p>
+            <a th:href="@{/mypage/tasks}" class="btn btn-primary"
+               style="display:block; text-align:center; padding:10px;">
+                태스크 전체보기
+            </a>
+        </div>
+
+        <!-- 내 댓글 카드 -->
+        <div class="card" style="margin-bottom:0;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+                <h2 style="margin:0; border:none; padding:0;">내 댓글</h2>
+                <span style="font-size:22px; font-weight:700; color:#3366FF;"
+                      th:text="${comments.commentResponseDtoList.size()}">0</span>
+            </div>
+            <p style="font-size:13px; color:#888; margin-bottom:1.5rem; line-height:1.5;">
+                내가 작성한 댓글 목록을 확인하고 관리하세요.
+            </p>
+            <a th:href="@{/mypage/comments}" class="btn btn-primary"
+               style="display:block; text-align:center; padding:10px;">
+                댓글 전체보기
+            </a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
