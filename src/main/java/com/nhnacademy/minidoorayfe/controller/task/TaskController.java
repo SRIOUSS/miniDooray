@@ -2,6 +2,8 @@ package com.nhnacademy.minidoorayfe.controller.task;
 
 import com.nhnacademy.minidoorayfe.api.TaskApiClient;
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
+import com.nhnacademy.minidoorayfe.dto.comment.CommentRequestDto;
+import com.nhnacademy.minidoorayfe.dto.milestone.MilestoneRequestDto;
 import com.nhnacademy.minidoorayfe.dto.tag.TagResponseDto;
 import com.nhnacademy.minidoorayfe.dto.task.TaskRequestDto;
 import com.nhnacademy.minidoorayfe.dto.task.TaskViewDto;
@@ -41,7 +43,8 @@ public class TaskController {
 
         model.addAttribute("projectId", projectId);
         model.addAttribute("task", this.taskApiClient.getTask(projectId, taskId, sessionAccountDto.getAccountId()));
-
+        model.addAttribute("milestoneRequestDto", new MilestoneRequestDto());
+        model.addAttribute("commentRequestDto", new CommentRequestDto());
         return "task/detail";
     }
 
