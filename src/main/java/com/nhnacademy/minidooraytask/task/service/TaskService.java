@@ -37,6 +37,11 @@ public class TaskService {
         return taskRepository.findAllByProject_Id(projectId);
     }
 
+    @Transactional
+    public List<Task> getMytasks(long accountId) {
+        return taskRepository.findByProjectMember_AccountId(accountId);
+    }
+
     // [Task 단건 조회]
     @Transactional(readOnly = true)
     public Task getSpecificTask(Long taskId, Long projectId) {

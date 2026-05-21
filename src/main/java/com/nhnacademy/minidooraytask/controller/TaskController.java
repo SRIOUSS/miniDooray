@@ -24,7 +24,6 @@ public class TaskController {
         return ResponseEntity.ok().body(responseDto);
     }
 
-
     @GetMapping("/{taskId}")
     public ResponseEntity<TaskViewDto> getTaskResponseDto(@PathVariable long projectId,
                                                           @PathVariable long taskId,

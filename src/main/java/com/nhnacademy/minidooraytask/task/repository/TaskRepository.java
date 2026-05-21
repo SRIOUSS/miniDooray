@@ -21,6 +21,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     Task findTaskById(Long id);
 
+    List<Task> findByProjectMember_AccountId(Long accountId);
 
     boolean existsTaskByProjectMember_AccountIdAndId(Long projectMemberAccountId, Long id);
 
