@@ -31,7 +31,7 @@
     <div class="section">
         <div class="section-header">
             <h2>태스크 목록</h2>
-            <a th:href="@{/projects/{projectId}/tasks/new(projectId=${tasks.taskInfoDtoList[0].id})}"
+            <a th:href="@{/projects/{projectId}/tasks/new(projectId=${projectId})}"
                class="btn btn-primary">+ 태스크 생성</a>
         </div>
         <div class="card">
