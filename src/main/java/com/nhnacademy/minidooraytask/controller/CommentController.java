@@ -23,7 +23,7 @@ public class CommentController {
     }
 
     //댓글 수정 (POST)
-    @PostMapping("/{commentId}")
+    @PutMapping("/{commentId}")
     public ResponseEntity<Void> updateComment(@PathVariable long taskId,
                                               @PathVariable long commentId,
                                               @RequestHeader("X-Account-Id") Long accountId,

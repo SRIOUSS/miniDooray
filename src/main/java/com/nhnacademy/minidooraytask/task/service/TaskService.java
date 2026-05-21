@@ -71,7 +71,7 @@ public class TaskService {
 
     @Transactional(readOnly = true)
     public void checkProjectMember(long taskId, long accountId) {
-        if(taskRepository.existsByIdAndProject_ProjectMemberListIsAccountId(taskId, accountId)) {
+        if(!taskRepository.existsByIdAndProject_ProjectMemberListIsAccountId(taskId, accountId)) {
             log.debug("[task service] 존재하지 않는 멤버입니다 - taskId:{}, projectId:{}", taskId, accountId);
             throw new ProjectMemberIsNotExistException("[task service] 존재하지 않는 멤버입니다");
         }

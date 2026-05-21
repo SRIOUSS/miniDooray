@@ -18,7 +18,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     //수정,삭제 시 본인의 뎃글인지 검증
     Optional<Comment> findByIdAndTask_IdAndProjectMember_Id(Long id, Long taskId, Long memberId);
 
-    @Query("SELECT 1 FROM Comment c JOIN Task t ON c.task.id = t.id JOIN ProjectMember pm ON c.projectMember.id = pm.id WHERE t.id = ?1 AND c.id = ?2 AND pm.accountId = ?3")
+    @Query("SELECT EXISTS(SELECT 1 FROM Comment c JOIN Task t ON c.task.id = t.id JOIN ProjectMember pm ON c.projectMember.id = pm.id WHERE t.id = ?1 AND c.id = ?2 AND pm.accountId = ?3)")
     boolean existProjectMemberByTaskIdAndCommentIdANdAccountId(Long taskId, Long commentId, Long accountId);
 
     <T> Comment findCommentById(Long id);
