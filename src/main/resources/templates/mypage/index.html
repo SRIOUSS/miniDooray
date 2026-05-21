@@ -39,7 +39,7 @@
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
                 <h2 style="margin:0; border:none; padding:0;">내 태스크</h2>
                 <span style="font-size:22px; font-weight:700; color:#3366FF;"
-                      th:text="${tasks != null ? tasks.taskInfoDtoList.size() : 0}">0</span>
+                      th:text="${tasks != null and tasks.taskInfoDtoList != null ? tasks.taskInfoDtoList.size() : 0}">0</span>
             </div>
             <p style="font-size:13px; color:#888; margin-bottom:1.5rem; line-height:1.5;">
                 내가 담당한 태스크 목록을 확인하고 관리하세요.
@@ -55,7 +55,7 @@
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
                 <h2 style="margin:0; border:none; padding:0;">내 댓글</h2>
                 <span style="font-size:22px; font-weight:700; color:#3366FF;"
-                      th:text="${comments != null ? comments.commentResponseDtoList.size() : 0}">0</span>
+                      th:text="${comments != null and comments.commentResponseDtoList != null ? comments.commentResponseDtoList.size() : 0}">0</span>
             </div>
             <p style="font-size:13px; color:#888; margin-bottom:1.5rem; line-height:1.5;">
                 내가 작성한 댓글 목록을 확인하고 관리하세요.
