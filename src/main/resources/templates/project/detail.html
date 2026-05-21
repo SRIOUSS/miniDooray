@@ -107,7 +107,7 @@
                             <td th:text="${member.memberId}"></td>
                             <td th:text="${member.userId}"></td>
                             <td th:text="${member.auth}"></td>
-                            <td th:text="${member.joinedAt}"></td>
+                            <td th:text="${member.joinedAt != null ? #temporals.format(member.joinedAt, 'yyyy-MM-dd HH:mm') : '-'}"></td>
                             <td>
                                 <form th:action="@{/projects/{projectId}/members/{memberId}(projectId=${projectId}, memberId=${member.memberId})}"
                                       method="post" style="display:inline-flex; gap:6px; align-items:center;">

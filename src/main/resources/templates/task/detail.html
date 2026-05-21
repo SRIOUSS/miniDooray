@@ -161,7 +161,7 @@
                         <div class="comment-meta">
                             <span th:text="${comment.userId}" style="font-weight:500; color:#555;"></span>
                             <span style="margin:0 4px;">·</span>
-                            <span th:text="${comment.createdAt}"></span>
+                            <span th:text="${comment.createdAt != null ? #temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm') : '-'}"></span>
                         </div>
                         <p class="comment-content" th:text="${comment.content}"></p>
                         <div class="comment-actions">
