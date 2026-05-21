@@ -26,6 +26,15 @@
 </nav>
 
 <div class="container">
+
+    <div class="breadcrumb">
+        <a th:href="@{/projects}">프로젝트 목록</a>
+        <span>/</span>
+        <a th:href="@{/projects/{projectId}(projectId=${projectId})}" th:text="'프로젝트 #' + ${projectId}">프로젝트</a>
+        <span>/</span>
+        <span>수정</span>
+    </div>
+
     <div class="page-header">
         <h1>프로젝트 수정</h1>
     </div>

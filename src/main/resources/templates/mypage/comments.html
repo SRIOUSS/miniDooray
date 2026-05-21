@@ -27,6 +27,13 @@
 </nav>
 
 <div class="container">
+
+    <div class="breadcrumb">
+        <a th:href="@{/mypage}">마이페이지</a>
+        <span>/</span>
+        <span>내 댓글</span>
+    </div>
+
     <div class="page-header">
         <h1>내 댓글</h1>
     </div>
@@ -38,22 +45,20 @@
                 <tr>
                     <th>ID</th>
                     <th>내용</th>
-                    <th>작성자</th>
                     <th>작성일</th>
                     <th>수정일</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${comments == null or #lists.isEmpty(comments.commentResponseDtoList)}">
-                    <td colspan="5" class="empty-state">작성한 댓글이 없습니다.</td>
+                <tr th:if="${comments == null or comments.commentResponseDtoList == null or #lists.isEmpty(comments.commentResponseDtoList)}">
+                    <td colspan="4" class="empty-state">작성한 댓글이 없습니다.</td>
                 </tr>
-                <th:block th:if="${comments != null}">
+                <th:block th:if="${comments != null and comments.commentResponseDtoList != null}">
                     <tr th:each="comment : ${comments.commentResponseDtoList}">
                         <td th:text="${comment.id}"></td>
                         <td th:text="${comment.content}"></td>
-                        <td th:text="${comment.userId}"></td>
-                        <td th:text="${comment.createdAt}"></td>
-                        <td th:text="${comment.updatedAt}"></td>
+                        <td th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${comment.updatedAt != null ? #temporals.format(comment.updatedAt, 'yyyy-MM-dd HH:mm') : '-'}"></td>
                     </tr>
                 </th:block>
                 </tbody>

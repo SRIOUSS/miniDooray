@@ -41,9 +41,22 @@ public class TaskController {
                           @PathVariable Long taskId,
                           Model model) {
 
+        TaskViewDto task = this.taskApiClient.getTask(projectId, taskId, sessionAccountDto.getAccountId());
+
+        MilestoneRequestDto milestoneRequestDto = new MilestoneRequestDto();
+        var ms = task.getTaskResponseDto().getMilestoneResponseDto();
+        if (ms != null) {
+            milestoneRequestDto.setTitle(ms.getTitle());
+            milestoneRequestDto.setDescription(ms.getDescription());
+            milestoneRequestDto.setStatus(ms.getStatus());
+            milestoneRequestDto.setDueDate(ms.getDueDate());
+        }
+
         model.addAttribute("projectId", projectId);
-        model.addAttribute("task", this.taskApiClient.getTask(projectId, taskId, sessionAccountDto.getAccountId()));
-        model.addAttribute("milestoneRequestDto", new MilestoneRequestDto());
+        model.addAttribute("taskId", taskId);
+        model.addAttribute("task", task);
+        model.addAttribute("allTasks", this.taskApiClient.getTasks(projectId, sessionAccountDto.getAccountId()));
+        model.addAttribute("milestoneRequestDto", milestoneRequestDto);
         model.addAttribute("commentRequestDto", new CommentRequestDto());
         return "task/detail";
     }
@@ -78,13 +91,19 @@ public class TaskController {
                                  Model model) {
 
         TaskViewDto task = taskApiClient.getTask(projectId, taskId, sessionAccountDto.getAccountId());
-        String tagNames = task.getTaskResponseDto().getTagResponseDtoList().stream()
-                .map(tag -> "#" + tag.getName())
-                .collect(Collectors.joining(", "));
+        String tagNames = task.getTaskResponseDto().getTagResponseDtoList() != null
+                ? task.getTaskResponseDto().getTagResponseDtoList().stream()
+                    .map(tag -> "#" + tag.getName())
+                    .collect(Collectors.joining(", "))
+                : "";
+
+        TaskRequestDto taskRequestDto = new TaskRequestDto();
+        taskRequestDto.setTitle(task.getTaskResponseDto().getTitle());
+        taskRequestDto.setContent(task.getTaskResponseDto().getContent());
 
         model.addAttribute("projectId", projectId);
-        model.addAttribute("task", this.taskApiClient.getTask(projectId, taskId, sessionAccountDto.getAccountId()));
-        model.addAttribute("taskRequestDto", new TaskRequestDto());
+        model.addAttribute("task", task);
+        model.addAttribute("taskRequestDto", taskRequestDto);
         model.addAttribute("tagNames", tagNames);
 
         return "task/edit";

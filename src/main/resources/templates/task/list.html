@@ -46,24 +46,31 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${tasks == null or #lists.isEmpty(tasks.taskInfoDtoList)}">
+                <tr th:if="${tasks == null or tasks.taskInfoDtoList == null or #lists.isEmpty(tasks.taskInfoDtoList)}">
                     <td colspan="4" class="empty-state">태스크가 없습니다.</td>
                 </tr>
-                <th:block th:if="${tasks != null}">
+                <th:block th:if="${tasks != null and tasks.taskInfoDtoList != null}">
                     <tr th:each="task : ${tasks.taskInfoDtoList}">
                         <td th:text="${task.id}"></td>
                         <td>
                             <a th:href="@{/projects/{projectId}/tasks/{taskId}(projectId=${projectId}, taskId=${task.id})}"
                                th:text="${task.title}"></a>
                         </td>
-                        <td th:text="${task.status}"></td>
                         <td>
+                            <span th:if="${task.status != null}"
+                                  th:with="s=${task.status.name().toLowerCase().replace('_', '-')}"
+                                  th:classappend="${'badge-' + s}"
+                                  class="badge"
+                                  th:text="${task.status}"></span>
+                            <span th:if="${task.status == null}" style="color:#ccc; font-size:12px;">없음</span>
+                        </td>
+                        <td style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
                             <a th:href="@{/projects/{projectId}/tasks/{taskId}/edit(projectId=${projectId}, taskId=${task.id})}"
-                               class="btn btn-secondary">수정</a>
+                               class="btn-table btn-table-edit">수정</a>
                             <form th:action="@{/projects/{projectId}/tasks/{taskId}(projectId=${projectId}, taskId=${task.id})}"
-                                  method="post" class="inline-form">
+                                  method="post">
                                 <input type="hidden" name="_method" value="DELETE">
-                                <button type="submit">삭제</button>
+                                <button type="submit" class="btn-table btn-table-delete">삭제</button>
                             </form>
                         </td>
                     </tr>

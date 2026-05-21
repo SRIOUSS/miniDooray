@@ -43,26 +43,33 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${#lists.isEmpty(projectView.projectInfoDtoList)}">
+                <tr th:if="${projectView == null or projectView.projectInfoDtoList == null or #lists.isEmpty(projectView.projectInfoDtoList)}">
                     <td colspan="4" class="empty-state">프로젝트가 없습니다.</td>
                 </tr>
+                <th:block th:if="${projectView != null and projectView.projectInfoDtoList != null}">
                 <tr th:each="project : ${projectView.projectInfoDtoList}">
                     <td th:text="${project.id}"></td>
                     <td>
                         <a th:href="@{/projects/{projectId}(projectId=${project.id})}"
                            th:text="${project.title}"></a>
                     </td>
-                    <td th:text="${project.status}"></td>
                     <td>
+                        <span th:with="s=${project.status?.name()?.toLowerCase()}"
+                              th:classappend="${s == 'active' ? 'badge-active' : (s == 'dormant' ? 'badge-dormant' : 'badge-terminated')}"
+                              class="badge"
+                              th:text="${project.status}"></span>
+                    </td>
+                    <td style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
                         <a th:href="@{/projects/{projectId}/edit(projectId=${project.id})}"
-                           class="btn btn-secondary">수정</a>
+                           class="btn-table btn-table-edit">수정</a>
                         <form th:action="@{/projects/{projectId}(projectId=${project.id})}"
-                              method="post" class="inline-form">
+                              method="post">
                             <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit">삭제</button>
+                            <button type="submit" class="btn-table btn-table-delete">삭제</button>
                         </form>
                     </td>
                 </tr>
+                </th:block>
                 </tbody>
             </table>
         </div>

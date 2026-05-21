@@ -25,10 +25,13 @@ public class MilestoneController {
                                   @PathVariable Long projectId,
                                   @PathVariable Long taskId,
                                   @ModelAttribute MilestoneRequestDto dto,
-                                  @RequestParam String dueDateDate,
-                                  @RequestParam String dueDateTime) {
+                                  @RequestParam(required = false) String dueDateDate,
+                                  @RequestParam(required = false) String dueDateTime) {
 
-        dto.setDueDate(LocalDateTime.parse(dueDateDate + "T" + dueDateTime));
+        if (dueDateDate != null && !dueDateDate.isBlank()) {
+            String time = (dueDateTime != null && !dueDateTime.isBlank()) ? dueDateTime : "00:00";
+            dto.setDueDate(LocalDateTime.parse(dueDateDate + "T" + time));
+        }
         this.taskApiClient.createMilestone(taskId, sessionAccountDto.getAccountId(), dto);
 
         return REDIRECT_URL;
@@ -40,10 +43,13 @@ public class MilestoneController {
                                   @PathVariable Long projectId,
                                   @PathVariable Long taskId,
                                   @ModelAttribute MilestoneRequestDto dto,
-                                  @RequestParam String dueDateDate,
-                                  @RequestParam String dueDateTime) {
+                                  @RequestParam(required = false) String dueDateDate,
+                                  @RequestParam(required = false) String dueDateTime) {
 
-        dto.setDueDate(LocalDateTime.parse(dueDateDate + "T" + dueDateTime));
+        if (dueDateDate != null && !dueDateDate.isBlank()) {
+            String time = (dueDateTime != null && !dueDateTime.isBlank()) ? dueDateTime : "00:00";
+            dto.setDueDate(LocalDateTime.parse(dueDateDate + "T" + time));
+        }
         this.taskApiClient.updateMilestone(taskId, sessionAccountDto.getAccountId(), dto);
 
         return REDIRECT_URL;
