@@ -48,8 +48,8 @@
         <p th:text="${task.taskResponseDto.content}" style="margin-bottom: 1rem; line-height: 1.6;"></p>
 
         <div style="display:flex; gap:1.5rem; font-size:12px; color:#aaa;">
-            <span>생성일: <span th:text="${task.taskResponseDto.createdAt}"></span></span>
-            <span>수정일: <span th:text="${task.taskResponseDto.updatedAt}"></span></span>
+            <span>생성일: <span th:text="${#temporals.format(task.taskResponseDto.createdAt, 'yyyy-MM-dd HH:mm')}"></span></span>
+            <span>수정일: <span th:text="${task.taskResponseDto.updatedAt != null ? #temporals.format(task.taskResponseDto.updatedAt, 'yyyy-MM-dd HH:mm') : '-'}"></span></span>
         </div>
 
         <!-- 태그 -->
