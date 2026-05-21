@@ -161,35 +161,37 @@
     <div class="card">
         <h2>댓글</h2>
 
-        <div th:if="${#lists.isEmpty(task.commentResponseDtoList)}">
+        <div th:if="${task.commentResponseDtoList == null or #lists.isEmpty(task.commentResponseDtoList)}">
             <p class="empty-state">댓글이 없습니다.</p>
         </div>
 
-        <div th:each="comment : ${task.commentResponseDtoList}" class="comment-item">
-            <div class="comment-meta">
-                <span th:text="${comment.userId}"></span> · <span th:text="${comment.createdAt}"></span>
+        <th:block th:if="${task.commentResponseDtoList != null}">
+            <div th:each="comment : ${task.commentResponseDtoList}" class="comment-item">
+                <div class="comment-meta">
+                    <span th:text="${comment.userId}"></span> · <span th:text="${comment.createdAt}"></span>
+                </div>
+                <p class="comment-content" th:text="${comment.content}"></p>
+                <div class="comment-actions">
+                    <!-- 댓글 수정 -->
+                    <form th:action="@{/projects/{projectId}/tasks/{taskId}/comments/{commentId}(projectId=${projectId}, taskId=${task.taskResponseDto.taskId}, commentId=${comment.id})}"
+                          th:object="${commentRequestDto}" method="post"
+                          style="display:flex; gap:6px; align-items:center;">
+                        <input type="hidden" name="_method" value="PUT">
+                        <input class="form-input" type="text" th:field="*{content}" placeholder="댓글 수정"
+                               aria-label="댓글 수정 내용"
+                               style="width:280px; padding:6px 10px;">
+                        <button type="submit" class="btn btn-primary" style="padding:6px 14px; white-space:nowrap;">수정
+                        </button>
+                    </form>
+                    <!-- 댓글 삭제 -->
+                    <form th:action="@{/projects/{projectId}/tasks/{taskId}/comments/{commentId}(projectId=${projectId}, taskId=${task.taskResponseDto.taskId}, commentId=${comment.id})}"
+                          method="post" class="inline-form">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit">삭제</button>
+                    </form>
+                </div>
             </div>
-            <p class="comment-content" th:text="${comment.content}"></p>
-            <div class="comment-actions">
-                <!-- 댓글 수정 -->
-                <form th:action="@{/projects/{projectId}/tasks/{taskId}/comments/{commentId}(projectId=${projectId}, taskId=${task.taskResponseDto.taskId}, commentId=${comment.id})}"
-                      th:object="${commentRequestDto}" method="post"
-                      style="display:flex; gap:6px; align-items:center;">
-                    <input type="hidden" name="_method" value="PUT">
-                    <input class="form-input" type="text" th:field="*{content}" placeholder="댓글 수정"
-                           aria-label="댓글 수정 내용"
-                           style="width:280px; padding:6px 10px;">
-                    <button type="submit" class="btn btn-primary" style="padding:6px 14px; white-space:nowrap;">수정
-                    </button>
-                </form>
-                <!-- 댓글 삭제 -->
-                <form th:action="@{/projects/{projectId}/tasks/{taskId}/comments/{commentId}(projectId=${projectId}, taskId=${task.taskResponseDto.taskId}, commentId=${comment.id})}"
-                      method="post" class="inline-form">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit">삭제</button>
-                </form>
-            </div>
-        </div>
+        </th:block>
 
         <!-- 댓글 작성 -->
         <div style="margin-top:1.25rem; padding-top:1.25rem; border-top:1px solid #f0f0f0;">

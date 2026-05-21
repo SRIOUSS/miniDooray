@@ -46,26 +46,28 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${#lists.isEmpty(tasks.taskInfoDtoList)}">
+                <tr th:if="${tasks == null or #lists.isEmpty(tasks.taskInfoDtoList)}">
                     <td colspan="4" class="empty-state">태스크가 없습니다.</td>
                 </tr>
-                <tr th:each="task : ${tasks.taskInfoDtoList}">
-                    <td th:text="${task.id}"></td>
-                    <td>
-                        <a th:href="@{/projects/{projectId}/tasks/{taskId}(projectId=${projectId}, taskId=${task.id})}"
-                           th:text="${task.title}"></a>
-                    </td>
-                    <td th:text="${task.status}"></td>
-                    <td>
-                        <a th:href="@{/projects/{projectId}/tasks/{taskId}/edit(projectId=${projectId}, taskId=${task.id})}"
-                           class="btn btn-secondary">수정</a>
-                        <form th:action="@{/projects/{projectId}/tasks/{taskId}(projectId=${projectId}, taskId=${task.id})}"
-                              method="post" class="inline-form">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit">삭제</button>
-                        </form>
-                    </td>
-                </tr>
+                <th:block th:if="${tasks != null}">
+                    <tr th:each="task : ${tasks.taskInfoDtoList}">
+                        <td th:text="${task.id}"></td>
+                        <td>
+                            <a th:href="@{/projects/{projectId}/tasks/{taskId}(projectId=${projectId}, taskId=${task.id})}"
+                               th:text="${task.title}"></a>
+                        </td>
+                        <td th:text="${task.status}"></td>
+                        <td>
+                            <a th:href="@{/projects/{projectId}/tasks/{taskId}/edit(projectId=${projectId}, taskId=${task.id})}"
+                               class="btn btn-secondary">수정</a>
+                            <form th:action="@{/projects/{projectId}/tasks/{taskId}(projectId=${projectId}, taskId=${task.id})}"
+                                  method="post" class="inline-form">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit">삭제</button>
+                            </form>
+                        </td>
+                    </tr>
+                </th:block>
                 </tbody>
             </table>
         </div>
