@@ -7,7 +7,9 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-
+<!--/* @thymesVar id="tasks" type="com.nhnacademy.minidoorayfe.dto.task.TaskInfoListDto" */-->
+<!--/* @thymesVar id="members" type="com.nhnacademy.minidoorayfe.dto.member.MemberInfoListDto" */-->
+<!--/* @thymesVar id="projectId" type="java.lang.Long" */-->
 <nav class="nav">
     <a th:href="@{/projects}" class="nav-logo">
         <div class="nav-logo-icon">
@@ -42,20 +44,20 @@
                         <th>ID</th>
                         <th>제목</th>
                         <th>상태</th>
-                    </tr>
-                    </thead>
                     <tbody>
-                    <tr th:if="${#lists.isEmpty(tasks.taskInfoDtoList)}">
+                    <tr th:if="${tasks == null or #lists.isEmpty(tasks.taskInfoDtoList)}">
                         <td colspan="3" class="empty-state">태스크가 없습니다.</td>
                     </tr>
-                    <tr th:each="task : ${tasks.taskInfoDtoList}">
-                        <td th:text="${task.id}"></td>
-                        <td>
-                            <a th:href="@{/projects/{projectId}/tasks/{taskId}(projectId=${#vars.projectId}, taskId=${task.id})}"
-                               th:text="${task.title}"></a>
-                        </td>
-                        <td th:text="${task.status}"></td>
-                    </tr>
+                    <th:block th:if="${tasks != null}">
+                        <tr th:each="task : ${tasks.taskInfoDtoList}">
+                            <td th:text="${task.id}"></td>
+                            <td>
+                                <a th:href="@{/projects/{projectId}/tasks/{taskId}(projectId=${projectId}, taskId=${task.id})}"
+                                   th:text="${task.title}"></a>
+                            </td>
+                            <td th:text="${task.status}"></td>
+                        </tr>
+                    </th:block>
                     </tbody>
                 </table>
             </div>
