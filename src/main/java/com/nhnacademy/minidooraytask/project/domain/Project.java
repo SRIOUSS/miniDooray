@@ -56,6 +56,7 @@ public class Project {
         this.description = description;
         this.createAccountId = createAccountId;
         this.status = ProjectStatus.ACTIVE;
+        this.createdAt = LocalDateTime.now();
 
         this.projectMemberList = new ArrayList<>();
         this.taskList = new ArrayList<>();

@@ -10,8 +10,8 @@ import java.util.Optional;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     //계정 아이디로 내가 소속된 모든 프로젝트 목록 조회
-    @Query("SELECT p FROM Project p JOIN ProjectMember m ON p = m.project WHERE m.accountId = :accountId")
-    List<Project> findAllByAccountIdByQuery(Long accountId);
+    @Query("SELECT p FROM Project p JOIN ProjectMember m ON p = m.project WHERE m.accountId = ?1 AND (?2 = true OR p.isDeleted = false)")
+    List<Project> findAllByAccountIdByQuery(Long accountId, boolean isDeleted);
 
 //    //프로젝트 상세 조회
 //    @Query("SELECT p FROM Project p WHERE p.id = :projectId")

@@ -37,7 +37,7 @@ public class ProjectService {
     // 내 프로젝트 목록 조회
     @Transactional(readOnly = true)
     public List<ProjectResponseDto> getMyProjects(Long accountId) {
-        return projectRepository.findAllByAccountIdByQuery(accountId)
+        return projectRepository.findAllByAccountIdByQuery(accountId, true)
                 .stream()
                 .map(ProjectResponseDto::from)
                 .toList();

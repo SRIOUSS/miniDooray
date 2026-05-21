@@ -124,17 +124,20 @@ public class ProjectMemberService {
         return memberIdAndUserId;
     }
 
-    private Map<Long, AccountResp> getAccountRespMap(List<ProjectMember> projectMemberList) {
-        Map<Long, Long> memberIdMap = projectMemberList.stream().collect(Collectors.toMap(ProjectMember::getId, ProjectMember::getAccountId));
-        Map<Long, AccountResp> accountByIds = client.getAccountByIds(memberIdMap.values().stream().toList());
+    public Map<Long, AccountResp> getAccountRespMap(List<ProjectMember> projectMemberList) {
+        if(!projectMemberList.isEmpty()) {
+            Map<Long, Long> memberIdMap = projectMemberList.stream().collect(Collectors.toMap(ProjectMember::getId, ProjectMember::getAccountId));
+            Map<Long, AccountResp> accountByIds = client.getAccountByIds(memberIdMap.values().stream().toList());
 
-        Map<Long, AccountResp> accountRespMap = new HashMap<>();
-        for(Long mi: memberIdMap.keySet().stream().toList()) {
-            Long accountId = memberIdMap.get(mi);
-            accountRespMap.put(mi, accountByIds.get(accountId));
+            Map<Long, AccountResp> accountRespMap = new HashMap<>();
+            for (Long mi : memberIdMap.keySet().stream().toList()) {
+                Long accountId = memberIdMap.get(mi);
+                accountRespMap.put(mi, accountByIds.get(accountId));
+            }
+
+            return accountRespMap;
         }
-
-        return accountRespMap;
+        return Map.of();
     }
 
     @Transactional(readOnly = true)
@@ -151,7 +154,7 @@ public class ProjectMemberService {
         return createMemberMapWithUserId(projectMembers);
     }
 
-    private Map<String, ProjectMember> createMemberMapWithUserId(List<ProjectMember> members) {
+    public Map<String, ProjectMember> createMemberMapWithUserId(List<ProjectMember> members) {
         Map<Long, AccountResp> accountRespMap = getAccountRespMap(members);
         Map<Long, ProjectMember> memberMap = members.stream().collect(Collectors.toMap(ProjectMember::getId, m -> m));
 
@@ -221,7 +224,7 @@ public class ProjectMemberService {
 
     @Transactional(readOnly = true)
     public List<ProjectMember> getProjectMemberByAccountId(long accountId) {
-        return projectMemberRepository.findAllById(accountId);
+        return projectMemberRepository.findAllByAccountId(accountId);
     }
 
     @Transactional(readOnly = true)
