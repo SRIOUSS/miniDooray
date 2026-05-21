@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>내 댓글 - miniDooray</title>
@@ -7,6 +7,8 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<!--/* @thymesVar id="comments" type="com.nhnacademy.minidoorayfe.dto.comment.CommentListDto" */-->
+
 <nav class="nav">
     <a th:href="@{/projects}" class="nav-logo">
         <div class="nav-logo-icon">
@@ -20,6 +22,7 @@
         <span class="nav-logo-text">miniDooray</span>
     </a>
     <a th:href="@{/projects}">프로젝트</a>
+    <a th:href="@{/mypage}">마이페이지</a>
     <a th:href="@{/logout}" class="nav-logout">로그아웃</a>
 </nav>
 
@@ -41,16 +44,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${#lists.isEmpty(comments.commentResponseDtoList)}">
+                <tr th:if="${comments == null or #lists.isEmpty(comments.commentResponseDtoList)}">
                     <td colspan="5" class="empty-state">작성한 댓글이 없습니다.</td>
                 </tr>
-                <tr th:each="comment : ${comments.commentResponseDtoList}">
-                    <td th:text="${comment.id}"></td>
-                    <td th:text="${comment.content}"></td>
-                    <td th:text="${comment.userId}"></td>
-                    <td th:text="${comment.createdAt}"></td>
-                    <td th:text="${comment.updatedAt}"></td>
-                </tr>
+                <th:block th:if="${comments != null}">
+                    <tr th:each="comment : ${comments.commentResponseDtoList}">
+                        <td th:text="${comment.id}"></td>
+                        <td th:text="${comment.content}"></td>
+                        <td th:text="${comment.userId}"></td>
+                        <td th:text="${comment.createdAt}"></td>
+                        <td th:text="${comment.updatedAt}"></td>
+                    </tr>
+                </th:block>
                 </tbody>
             </table>
         </div>

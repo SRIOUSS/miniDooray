@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>내 태스크 - miniDooray</title>
@@ -7,6 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<!--/* @thymesVar id="tasks" type="com.nhnacademy.minidoorayfe.dto.task.TaskInfoListDto" */-->
 
 <nav class="nav">
     <a th:href="@{/projects}" class="nav-logo">
@@ -21,6 +22,7 @@
         <span class="nav-logo-text">miniDooray</span>
     </a>
     <a th:href="@{/projects}">프로젝트</a>
+    <a th:href="@{/mypage}">마이페이지</a>
     <a th:href="@{/logout}" class="nav-logout">로그아웃</a>
 </nav>
 
@@ -40,14 +42,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:if="${#lists.isEmpty(tasks.taskInfoDtoList)}">
+                <tr th:if="${tasks == null or #lists.isEmpty(tasks.taskInfoDtoList)}">
                     <td colspan="3" class="empty-state">작성한 태스크가 없습니다.</td>
                 </tr>
-                <tr th:each="task : ${tasks.taskInfoDtoList}">
-                    <td th:text="${task.id}"></td>
-                    <td th:text="${task.title}"></td>
-                    <td th:text="${task.status}"></td>
-                </tr>
+                <th:block th:if="${tasks != null}">
+                    <tr th:each="task : ${tasks.taskInfoDtoList}">
+                        <td th:text="${task.id}"></td>
+                        <td th:text="${task.title}"></td>
+                        <td th:text="${task.status}"></td>
+                    </tr>
+                </th:block>
                 </tbody>
             </table>
         </div>
