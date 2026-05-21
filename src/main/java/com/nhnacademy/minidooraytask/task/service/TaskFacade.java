@@ -120,7 +120,7 @@ public class TaskFacade {
 
     public Map<Long, TaskInfoListDto> createTaskInfoListDto(List<ProjectMember> projectMemberList) {
         List<Task> tasks = projectMemberList.stream()
-                .map(ProjectMember::getTaskList)
+                .map(pm -> pm.getProject().getTaskList())
                 .flatMap(Collection::stream)
                 .filter(t -> !t.isDeleted())
                 .toList();

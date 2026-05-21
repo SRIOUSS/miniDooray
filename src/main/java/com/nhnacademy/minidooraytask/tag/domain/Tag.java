@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-@Table(name = "tags")
+@Table(name = "tagResponseDtoList")
 public class Tag {
 
     @Id

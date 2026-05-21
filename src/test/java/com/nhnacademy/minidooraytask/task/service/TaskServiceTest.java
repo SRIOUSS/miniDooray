@@ -265,8 +265,8 @@ class TaskServiceTest {
         assertThat(result.milestoneResponseDto()).isNotNull();
         assertThat(result.milestoneResponseDto().id()).isEqualTo(10L);
         assertThat(result.milestoneResponseDto().status()).isEqualTo(MileStoneStatus.IN_PROGRESS);
-        assertThat(result.tags()).hasSize(1);
-        assertThat(result.tags().getFirst().name()).isEqualTo("bug");
+        assertThat(result.tagResponseDtoList()).hasSize(1);
+        assertThat(result.tagResponseDtoList().getFirst().name()).isEqualTo("bug");
     }
 
     @Test
@@ -293,7 +293,7 @@ class TaskServiceTest {
         TaskResponseDto result = taskService.buildTaskResponseDto(task);
 
         assertThat(result.milestoneResponseDto()).isNull();
-        assertThat(result.tags()).isEmpty();
+        assertThat(result.tagResponseDtoList()).isEmpty();
     }
 
     @Test
@@ -332,7 +332,7 @@ class TaskServiceTest {
 
         TaskResponseDto result = taskService.buildTaskResponseDto(task);
 
-        assertThat(result.tags()).hasSize(2);
-        assertThat(result.tags()).extracting("name").containsExactlyInAnyOrder("feature", "bug");
+        assertThat(result.tagResponseDtoList()).hasSize(2);
+        assertThat(result.tagResponseDtoList()).extracting("name").containsExactlyInAnyOrder("feature", "bug");
     }
 }

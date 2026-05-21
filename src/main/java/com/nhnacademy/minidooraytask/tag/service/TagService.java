@@ -164,12 +164,13 @@ public class TagService {
             for (Tag t : existTags) {
                 TaskTag taskTag = new TaskTag(task, t);
                 createTaskTag.add(taskTag);
+                t.getTaskTagList().add(taskTag);
             }
 
             if(!createTaskTag.isEmpty()) {
                 taskTagRepository.saveAll(createTaskTag);
                 task.getTaskTagList().addAll(createTaskTag);
-                taskTagList.forEach(tt -> tt.getTag().getTaskTagList().add(tt));
+//                taskTagList.forEach(tt -> tt.getTag().getTaskTagList().add(tt));
             }
         }
     }

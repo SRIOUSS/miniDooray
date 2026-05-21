@@ -69,7 +69,8 @@ public class MileStoneService {
         }
 
         MileStone mileStone = MileStone.create(task, requestDto);
-        mileStoneRepository.save(mileStone);
+        MileStone save = mileStoneRepository.save(mileStone);
+        task.setMilestone(save);
     }
 
     @Transactional
