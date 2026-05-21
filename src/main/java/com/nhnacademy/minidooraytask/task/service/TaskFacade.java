@@ -35,7 +35,10 @@ public class TaskFacade {
     public TaskInfoListDto getTaskInfoList(long projectId, long accountId) {
         projectMemberService.checkProjectMember(projectId, accountId);
 
-        return createTaskInfoListDto(projectMemberService.getProjectMemberByAccountId(accountId)).get(projectId);
+        List<ProjectMember> projectMemberList = projectMemberService.getProjectMemberByAccountId(accountId);
+        Map<Long, TaskInfoListDto> taskInfoListDto = createTaskInfoListDto(projectMemberList);
+
+        return taskInfoListDto.get(projectId);
     }
 
     @Transactional

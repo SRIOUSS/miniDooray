@@ -44,7 +44,7 @@ public class ProjectMemberFacade {
         //이미 프로젝트에 포함된 멤버인지
         projectMemberService.checkIncludedMember(projectId, accountId);
         //멤버 권한
-        projectMemberService.checkAdminAuth(memberRequestDto);
+        projectMemberService.checkAdminAuth(projectId, accountId);
 
         Project project = projectService.exGetProjectById(projectId);
         projectMemberService.addProjectMember(project, memberRequestDto);

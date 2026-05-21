@@ -91,6 +91,9 @@ public class TaskService {
         Task savedTask = taskRepository.save(task);
         log.debug("[task service] task 생성 완료 - taskId:{}, projectId:{}", savedTask.getId(), project.getId());
 
+        projectMember.getTaskList().add(savedTask);
+        project.getTaskList().add(savedTask);
+
         return savedTask;
     }
 

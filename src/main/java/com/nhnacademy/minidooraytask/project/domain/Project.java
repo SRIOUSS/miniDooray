@@ -44,10 +44,10 @@ public class Project {
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
-    @OneToMany
+    @OneToMany(mappedBy = "project")
     private List<ProjectMember> projectMemberList;
 
-    @OneToMany
+    @OneToMany(mappedBy = "project")
     private List<Task> taskList;
 
     //프로젝트를 처음 만들 때

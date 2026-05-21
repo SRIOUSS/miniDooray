@@ -48,10 +48,10 @@ public class ProjectMember {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 
-    @OneToMany
+    @OneToMany(mappedBy = "projectMember")
     private List<Task> taskList;
 
-    @OneToMany
+    @OneToMany(mappedBy = "projectMember")
     private List<Comment> commentList;
 
     public ProjectMember(Project project, Long accountId, MembersAuth auth) {
