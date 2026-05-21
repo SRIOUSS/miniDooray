@@ -84,11 +84,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:if="${members == null or #lists.isEmpty(members.memberInfoList)}">
+                    <tr th:if="${members == null or members.memberInfoDtoList == null or #lists.isEmpty(members.memberInfoDtoList)}">
                         <td colspan="5" class="empty-state">멤버가 없습니다.</td>
                     </tr>
                     <th:block th:if="${members != null}">
-                        <tr th:each="member : ${members.memberInfoList}">
+                        <tr th:each="member : ${members.memberInfoDtoList}">
                             <td th:text="${member.memberId}"></td>
                             <td th:text="${member.userId}"></td>
                             <td th:text="${member.auth}"></td>
