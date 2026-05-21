@@ -3,6 +3,8 @@ package com.nhnacademy.minidoorayfe.config;
 import com.nhnacademy.minidoorayfe.auth.CustomAuthenticationFailHandler;
 import com.nhnacademy.minidoorayfe.auth.CustomAuthenticationProvider;
 import com.nhnacademy.minidoorayfe.auth.CustomAuthenticationSuccessHandler;
+import com.nhnacademy.minidoorayfe.filter.IpBlackListFilter;
+import com.nhnacademy.minidoorayfe.filter.SessionAuthFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,7 @@ public class SecurityConfig {
     private final CustomAuthenticationSuccessHandler loginSuccessHandler;
     private final CustomAuthenticationFailHandler loginFailHandler;
     private final IpBlackListFilter ipBlackListFilter;
+    private final SessionAuthFilter sessionAuthFilter;
 
     @Bean
     public HttpSessionEventPublisher httpSessionEventPublisher() {
@@ -37,7 +40,9 @@ public class SecurityConfig {
 
         httpSecurity.authenticationProvider(provider)
                 .addFilterBefore(ipBlackListFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/projects/**","/login", "/signup", "/error").permitAll()
+                .addFilterBefore(sessionAuthFilter, UsernamePasswordAuthenticationFilter.class) // TODO 매 요청마다 세션에 SESSION_ACCOUNT 있으면 시큐리티에게 이 사람 인증됐다고 알려주는 역할
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login", "/signup", "/error").permitAll() // TODO projects 퍼밋 올 제거함
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .anyRequest().authenticated()
                 )

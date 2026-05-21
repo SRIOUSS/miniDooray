@@ -1,4 +1,4 @@
-package com.nhnacademy.minidoorayfe.config;
+package com.nhnacademy.minidoorayfe.handler;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 

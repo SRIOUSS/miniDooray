@@ -1,4 +1,4 @@
-package com.nhnacademy.minidoorayfe.config;
+package com.nhnacademy.minidoorayfe.filter;
 
 import com.nhnacademy.minidoorayfe.auth.BlackList;
 import jakarta.servlet.FilterChain;
