@@ -105,7 +105,7 @@ public class ProjectService {
     @Transactional
     public void deleteProject(Long projectId, Long accountId) {
 
-        Project project = projectRepository.findById(projectId)
+        Project project = projectRepository.findProjectByIdAndCreateAccountId(projectId, accountId)
                 .orElseThrow(() -> {
                     log.debug("[project service] 존재하지 않는 프로젝트 삭제입니다 - projectId : {}", projectId);
                     return new ProjectNotFoundException("[project service] 존재하지 않는 프로젝트입니다");

@@ -94,7 +94,7 @@ public class Task {
     }
 
     public void setContent(String content) {
-        if(Objects.isNull(title) || title.isBlank()) {
+        if(Objects.isNull(content) || content.isBlank()) {
             throw new TaskValidInputException("[task] 입력값이 null");
         }
         this.content = content;

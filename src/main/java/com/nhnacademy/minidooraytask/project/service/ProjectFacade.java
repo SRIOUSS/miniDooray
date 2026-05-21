@@ -1,10 +1,12 @@
 package com.nhnacademy.minidooraytask.project.service;
 
 
+import com.nhnacademy.minidooraytask.MileStone.domain.MileStone;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
 import com.nhnacademy.minidooraytask.member.service.ProjectMemberService;
 import com.nhnacademy.minidooraytask.project.domain.ProjectInfoDto;
 import com.nhnacademy.minidooraytask.project.domain.ProjectViewDto;
+import com.nhnacademy.minidooraytask.task.domain.Task;
 import com.nhnacademy.minidooraytask.task.domain.TaskInfoDto;
 import com.nhnacademy.minidooraytask.task.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Component
@@ -36,7 +39,11 @@ public class ProjectFacade {
                   project.getId(),
                     project.getTitle(),
                     project.getStatus(),
-                    project.getTaskList().stream().map(t -> t.getMilestone().getStatus()).toList()
+                    project.getTaskList().stream()
+                            .map(Task::getMilestone)
+                            .filter(Objects::nonNull)
+                            .map(MileStone::getStatus)
+                            .toList()
 
                 ))
                 .toList();
@@ -48,7 +55,7 @@ public class ProjectFacade {
                 .map(task -> new TaskInfoDto(
                         task.getId(),
                         task.getTitle(),
-                        task.getMilestone().getStatus()
+                        Objects.nonNull(task.getMilestone()) ? task.getMilestone().getStatus() : null
                 ))
                 .toList();
 

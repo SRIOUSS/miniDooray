@@ -105,9 +105,11 @@ public class TaskFacade {
 
         Map<Long, TaskInfoListDto> taskListMap = new HashMap<>();
         if(!tasks.isEmpty()) {
-            Map<Long, MileStoneStatus> mileStoneStatusMapeMap = tasks.stream()
-                    .map(Task::getMilestone)
-                    .collect(Collectors.toMap(ms -> ms.getTask().getId(), MileStone::getStatus));
+            Map<Long, MileStoneStatus> mileStoneStatusMap = tasks.stream()
+                    .filter(t -> Objects.nonNull(t.getMilestone()))
+                    .collect(Collectors.toMap(
+                            Task::getId,
+                            t -> t.getMilestone().getStatus()));
 
             Set<Long> projectIds = tasks.stream()
                     .map(t -> t.getProject().getId())
@@ -116,7 +118,11 @@ public class TaskFacade {
             for (Long id : projectIds) {
                 List<TaskInfoDto> taskInfoList = tasks.stream()
                         .filter(t -> t.getProject().getId().equals(id))
-                        .map(t -> new TaskInfoDto(t.getId(), t.getTitle(), mileStoneStatusMapeMap.get(t.getId())))
+                        .map(t ->
+                                new TaskInfoDto(t.getId(),
+                                                t.getTitle(),
+                                                mileStoneStatusMap.get(t.getId())
+                                ))
                         .toList();
 
                 taskListMap.put(id, new TaskInfoListDto(taskInfoList));
