@@ -34,7 +34,7 @@ public class TaskService {
     // [특정 프로젝트 Task 목록 조회]
     @Transactional(readOnly = true)
     public List<Task> getTasks(Long projectId) {
-        return taskRepository.findAllByProject_Id(projectId);
+        return taskRepository.findAllByProject_Id(projectId, false);
     }
 
     @Transactional
@@ -119,9 +119,11 @@ public class TaskService {
     @Transactional
     public void deleteTask(Task task) {
 
-        taskRepository.delete(task);
-
         log.debug("[task service] task 삭제 완료 - taskId:{}", task.getId());
+//        taskRepository.delete(task);
+        task.isDelete();
+        taskRepository.save(task);
+
     }
 
     // [TaskResponseDto 조립 메서드]

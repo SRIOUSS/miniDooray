@@ -122,6 +122,7 @@ public class TaskFacade {
         List<Task> tasks = projectMemberList.stream()
                 .map(ProjectMember::getTaskList)
                 .flatMap(Collection::stream)
+                .filter(t -> !t.isDeleted())
                 .toList();
 
         Map<Long, TaskInfoListDto> taskListMap = new HashMap<>();
@@ -190,7 +191,7 @@ public class TaskFacade {
     }
 
     @Transactional
-    public void deleteTask(Long projectId, Long taskId, Long accountId) {
+    public void deleteTask(Long projectId, Long accountId, Long taskId) {
 
         // 프로젝트에 속한 삭제안된 멤버
         ProjectMember activeMember = projectMemberService.getActiveMember(projectId, accountId);

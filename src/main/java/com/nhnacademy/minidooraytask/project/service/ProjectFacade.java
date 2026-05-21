@@ -35,6 +35,7 @@ public class ProjectFacade {
 //        projectInfoDto랑 TaskInfoDto를 가져와서 ProjetViewDto에 넣어야함
         List<ProjectInfoDto> projectInfoDtos = projectMemberList.stream()
                 .map(ProjectMember::getProject)
+                .filter(p -> !p.isDeleted())
                 .map(project -> new ProjectInfoDto(
                   project.getId(),
                     project.getTitle(),
@@ -52,6 +53,7 @@ public class ProjectFacade {
         List<TaskInfoDto> taskInfoDtos = projectMemberList.stream()
                 .map(ProjectMember::getTaskList)
                 .flatMap(Collection::stream)
+                .filter(t -> !t.isDeleted())
                 .map(task -> new TaskInfoDto(
                         task.getId(),
                         task.getTitle(),

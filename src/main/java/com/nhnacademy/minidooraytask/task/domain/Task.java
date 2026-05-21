@@ -66,6 +66,9 @@ public class Task {
     @OneToMany(mappedBy = "task")
     private List<Comment> commentList;
 
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
+
     //생성자
     public Task(Project project, ProjectMember projectMember, String title, String content) {
         this.project = project;
@@ -101,5 +104,9 @@ public class Task {
             throw new TaskValidInputException("[task] 입력값이 null");
         }
         this.content = content;
+    }
+
+    public void isDelete() {
+        this.isDeleted = true;
     }
 }
