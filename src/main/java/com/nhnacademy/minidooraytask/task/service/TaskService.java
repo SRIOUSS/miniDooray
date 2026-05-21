@@ -101,15 +101,8 @@ public class TaskService {
     @Transactional
     public Task updateTask(Task task, TaskRequestDto taskRequestDto) {
 
-        if(!taskRequestDto.title().equals(task.getTitle())) {
-            task.setTitle(taskRequestDto.title());
-        }
-        if(!taskRequestDto.content().equals(task.getContent())) {
-            task.setContent(taskRequestDto.content());
-        }
-
+        task.updateTask(taskRequestDto.title(), taskRequestDto.content());
         taskRepository.save(task);
-
         return task;
     }
 
