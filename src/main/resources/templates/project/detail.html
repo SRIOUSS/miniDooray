@@ -68,7 +68,7 @@
     <div class="section">
         <div class="section-header">
             <h2>멤버 목록</h2>
-            <a th:href="@{/projects/{projectId}/members/new(projectId=${#vars.projectId})}"
+            <a th:href="@{/projects/{projectId}/members/new(projectId=${projectId})}"
                class="btn btn-primary">+ 멤버 추가</a>
         </div>
         <div class="card">
@@ -90,7 +90,7 @@
                         <td th:text="${member.auth}"></td>
                         <td th:text="${member.joinedAt}"></td>
                         <td>
-                            <form th:action="@{/projects/{projectId}/members/{memberId}(projectId=${#vars.projectId}, memberId=${member.memberId})}"
+                            <form th:action="@{/projects/{projectId}/members/{memberId}(projectId=${projectId}, memberId=${member.memberId})}"
                                   method="post" style="display:inline-flex; gap:6px; align-items:center;">
                                 <input type="hidden" name="_method" value="PUT">
                                 <select name="auth" aria-label="권한 선택" style="width:auto; padding:5px 8px; margin:0;">
@@ -101,8 +101,9 @@
                                     변경
                                 </button>
                             </form>
-                            <form th:action="@{/projects/{projectId}/members/{memberId}(projectId=${#vars.projectId}, memberId=${member.memberId})}"
+                            <form th:action="@{/projects/{projectId}/members/{memberId}(projectId=${projectId}, memberId=${member.memberId})}"
                                   method="post" class="inline-form" style="margin-left:4px;">
+
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button type="submit" style="padding:5px 10px; font-size:12px;">삭제</button>
                             </form>
