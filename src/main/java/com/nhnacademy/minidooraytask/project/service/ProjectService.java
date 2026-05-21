@@ -69,7 +69,7 @@ public class ProjectService {
 
     // POST 프로젝트 생성, 관리자 등록
     @Transactional
-    public ProjectResponseDto createProject(Long accountId, ProjectRequestDto request) {
+    public void createProject(Long accountId, ProjectRequestDto request) {
 
         Project project = new Project(
                 request.title(),
@@ -87,9 +87,6 @@ public class ProjectService {
         );
 
         projectMemberRepository.save(adminMember);
-
-        // dto
-        return ProjectResponseDto.from(savedProject);
     }
 
     // PUT - 프로젝트 수정

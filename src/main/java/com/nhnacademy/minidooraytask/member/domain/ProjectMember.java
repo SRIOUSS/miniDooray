@@ -60,6 +60,7 @@ public class ProjectMember {
         this.auth = auth;
         this.isDeleted = false;
 
+        this.joinedAt = LocalDateTime.now();
         this.taskList = new ArrayList<>();
         this.commentList = new ArrayList<>();
     }
