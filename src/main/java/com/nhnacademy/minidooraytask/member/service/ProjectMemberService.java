@@ -175,7 +175,8 @@ public class ProjectMemberService {
     public void addProjectMember(Project project,MemberRequestDto memberRequestDto) {
 
         // 추가하려는 대상 아이디
-        Long targetAccountId = memberRequestDto.accountId();
+        AccountResp accountResp = client.getAccountByUserId(memberRequestDto.userId());
+        Long targetAccountId = accountResp.id();
 
         ProjectMember targetMember = projectMemberRepository.findByProject_IdAndAccountId(project.getId(), targetAccountId)
                 .map(existingMember -> {
