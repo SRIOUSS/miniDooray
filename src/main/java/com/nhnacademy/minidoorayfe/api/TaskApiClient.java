@@ -190,10 +190,10 @@ public class TaskApiClient {
                 .toBodilessEntity();
     }
 
-    // 댓글 수정 (POST)
+    // 댓글 수정 (PUT)
     public void updateComment(Long taskId, Long accountId, Long commentId, CommentRequestDto dto) {
         String url = "/task-api/tasks/%s/comments/%s".formatted(taskId, commentId);
-        restClient.post()
+        restClient.put()
                 .uri(url)
                 .header(ACCOUNT_ID_HEADER, String.valueOf(accountId))
                 .body(dto)

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/projects/{projectId}/tasks/{taskId}/milestones")
@@ -22,8 +24,11 @@ public class MilestoneController {
     public String createMilestone(@SessionIdentity SessionAccountDto sessionAccountDto,
                                   @PathVariable Long projectId,
                                   @PathVariable Long taskId,
-                                  @ModelAttribute MilestoneRequestDto dto) {
+                                  @ModelAttribute MilestoneRequestDto dto,
+                                  @RequestParam String dueDateDate,
+                                  @RequestParam String dueDateTime) {
 
+        dto.setDueDate(LocalDateTime.parse(dueDateDate + "T" + dueDateTime));
         this.taskApiClient.createMilestone(taskId, sessionAccountDto.getAccountId(), dto);
 
         return REDIRECT_URL;
@@ -34,8 +39,11 @@ public class MilestoneController {
     public String updateMilestone(@SessionIdentity SessionAccountDto sessionAccountDto,
                                   @PathVariable Long projectId,
                                   @PathVariable Long taskId,
-                                  @ModelAttribute MilestoneRequestDto dto) {
+                                  @ModelAttribute MilestoneRequestDto dto,
+                                  @RequestParam String dueDateDate,
+                                  @RequestParam String dueDateTime) {
 
+        dto.setDueDate(LocalDateTime.parse(dueDateDate + "T" + dueDateTime));
         this.taskApiClient.updateMilestone(taskId, sessionAccountDto.getAccountId(), dto);
 
         return REDIRECT_URL;

@@ -104,7 +104,11 @@
                     </div>
                     <div class="form-group">
                         <label class="label" for="milestoneDueDate">마감일</label>
-                        <input class="form-input" type="datetime-local" id="milestoneDueDate" th:field="*{dueDate}">
+                        <input class="form-input" type="date" id="milestoneDueDate" name="dueDateDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="label" for="milestoneDueTime">마감 시간</label>
+                        <input class="form-input" type="time" id="milestoneDueTime" name="dueDateTime">
                     </div>
                 </div>
                 <div class="form-actions">
@@ -147,7 +151,13 @@
                     </div>
                     <div class="form-group">
                         <label class="label" for="newMilestoneDueDate">마감일</label>
-                        <input class="form-input" type="datetime-local" id="newMilestoneDueDate" th:field="*{dueDate}">
+                        <input class="form-input" type="date" id="newMilestoneDueDate" name="dueDateDate"
+                               placeholder="날짜">
+                    </div>
+                    <div class="form-group">
+                        <label class="label" for="newMilestoneDueTime">마감 시간</label>
+                        <input class="form-input" type="time" id="newMilestoneDueTime" name="dueDateTime"
+                               placeholder="시간">
                     </div>
                 </div>
                 <div class="form-actions">

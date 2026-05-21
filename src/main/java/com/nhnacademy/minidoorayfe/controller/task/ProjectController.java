@@ -1,5 +1,6 @@
 package com.nhnacademy.minidoorayfe.controller.task;
 
+import com.nhnacademy.minidoorayfe.dto.member.MemberInfoListDto;
 import com.nhnacademy.minidoorayfe.resolver.SessionIdentity;
 import com.nhnacademy.minidoorayfe.api.TaskApiClient;
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
@@ -54,7 +55,8 @@ public class ProjectController {
 
         model.addAttribute("projectId", projectId);
         model.addAttribute("tasks", this.taskApiClient.getTasks(projectId, sessionAccountDto.getAccountId()));
-        model.addAttribute("members", this.taskApiClient.getMembers(projectId, sessionAccountDto.getAccountId()));
+        MemberInfoListDto members = taskApiClient.getMembers(projectId, sessionAccountDto.getAccountId());
+        model.addAttribute("members", members);
 
         return "project/detail";
     }

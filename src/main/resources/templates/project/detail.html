@@ -87,10 +87,6 @@
                     <tr th:if="${members == null or #lists.isEmpty(members.memberInfoList)}">
                         <td colspan="5" class="empty-state">멤버가 없습니다.</td>
                     </tr>
-                    <tbody>
-                    <tr th:if="${members == null or #lists.isEmpty(members.memberInfoList)}">
-                        <td colspan="5" class="empty-state">멤버가 없습니다.</td>
-                    </tr>
                     <th:block th:if="${members != null}">
                         <tr th:each="member : ${members.memberInfoList}">
                             <td th:text="${member.memberId}"></td>
