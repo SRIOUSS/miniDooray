@@ -16,6 +16,16 @@ public class MyPageController {
 
     private final TaskApiClient taskApiClient;
 
+    @GetMapping
+    public String getMyPage(@SessionIdentity SessionAccountDto sessionAccountDto,
+                            Model model) {
+
+        model.addAttribute("tasks", this.taskApiClient.getMyTasks(sessionAccountDto.getAccountId()));
+        model.addAttribute("comments", this.taskApiClient.getMyComments(sessionAccountDto.getAccountId()));
+
+        return "mypage/index";
+    }
+
     // 마이페이지에서 내가 작성한 Task 목록 (GET)
     @GetMapping("/tasks")
     public String getMyTasks(@SessionIdentity SessionAccountDto sessionAccountDto,
