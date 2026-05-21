@@ -40,4 +40,7 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
         ProjectMember findProjectMemberByTaskIdAndAccountId(Long taskId, Long accountId);
 
         List<ProjectMember> findAllByAccountId(Long accountId);
+
+        @Query("SELECT pm.auth FROM ProjectMember pm WHERE pm.project.id = ?1 AND pm.accountId = ?2")
+        String getAuth(long projectId, long accountId);
 }

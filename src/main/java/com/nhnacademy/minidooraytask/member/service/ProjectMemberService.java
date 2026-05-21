@@ -62,9 +62,10 @@ public class ProjectMemberService {
 
     // 멤버 권한 확인
     @Transactional(readOnly = true)
-    public void checkAdminAuth(MemberRequestDto memberRequestDto) {
-        if (!(memberRequestDto.auth().equals(MembersAuth.ADMIN))) {
-            log.debug("[project-member service] 프로젝트에 대한 권한이 존제하지 않습니다 - MemberAuth : {}", memberRequestDto.auth());
+    public void checkAdminAuth(long projectId, long accountId) {
+        String auth = projectMemberRepository.getAuth(projectId, accountId);
+        if (!auth.equals(MembersAuth.ADMIN.name())) {
+            log.debug("[project-member service] 프로젝트에 대한 권한이 존제하지 않습니다 - MemberAuth : {}", auth);
             throw new IllegalArgumentException("[project-member service] 프로젝트에 대한 권한이 존제하지 않습니다");
         }
     }
@@ -191,7 +192,9 @@ public class ProjectMemberService {
                 //아예 존재하지 않는다면
                 .orElseGet(() -> {
                     ProjectMember newMember = new ProjectMember(project, targetAccountId, memberRequestDto.auth());
-                    return projectMemberRepository.save(newMember);
+                    ProjectMember save = projectMemberRepository.save(newMember);
+                    project.getProjectMemberList().add(save);
+                    return save;
                 });
 
 

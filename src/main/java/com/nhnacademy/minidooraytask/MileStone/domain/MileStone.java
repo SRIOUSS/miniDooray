@@ -24,7 +24,7 @@ public class MileStone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(optional = false)
     @JoinColumn(name = "task_id")
     private Task task;
 

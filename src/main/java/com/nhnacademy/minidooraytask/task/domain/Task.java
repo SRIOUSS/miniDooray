@@ -56,13 +56,14 @@ public class Task {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToOne(optional = false)
+    @OneToOne
+    @JoinColumn(name = "milestone_id")
     private MileStone milestone;
 
-    @OneToMany
+    @OneToMany(mappedBy = "task")
     private List<TaskTag> taskTagList;
 
-    @OneToMany
+    @OneToMany(mappedBy = "task")
     private List<Comment> commentList;
 
     //생성자
@@ -71,6 +72,7 @@ public class Task {
         this.projectMember = projectMember;
         this.title = title;
         this.content = content;
+        this.createdAt = LocalDateTime.now();
 
         this.taskTagList = new ArrayList<>();
         this.commentList = new ArrayList<>();
@@ -84,6 +86,7 @@ public class Task {
         if (content != null) {
             this.content = content;
         }
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void setTitle(String title) {
