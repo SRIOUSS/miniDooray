@@ -1,5 +1,6 @@
 package com.nhnacademy.minidoorayfe.dto.project;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,5 +16,10 @@ public enum ProjectStatus {
     @Override
     public String toString() {
         return this.displayName;
+    }
+
+    @JsonValue
+    public String getValue() {
+        return this.name();
     }
 }

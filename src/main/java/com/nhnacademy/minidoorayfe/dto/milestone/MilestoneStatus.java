@@ -1,5 +1,6 @@
 package com.nhnacademy.minidoorayfe.dto.milestone;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,5 +17,10 @@ public enum MilestoneStatus {
     @Override
     public String toString() {
         return this.displayName;
+    }
+
+    @JsonValue
+    public String getValue() {
+        return this.name();
     }
 }

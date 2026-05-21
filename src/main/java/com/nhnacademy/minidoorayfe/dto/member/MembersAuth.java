@@ -1,5 +1,6 @@
 package com.nhnacademy.minidoorayfe.dto.member;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,5 +15,10 @@ public enum MembersAuth {
     @Override
     public String toString() {
         return this.displayName;
+    }
+
+    @JsonValue
+    public String getValue() {
+        return this.name();
     }
 }
