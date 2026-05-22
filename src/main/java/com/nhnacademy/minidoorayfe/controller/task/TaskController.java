@@ -4,7 +4,6 @@ import com.nhnacademy.minidoorayfe.api.TaskApiClient;
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
 import com.nhnacademy.minidoorayfe.dto.comment.CommentRequestDto;
 import com.nhnacademy.minidoorayfe.dto.milestone.MilestoneRequestDto;
-import com.nhnacademy.minidoorayfe.dto.tag.TagResponseDto;
 import com.nhnacademy.minidoorayfe.dto.task.TaskRequestDto;
 import com.nhnacademy.minidoorayfe.dto.task.TaskViewDto;
 import com.nhnacademy.minidoorayfe.resolver.SessionIdentity;
