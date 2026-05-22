@@ -56,7 +56,6 @@ class AuthControllerTest {
     }
 
     @Test
-//    @WithMockUser
     void loginPage_returnsLoginView() throws Exception {
         mockMvc.perform(get("/login"))
                 .andExpect(status().isOk())
