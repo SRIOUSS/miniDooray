@@ -7,6 +7,7 @@ import com.nhnacademy.minidooraytask.member.exception.AlreadyProjectMemberExistE
 import com.nhnacademy.minidooraytask.member.exception.ProjectMemberIsNotExistException;
 import com.nhnacademy.minidooraytask.member.repository.ProjectMemberRepository;
 import com.nhnacademy.minidooraytask.project.domain.Project;
+import com.nhnacademy.minidooraytask.project.exception.NoAuthoProjectException;
 import com.nhnacademy.minidooraytask.project.respository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,10 +64,9 @@ public class ProjectMemberService {
     // 멤버 권한 확인
     @Transactional(readOnly = true)
     public void checkAdminAuth(long projectId, long accountId) {
-        String auth = projectMemberRepository.getAuth(projectId, accountId);
-        if (!auth.equals(MembersAuth.ADMIN.name())) {
-            log.debug("[project-member service] 프로젝트에 대한 권한이 존제하지 않습니다 - MemberAuth : {}", auth);
-            throw new IllegalArgumentException("[project-member service] 프로젝트에 대한 권한이 존제하지 않습니다");
+        if (!projectMemberRepository.existsByProject_IdAndAccountIdAndAuth(projectId, accountId, MembersAuth.ADMIN)) {
+            log.debug("[project-member service] 프로젝트 관리자 권한이 필요합니다 - projectId:{}, accountId:{}", projectId, accountId);
+            throw new NoAuthoProjectException("[project-member service] 프로젝트 관리자 권한이 필요합니다");
         }
     }
 
@@ -220,7 +220,8 @@ public class ProjectMemberService {
 
         // 요청된 projectId와 이 멤버가 속한 projectId가 같은지 검증!
         if (!member.getProject().getId().equals(projectId)) {
-            throw new IllegalArgumentException("해당 프로젝트의 멤버가 아닙니다.");
+            log.debug("[project-member service] 해당 프로젝트의 멤버가 아닙니다 - projectId:{}, memberId:{}", projectId, memberId);
+            throw new NoAuthoProjectException("해당 프로젝트의 멤버가 아닙니다.");
         }
 
         member.delete();
@@ -233,6 +234,6 @@ public class ProjectMemberService {
 
     @Transactional(readOnly = true)
     public ProjectMember getProjectMemberByProjectIdAndAccountId(long projectId, long accountId) {
-        return projectMemberRepository.findByProject_IdAndAccountId(projectId, accountId).orElseGet(null);
+        return projectMemberRepository.findByProject_IdAndAccountId(projectId, accountId).orElse(null);
     }
 }

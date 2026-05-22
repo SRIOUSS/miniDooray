@@ -7,6 +7,7 @@ import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
 import com.nhnacademy.minidooraytask.member.exception.ProjectMemberIsNotExistException;
 import com.nhnacademy.minidooraytask.member.repository.ProjectMemberRepository;
 import com.nhnacademy.minidooraytask.project.domain.Project;
+import com.nhnacademy.minidooraytask.project.exception.NoAuthoProjectException;
 import com.nhnacademy.minidooraytask.project.respository.ProjectRepository;
 import com.nhnacademy.minidooraytask.tag.domain.TagResponseDto;
 import com.nhnacademy.minidooraytask.tag.domain.TaskTag;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -52,41 +54,43 @@ public class TaskService {
                 });
     }
 
-    //테스크 작성자인지 확인
+    // 태스크 작성자인지 확인 - 작성자가 아니면 403
     @Transactional(readOnly = true)
     public void checkTaskMaker(Long memberId, Long taskId) {
-        if(!(taskRepository.existsByIdAndAccountId(taskId,memberId))) {
-            log.debug("[task service] 해당 테스크의 작성자가 아닙니다 - taskId:{}, memberId:{}", taskId, memberId);
-            throw new TaskNotFoundException("[task service] 존재하지 않는 task입니다");
+        if (!(taskRepository.existsByIdAndAccountId(taskId, memberId))) {
+            log.debug("[task service] 태스크 수정/삭제 권한이 없습니다 - taskId:{}, memberId:{}", taskId, memberId);
+            throw new NoAuthoProjectException("[task service] 태스크 수정/삭제 권한이 없습니다");
         }
     }
 
     @Transactional(readOnly = true)
     public void checkTaskMakerByAccountId(long accountId, long taskId) {
-        if(!(taskRepository.existsTaskByProjectMember_AccountIdAndId(accountId, taskId))) {
-            log.debug("[task service] 해당 테스크의 작성자가 아닙니다 - taskId:{}, accountId:{}", taskId, accountId);
-            throw new TaskNotFoundException("[task service] 존재하지 않는 task입니다");
+        if (!(taskRepository.existsTaskByProjectMember_AccountIdAndId(accountId, taskId))) {
+            log.debug("[task service] 태스크 수정/삭제 권한이 없습니다 - taskId:{}, accountId:{}", taskId, accountId);
+            throw new NoAuthoProjectException("[task service] 태스크 수정/삭제 권한이 없습니다");
         }
     }
 
     @Transactional(readOnly = true)
     public void checkProjectMember(long taskId, long accountId) {
-        if(!taskRepository.existsByIdAndProject_ProjectMemberListIsAccountId(taskId, accountId)) {
-            log.debug("[task service] 존재하지 않는 멤버입니다 - taskId:{}, projectId:{}", taskId, accountId);
-            throw new ProjectMemberIsNotExistException("[task service] 존재하지 않는 멤버입니다");
+        if (!taskRepository.existsByIdAndProject_ProjectMemberListIsAccountId(taskId, accountId)) {
+            log.debug("[task service] 존재하지 않는 멤버입니다 - taskId:{}, accountId:{}", taskId, accountId);
+            throw new ProjectMemberIsNotExistException("[task service] 프로젝트 멤버가 아닙니다");
         }
     }
 
     @Transactional(readOnly = true)
     public Task getTaskById(long taskId) {
-        return taskRepository.findTaskById(taskId);
+        return Optional.ofNullable(taskRepository.findTaskById(taskId))
+                .orElseThrow(() -> {
+                    log.debug("[task service] 존재하지 않는 task입니다 - taskId:{}", taskId);
+                    return new TaskNotFoundException("[task service] 존재하지 않는 task입니다. taskId: " + taskId);
+                });
     }
-
 
     // [Task 생성]
     @Transactional
     public Task createTask(Project project, ProjectMember projectMember, TaskRequestDto request) {
-
         Task task = new Task(project, projectMember, request.title(), request.content());
         Task savedTask = taskRepository.save(task);
         log.debug("[task service] task 생성 완료 - taskId:{}, projectId:{}", savedTask.getId(), project.getId());
@@ -100,28 +104,21 @@ public class TaskService {
     // [Task 수정]
     @Transactional
     public Task updateTask(Task task, TaskRequestDto taskRequestDto) {
-
         task.updateTask(taskRequestDto.title(), taskRequestDto.content());
         taskRepository.save(task);
         return task;
     }
 
     // [Task 삭제]
-    // TaskFacade.java 내부에 추가할 삭제 메서드 힌트
-
     @Transactional
     public void deleteTask(Task task) {
-
         log.debug("[task service] task 삭제 완료 - taskId:{}", task.getId());
-//        taskRepository.delete(task);
         task.isDelete();
         taskRepository.save(task);
-
     }
 
-    // [TaskResponseDto 조립 메서드]
+    // [TaskResponseDto 조립]
     public TaskResponseDto buildTaskResponseDto(Task task) {
-
         MileStone mileStone = task.getMilestone();
         MilestoneResponseDto milestoneResponseDto = null;
         if (mileStone != null) {
@@ -136,7 +133,7 @@ public class TaskService {
                 .map(t -> new TagResponseDto(t.getId(), t.getName()))
                 .toList();
 
-        TaskResponseDto response = new TaskResponseDto(
+        return new TaskResponseDto(
                 task.getId(),
                 task.getProject().getId(),
                 task.getProjectMember().getId(),
@@ -147,9 +144,5 @@ public class TaskService {
                 milestoneResponseDto,
                 tagResponseDtoList
         );
-
-        return response;
     }
-
-
 }

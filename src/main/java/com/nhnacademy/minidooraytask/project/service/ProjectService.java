@@ -57,7 +57,7 @@ public class ProjectService {
     @Transactional(readOnly = true)
     public ProjectResponseDto getProjectById(Long projectId) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 프로젝트입니다. projectId: " + projectId));
+                .orElseThrow(() -> new ProjectNotFoundException("존재하지 않는 프로젝트입니다. projectId: " + projectId));
         return ProjectResponseDto.from(project);
     }
 
@@ -104,12 +104,16 @@ public class ProjectService {
 
     @Transactional
     public void deleteProject(Long projectId, Long accountId) {
-
-        Project project = projectRepository.findProjectByIdAndCreateAccountId(projectId, accountId)
+        Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> {
                     log.debug("[project service] 존재하지 않는 프로젝트 삭제입니다 - projectId : {}", projectId);
                     return new ProjectNotFoundException("[project service] 존재하지 않는 프로젝트입니다");
                 });
+
+        if (!projectRepository.existsProjectByIdAndCreateAccountId(projectId, accountId)) {
+            log.debug("[project service] 프로젝트 삭제 권한이 없습니다 - projectId:{}, accountId:{}", projectId, accountId);
+            throw new NoAuthoProjectException("[project service] 프로젝트 삭제 권한이 없습니다");
+        }
 
         project.isDelete();
         projectRepository.save(project);

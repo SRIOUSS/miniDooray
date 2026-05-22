@@ -2,6 +2,7 @@ package com.nhnacademy.minidooraytask.comment.service;
 
 import com.nhnacademy.minidooraytask.comment.domain.Comment;
 import com.nhnacademy.minidooraytask.comment.domain.CommentRequestDto;
+import com.nhnacademy.minidooraytask.comment.exception.CommentNotAuthorizedException;
 import com.nhnacademy.minidooraytask.comment.exception.CommentNotFoundException;
 import com.nhnacademy.minidooraytask.comment.repository.CommentRepository;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
@@ -22,9 +23,17 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public void checkTaskComment(long taskId, long commentId, long accountId) {
-        if(!commentRepository.existProjectMemberByTaskIdAndCommentIdANdAccountId(taskId, commentId, accountId)) {
-            log.debug("[comment service] 존재하지 않는 댓글 수정입니다 - commentId:{}, taskId:{}, accountId:{}", commentId, taskId, accountId);
-            throw new CommentNotFoundException("[comment service] 존재하지 않는 댓글입니다");
+        // 1. 댓글이 해당 task에 속하는지 확인
+        Comment comment = commentRepository.findByIdAndTask_Id(commentId, taskId)
+                .orElseThrow(() -> {
+                    log.debug("[comment service] 존재하지 않는 댓글입니다 - commentId:{}, taskId:{}", commentId, taskId);
+                    return new CommentNotFoundException("[comment service] 존재하지 않는 댓글입니다");
+                });
+
+        // 2. 댓글 작성자인지 확인
+        if (!comment.getProjectMember().getAccountId().equals(accountId)) {
+            log.debug("[comment service] 댓글 수정/삭제 권한이 없습니다 - commentId:{}, accountId:{}", commentId, accountId);
+            throw new CommentNotAuthorizedException("[comment service] 댓글 수정/삭제 권한이 없습니다");
         }
     }
 
@@ -33,27 +42,19 @@ public class CommentService {
         return commentRepository.findAllByProjectMember_AccountId(accountId);
     }
 
-    //[댓글 생성]
     @Transactional
-    public void createComment(Task task, ProjectMember member,  CommentRequestDto requestDto) {
+    public void createComment(Task task, ProjectMember member, CommentRequestDto requestDto) {
         Comment comment = Comment.create(task, member, requestDto);
-
         commentRepository.save(comment);
     }
 
-    //[댓글 수정]
     @Transactional
-    public void updateComment(Long commentId,  CommentRequestDto requestDto) {
-
-        // projectMember.getId()로 본인 댓글인지 확인
+    public void updateComment(Long commentId, CommentRequestDto requestDto) {
         Comment comment = commentRepository.findCommentById(commentId);
-
         comment.updateContent(requestDto.content());
-
         commentRepository.save(comment);
     }
 
-    //댓글 삭제
     @Transactional
     public void deleteComment(Long commentId) {
         commentRepository.deleteById(commentId);
