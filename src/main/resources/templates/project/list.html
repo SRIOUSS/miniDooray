@@ -22,7 +22,9 @@
     </a>
     <a th:href="@{/projects}">프로젝트</a>
     <a th:href="@{/mypage}">마이페이지</a>
-    <a th:href="@{/logout}" class="nav-logout">로그아웃</a>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="nav-logout">로그아웃</button>
+    </form>
 </nav>
 
 <div class="container">
@@ -47,28 +49,28 @@
                     <td colspan="4" class="empty-state">프로젝트가 없습니다.</td>
                 </tr>
                 <th:block th:if="${projectView != null and projectView.projectInfoDtoList != null}">
-                <tr th:each="project : ${projectView.projectInfoDtoList}">
-                    <td th:text="${project.id}"></td>
-                    <td>
-                        <a th:href="@{/projects/{projectId}(projectId=${project.id})}"
-                           th:text="${project.title}"></a>
-                    </td>
-                    <td>
+                    <tr th:each="project : ${projectView.projectInfoDtoList}">
+                        <td th:text="${project.id}"></td>
+                        <td>
+                            <a th:href="@{/projects/{projectId}(projectId=${project.id})}"
+                               th:text="${project.title}"></a>
+                        </td>
+                        <td>
                         <span th:with="s=${project.status?.name()?.toLowerCase()}"
                               th:classappend="${s == 'active' ? 'badge-active' : (s == 'dormant' ? 'badge-dormant' : 'badge-terminated')}"
                               class="badge"
                               th:text="${project.status}"></span>
-                    </td>
-                    <td style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
-                        <a th:href="@{/projects/{projectId}/edit(projectId=${project.id})}"
-                           class="btn-table btn-table-edit">수정</a>
-                        <form th:action="@{/projects/{projectId}(projectId=${project.id})}"
-                              method="post">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <button type="submit" class="btn-table btn-table-delete">삭제</button>
-                        </form>
-                    </td>
-                </tr>
+                        </td>
+                        <td style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                            <a th:href="@{/projects/{projectId}/edit(projectId=${project.id})}"
+                               class="btn-table btn-table-edit">수정</a>
+                            <form th:action="@{/projects/{projectId}(projectId=${project.id})}"
+                                  method="post">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn-table btn-table-delete">삭제</button>
+                            </form>
+                        </td>
+                    </tr>
                 </th:block>
                 </tbody>
             </table>

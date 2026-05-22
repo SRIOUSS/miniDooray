@@ -26,7 +26,9 @@
     </a>
     <a th:href="@{/projects}">프로젝트</a>
     <a th:href="@{/mypage}">마이페이지</a>
-    <a th:href="@{/logout}" class="nav-logout">로그아웃</a>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="nav-logout">로그아웃</button>
+    </form>
 </nav>
 
 <div class="container">
@@ -46,7 +48,8 @@
         <div class="task-sidebar">
             <div class="task-sidebar-header">태스크 목록</div>
             <div th:if="${allTasks == null or allTasks.taskInfoDtoList == null or #lists.isEmpty(allTasks.taskInfoDtoList)}"
-                 style="padding:10px 14px; color:#ccc; font-size:12px;">없음</div>
+                 style="padding:10px 14px; color:#ccc; font-size:12px;">없음
+            </div>
             <th:block th:if="${allTasks != null and allTasks.taskInfoDtoList != null}">
                 <a th:each="t : ${allTasks.taskInfoDtoList}"
                    th:href="@{/projects/{projectId}/tasks/{taskId}(projectId=${projectId}, taskId=${t.id})}"
@@ -81,14 +84,17 @@
                        style="margin-bottom:1rem; line-height:1.6; color:#444; min-height:2rem;"></p>
 
                     <div style="display:flex; gap:1.5rem; font-size:12px; color:#aaa; margin-bottom:0.75rem;">
-                        <span>생성: <span th:text="${#temporals.format(task.taskResponseDto.createdAt, 'yyyy-MM-dd HH:mm')}"></span></span>
-                        <span>수정: <span th:text="${task.taskResponseDto.updatedAt != null ? #temporals.format(task.taskResponseDto.updatedAt, 'yyyy-MM-dd HH:mm') : '-'}"></span></span>
+                        <span>생성: <span
+                                th:text="${#temporals.format(task.taskResponseDto.createdAt, 'yyyy-MM-dd HH:mm')}"></span></span>
+                        <span>수정: <span
+                                th:text="${task.taskResponseDto.updatedAt != null ? #temporals.format(task.taskResponseDto.updatedAt, 'yyyy-MM-dd HH:mm') : '-'}"></span></span>
                     </div>
 
                     <!-- 태그 -->
                     <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
                         <span style="font-size:12px; color:#888; font-weight:500;">태그</span>
-                        <th:block th:if="${task.taskResponseDto.tagResponseDtoList != null and !#lists.isEmpty(task.taskResponseDto.tagResponseDtoList)}">
+                        <th:block
+                                th:if="${task.taskResponseDto.tagResponseDtoList != null and !#lists.isEmpty(task.taskResponseDto.tagResponseDtoList)}">
                             <span th:each="tag : ${task.taskResponseDto.tagResponseDtoList}"
                                   style="padding:2px 10px; background:#dce6ff; color:#1a4fd6; border-radius:100px; font-size:12px;"
                                   th:text="${tag.name}"></span>
@@ -112,7 +118,8 @@
                             <div class="ms-title" th:text="${task.taskResponseDto.milestoneResponseDto.title}"></div>
                         </th:block>
                         <div th:if="${task.taskResponseDto.milestoneResponseDto == null}"
-                             style="color:#ccc; font-size:13px; margin-top:4px;">없음</div>
+                             style="color:#ccc; font-size:13px; margin-top:4px;">없음
+                        </div>
                     </div>
                     <div class="ms-detail">
                         <th:block th:if="${task.taskResponseDto.milestoneResponseDto != null}">
@@ -125,17 +132,21 @@
                                  th:text="'마감 ' + ${#temporals.format(task.taskResponseDto.milestoneResponseDto.dueDate, 'yyyy-MM-dd HH:mm')}"></div>
                             <div style="display:flex; gap:6px; margin-top:4px;">
                                 <button type="button" onclick="openModal('milestoneModal')"
-                                        class="btn-table btn-table-edit" style="flex:1; justify-content:center;">수정</button>
+                                        class="btn-table btn-table-edit" style="flex:1; justify-content:center;">수정
+                                </button>
                                 <form th:action="@{/projects/{projectId}/tasks/{taskId}/milestones(projectId=${projectId}, taskId=${task.taskResponseDto.taskId})}"
                                       method="post" style="flex:1; display:flex;">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" class="btn-table btn-table-delete" style="flex:1; justify-content:center;">삭제</button>
+                                    <button type="submit" class="btn-table btn-table-delete"
+                                            style="flex:1; justify-content:center;">삭제
+                                    </button>
                                 </form>
                             </div>
                         </th:block>
                         <div th:if="${task.taskResponseDto.milestoneResponseDto == null}">
                             <button type="button" onclick="openModal('milestoneModal')"
-                                    class="btn btn-primary" style="width:100%; padding:5px 0; font-size:12px;">+ 추가</button>
+                                    class="btn btn-primary" style="width:100%; padding:5px 0; font-size:12px;">+ 추가
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -150,11 +161,13 @@
                               th:text="'(' + ${task.commentResponseDtoList.size()} + ')'"></span>
                     </h2>
                     <button type="button" onclick="openModal('commentCreateModal')"
-                            class="btn btn-primary" style="padding:5px 12px; font-size:12px;">+ 댓글 작성</button>
+                            class="btn btn-primary" style="padding:5px 12px; font-size:12px;">+ 댓글 작성
+                    </button>
                 </div>
 
                 <div th:if="${task.commentResponseDtoList == null or #lists.isEmpty(task.commentResponseDtoList)}"
-                     class="empty-state" style="padding:1.5rem 0;">댓글이 없습니다.</div>
+                     class="empty-state" style="padding:1.5rem 0;">댓글이 없습니다.
+                </div>
 
                 <th:block th:if="${task.commentResponseDtoList != null}">
                     <div th:each="comment : ${task.commentResponseDtoList}" class="comment-item">
@@ -168,7 +181,8 @@
                             <button type="button"
                                     th:attr="data-content=${comment.content},data-action=@{/projects/{projectId}/tasks/{taskId}/comments/{commentId}(projectId=${projectId}, taskId=${task.taskResponseDto.taskId}, commentId=${comment.id})}"
                                     onclick="openCommentEditModal(this)"
-                                    class="btn-table btn-table-edit">수정</button>
+                                    class="btn-table btn-table-edit">수정
+                            </button>
                             <form th:action="@{/projects/{projectId}/tasks/{taskId}/comments/{commentId}(projectId=${projectId}, taskId=${task.taskResponseDto.taskId}, commentId=${comment.id})}"
                                   method="post" class="inline-form">
                                 <input type="hidden" name="_method" value="DELETE">
@@ -194,7 +208,8 @@
         </div>
         <form th:action="@{/projects/{projectId}/tasks/{taskId}/milestones(projectId=${projectId}, taskId=${task.taskResponseDto.taskId})}"
               th:object="${milestoneRequestDto}" method="post">
-            <input th:if="${task.taskResponseDto.milestoneResponseDto != null}" type="hidden" name="_method" value="PUT">
+            <input th:if="${task.taskResponseDto.milestoneResponseDto != null}" type="hidden" name="_method"
+                   value="PUT">
             <div class="modal-body">
                 <div class="form-group">
                     <label class="label" for="msTitle">제목</label>
@@ -220,7 +235,8 @@
                                th:value="${milestoneRequestDto.dueDate != null ? #temporals.format(milestoneRequestDto.dueDate, 'yyyy-MM-dd') : ''}">
                     </div>
                     <div class="form-group" style="margin-bottom:0;">
-                        <label class="label" for="dueDateTime">마감 시간 <span style="color:#aaa; font-weight:400;">(HH:MM)</span></label>
+                        <label class="label" for="dueDateTime">마감 시간 <span
+                                style="color:#aaa; font-weight:400;">(HH:MM)</span></label>
                         <input type="text" id="dueDateTime" name="dueDateTime" placeholder="예: 14:30"
                                th:value="${milestoneRequestDto.dueDate != null ? #temporals.format(milestoneRequestDto.dueDate, 'HH:mm') : ''}">
                     </div>
@@ -229,7 +245,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeModal('milestoneModal')">취소</button>
                 <button type="submit" class="btn btn-primary"
-                        th:text="${task.taskResponseDto.milestoneResponseDto != null ? '수정' : '추가'}">저장</button>
+                        th:text="${task.taskResponseDto.milestoneResponseDto != null ? '수정' : '추가'}">저장
+                </button>
             </div>
         </form>
     </div>
@@ -303,8 +320,8 @@
         openModal('commentEditModal');
     }
 
-    document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
-        overlay.addEventListener('click', function(e) {
+    document.querySelectorAll('.modal-overlay').forEach(function (overlay) {
+        overlay.addEventListener('click', function (e) {
             if (e.target === overlay) closeModal(overlay.id);
         });
     });

@@ -22,7 +22,9 @@
     </a>
     <a th:href="@{/projects}">프로젝트</a>
     <a th:href="@{/mypage}">마이페이지</a>
-    <a th:href="@{/logout}" class="nav-logout">로그아웃</a>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="nav-logout">로그아웃</button>
+    </form>
 </nav>
 
 <div class="container">
