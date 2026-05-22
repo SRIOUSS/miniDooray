@@ -4,6 +4,7 @@ import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -26,10 +27,10 @@ public class SessionArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public @Nullable Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer, NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
+    public @Nullable Object resolveArgument(@NonNull MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer, NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
 
         HttpServletRequest req = (HttpServletRequest) webRequest.getNativeRequest();
-        HttpSession session = req.getSession();
+        HttpSession session = req.getSession(false);
 
         Object object = session.getAttribute(SessionConstants.SESSION_KEY); // SESSION_ACCOUNT 로 꺼냄
 

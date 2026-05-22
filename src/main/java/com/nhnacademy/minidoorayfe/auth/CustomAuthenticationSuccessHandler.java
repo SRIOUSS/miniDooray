@@ -51,7 +51,6 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         log.info("Login Success: {}", accountResponseDto.getUserId());
 
-//        response.sendRedirect("/projects");
         setDefaultTargetUrl("/projects");
         super.onAuthenticationSuccess(request, response, authentication);
     }

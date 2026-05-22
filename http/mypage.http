@@ -1,7 +1,0 @@
-### 내 태스크 목록
-GET http://localhost:8080/mypage/tasks
-Cookie: SESSION={{session}}
-
-### 내 댓글 목록
-GET http://localhost:8080/mypage/comments
-Cookie: SESSION={{session}}

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -37,7 +38,7 @@ public class SessionAuthFilter extends OncePerRequestFilter {
     // 세션에 SESSION_ACCOUNT 가 있으면 시큐리티에게 이 사람 로그인 됐다고 알려주는 놈임
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         // 현재 요청의 세션 가져옴 (false니까 세션 없으면 새로 안 만들고 널 리턴함)
         HttpSession session = request.getSession(false);

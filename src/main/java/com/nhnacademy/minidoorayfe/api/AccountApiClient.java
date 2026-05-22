@@ -15,13 +15,6 @@ public class AccountApiClient {
         this.restClient = restClient;
     }
 
-    public boolean checkUserId(String userId) {
-        String url = "/account-api/v1/accounts/check-userId?userId=%s"
-                .formatted(userId);
-        return Boolean.TRUE.equals(restClient.get().uri(url).retrieve()
-                .body(Boolean.class));
-    }
-
     public AccountResponseDto findByUserId(String userId) {
         String url = "/account-api/v1/accounts/login?userId=%s".formatted(userId);
         return restClient.get().uri(url).retrieve()
@@ -37,4 +30,3 @@ public class AccountApiClient {
                 .toBodilessEntity(); // body 없이 상태 코드만
     }
 }
-// http:/localhost:8000/accounts-api/v1/login?userId=%s

@@ -62,8 +62,6 @@ public class RedisConfig {
     public SessionRepositoryCustomizer<RedisIndexedSessionRepository> sessionRepositoryCustomizer(
             RedisSerializer<Object> springSessionDefaultRedisSerializer) {
         return repository -> {
-            System.out.println("=== Serializer 주입 확인: " + springSessionDefaultRedisSerializer.getClass().getName());
-
             repository.setDefaultSerializer(springSessionDefaultRedisSerializer);
         };
     }
