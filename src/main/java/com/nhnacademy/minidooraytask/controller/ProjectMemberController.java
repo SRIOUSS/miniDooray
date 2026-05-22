@@ -43,7 +43,7 @@ public class ProjectMemberController {
                                                     @RequestHeader("X-Account-Id") Long accountId,
                                                     @RequestBody MemberRequestDto requestDto) {
         projectMemberFacade.updateMember(projectId, memberId, accountId, requestDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{memberId}")
@@ -51,6 +51,6 @@ public class ProjectMemberController {
                                                     @PathVariable long memberId,
                                                     @RequestHeader("X-Account-Id") Long accountId) {
         projectMemberService.deleteProjectMember(projectId, memberId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

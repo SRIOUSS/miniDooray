@@ -4,6 +4,7 @@ import com.nhnacademy.minidooraytask.task.domain.*;
 import com.nhnacademy.minidooraytask.task.service.TaskFacade;
 import com.nhnacademy.minidooraytask.task.service.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +41,7 @@ public class TaskController {
                                            @RequestBody TaskRequestDto requestDto) {
 
         taskFacade.createTask(projectId, accountId, requestDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{taskId}")
@@ -59,7 +60,7 @@ public class TaskController {
                                            @RequestHeader("X-Account-Id") Long accountId) {
 
         taskFacade.deleteTask(projectId,accountId,taskId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -3,6 +3,7 @@ package com.nhnacademy.minidooraytask.controller;
 import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneRequestDto;
 import com.nhnacademy.minidooraytask.MileStone.service.MileStoneFacade;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class MileStoneController {
                                                 @RequestHeader("X-Account-Id") long accountId,
                                                 @RequestBody MilestoneRequestDto requestDto) {
         mileStoneFacade.createMilestone(taskId, accountId, requestDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping
@@ -25,13 +26,13 @@ public class MileStoneController {
                                                 @RequestHeader("X-Account-Id") long accountId,
                                                 @RequestBody MilestoneRequestDto requestDto) {
         mileStoneFacade.updateMilestone(taskId, accountId, requestDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping
     public ResponseEntity<Void> deleteMileStone(@PathVariable long taskId,
                                                 @RequestHeader("X-Account-Id") long accountId) {
         mileStoneFacade.deleteMilestone(taskId, accountId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

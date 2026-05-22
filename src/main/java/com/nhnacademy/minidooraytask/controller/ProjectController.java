@@ -39,7 +39,7 @@ public class ProjectController {
                                               @RequestHeader("X-Account-Id") long accountId,
                                               @RequestBody ProjectRequestDto requestDto) {
         projectService.updateProject(projectId, requestDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     // DELETE - 특정 프로젝트 삭제 (소프트 삭제)
@@ -47,6 +47,6 @@ public class ProjectController {
     public ResponseEntity<Void> deleteProject(@PathVariable long projectId,
                                               @RequestHeader("X-Account-Id") Long accountId) {
         projectService.deleteProject(projectId, accountId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
