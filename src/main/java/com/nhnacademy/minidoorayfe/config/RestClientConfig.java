@@ -33,7 +33,6 @@ public class RestClientConfig {
                 .configureMessageConverters(builder ->
                         builder.withJsonConverter(new JacksonJsonHttpMessageConverter(restClientMapper))
                 )
-
                 .defaultStatusHandler(
                         status -> status.equals(HttpStatus.NOT_FOUND),
                         ((request, response) -> {
