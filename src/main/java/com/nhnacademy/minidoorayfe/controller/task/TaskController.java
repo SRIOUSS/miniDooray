@@ -4,7 +4,6 @@ import com.nhnacademy.minidoorayfe.api.TaskApiClient;
 import com.nhnacademy.minidoorayfe.dto.auth.SessionAccountDto;
 import com.nhnacademy.minidoorayfe.dto.comment.CommentRequestDto;
 import com.nhnacademy.minidoorayfe.dto.milestone.MilestoneRequestDto;
-import com.nhnacademy.minidoorayfe.dto.tag.TagResponseDto;
 import com.nhnacademy.minidoorayfe.dto.task.TaskRequestDto;
 import com.nhnacademy.minidoorayfe.dto.task.TaskViewDto;
 import com.nhnacademy.minidoorayfe.resolver.SessionIdentity;
@@ -91,10 +90,11 @@ public class TaskController {
                                  Model model) {
 
         TaskViewDto task = taskApiClient.getTask(projectId, taskId, sessionAccountDto.getAccountId());
+
         String tagNames = task.getTaskResponseDto().getTagResponseDtoList() != null
                 ? task.getTaskResponseDto().getTagResponseDtoList().stream()
-                    .map(tag -> "#" + tag.getName())
-                    .collect(Collectors.joining(", "))
+                  .map(tag -> "#" + tag.getName().replaceAll("^#+", "")) // TODO 정규표현식 써서 앞에 붙은 # 다 떼고 다시 # 하나만 붙여줌. DB에는 그냥 사용자 입력값으로 들어가는거임
+                  .collect(Collectors.joining(", "))
                 : "";
 
         TaskRequestDto taskRequestDto = new TaskRequestDto();
