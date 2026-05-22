@@ -1,10 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>404</title>
+    <title>페이지를 찾을 수 없습니다 - miniDooray</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .error-wrap {
+            min-height: calc(100vh - 52px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .error-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 3rem 2.5rem;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
+        .error-code {
+            font-size: 88px;
+            font-weight: 700;
+            color: #3366FF;
+            line-height: 1;
+            letter-spacing: -4px;
+        }
+        .error-icon-wrap {
+            margin: 1.25rem auto 0;
+            width: 56px;
+            height: 56px;
+            background: #eef2ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .error-title {
+            font-size: 19px;
+            font-weight: 600;
+            color: #222;
+            margin: 1.25rem 0 0.5rem;
+        }
+        .error-msg {
+            font-size: 14px;
+            color: #888;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+    </style>
 </head>
 <body>
-<h1>404입니다</h1>
+
+<nav class="nav">
+    <a th:href="@{/projects}" class="nav-logo">
+        <div class="nav-logo-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+        </div>
+        <span class="nav-logo-text">miniDooray</span>
+    </a>
+    <a th:href="@{/projects}">프로젝트</a>
+    <a th:href="@{/mypage}">마이페이지</a>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="nav-logout">로그아웃</button>
+    </form>
+</nav>
+
+<div class="error-wrap">
+    <div class="error-card">
+        <div class="error-code">404</div>
+        <div class="error-icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+                 stroke="#3366FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <line x1="11" y1="8" x2="11" y2="11"/>
+                <circle cx="11" cy="14.5" r="0.5" fill="#3366FF"/>
+            </svg>
+        </div>
+        <h1 class="error-title">페이지를 찾을 수 없습니다</h1>
+        <p class="error-msg" th:text="${message} ?: '요청하신 리소스를 찾을 수 없습니다.'">
+            요청하신 리소스를 찾을 수 없습니다.
+        </p>
+        <a th:href="@{/projects}" class="btn btn-primary">홈으로 돌아가기</a>
+    </div>
+</div>
+
 </body>
 </html>
