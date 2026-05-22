@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
 
 @Slf4j
 @Configuration
@@ -55,7 +56,7 @@ public class SecurityConfig {
                         .failureHandler(loginFailHandler)
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
+                        .logoutUrl("/logout").permitAll()
                         .invalidateHttpSession(true)
                         .deleteCookies("SESSION")
                         .logoutSuccessUrl("/login")
