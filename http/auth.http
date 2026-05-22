@@ -1,0 +1,45 @@
+### 회원가입
+POST http://localhost:8080/api/auth/sign-up
+Content-Type: application/json
+
+{
+  "userId": "testuser",
+  "userPassword": "password123",
+  "userName": "홍길동",
+  "userEmail": "test@example.com"
+}
+
+###
+
+### 로그인
+POST http://localhost:8080/api/auth/sign-in
+Content-Type: application/json
+
+{
+  "userId": "testuser",
+  "userPassword": "password123"
+}
+
+###
+
+### 회원 조회
+GET http://localhost:8080/api/auth/account/1
+Accept: application/json
+
+###
+
+### 회원 정보 수정
+PUT http://localhost:8080/api/auth/account/1
+Content-Type: application/json
+
+{
+  "userId": "testuser",
+  "userPassword": "newpassword123",
+  "userName": "홍길동",
+  "userEmail": "new@example.com"
+}
+
+###
+
+### 회원 탈퇴
+DELETE http://localhost:8080/api/auth/account/1
