@@ -9,10 +9,7 @@ import com.nhnacademy.minidooraytask.tag.domain.Tag;
 import com.nhnacademy.minidooraytask.tag.domain.TaskTag;
 import com.nhnacademy.minidooraytask.task.exception.TaskValidInputException;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -56,6 +53,7 @@ public class Task {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Setter
     @OneToOne
     @JoinColumn(name = "milestone_id")
     private MileStone milestone;
@@ -65,6 +63,9 @@ public class Task {
 
     @OneToMany(mappedBy = "task")
     private List<Comment> commentList;
+
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
 
     //생성자
     public Task(Project project, ProjectMember projectMember, String title, String content) {
@@ -101,5 +102,9 @@ public class Task {
             throw new TaskValidInputException("[task] 입력값이 null");
         }
         this.content = content;
+    }
+
+    public void isDelete() {
+        this.isDeleted = true;
     }
 }

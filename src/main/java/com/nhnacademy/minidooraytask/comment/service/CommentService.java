@@ -22,7 +22,7 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public void checkTaskComment(long taskId, long commentId, long accountId) {
-        if(commentRepository.existProjectMemberByTaskIdAndCommentIdANdAccountId(taskId, commentId, accountId)) {
+        if(!commentRepository.existProjectMemberByTaskIdAndCommentIdANdAccountId(taskId, commentId, accountId)) {
             log.debug("[comment service] 존재하지 않는 댓글 수정입니다 - commentId:{}, taskId:{}, accountId:{}", commentId, taskId, accountId);
             throw new CommentNotFoundException("[comment service] 존재하지 않는 댓글입니다");
         }

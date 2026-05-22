@@ -34,7 +34,7 @@ public class TaskService {
     // [특정 프로젝트 Task 목록 조회]
     @Transactional(readOnly = true)
     public List<Task> getTasks(Long projectId) {
-        return taskRepository.findAllByProject_Id(projectId);
+        return taskRepository.findAllByProject_Id(projectId, false);
     }
 
     @Transactional
@@ -71,7 +71,7 @@ public class TaskService {
 
     @Transactional(readOnly = true)
     public void checkProjectMember(long taskId, long accountId) {
-        if(taskRepository.existsByIdAndProject_ProjectMemberListIsAccountId(taskId, accountId)) {
+        if(!taskRepository.existsByIdAndProject_ProjectMemberListIsAccountId(taskId, accountId)) {
             log.debug("[task service] 존재하지 않는 멤버입니다 - taskId:{}, projectId:{}", taskId, accountId);
             throw new ProjectMemberIsNotExistException("[task service] 존재하지 않는 멤버입니다");
         }
@@ -101,15 +101,8 @@ public class TaskService {
     @Transactional
     public Task updateTask(Task task, TaskRequestDto taskRequestDto) {
 
-        if(!taskRequestDto.title().equals(task.getTitle())) {
-            task.setTitle(taskRequestDto.title());
-        }
-        if(!taskRequestDto.content().equals(task.getContent())) {
-            task.setContent(taskRequestDto.content());
-        }
-
+        task.updateTask(taskRequestDto.title(), taskRequestDto.content());
         taskRepository.save(task);
-
         return task;
     }
 
@@ -119,9 +112,11 @@ public class TaskService {
     @Transactional
     public void deleteTask(Task task) {
 
-        taskRepository.delete(task);
-
         log.debug("[task service] task 삭제 완료 - taskId:{}", task.getId());
+//        taskRepository.delete(task);
+        task.isDelete();
+        taskRepository.save(task);
+
     }
 
     // [TaskResponseDto 조립 메서드]

@@ -1,16 +1,14 @@
 package com.nhnacademy.minidooraytask.controller;
 
 import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneRequestDto;
-import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneUpdateRequestDto;
 import com.nhnacademy.minidooraytask.MileStone.service.MileStoneFacade;
-import com.nhnacademy.minidooraytask.MileStone.service.MileStoneService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/task-api/tasks/{taskId}/milestone")
+@RequestMapping("/task-api/tasks/{taskId}/milestones")
 public class MileStoneController {
     private final MileStoneFacade mileStoneFacade;
 

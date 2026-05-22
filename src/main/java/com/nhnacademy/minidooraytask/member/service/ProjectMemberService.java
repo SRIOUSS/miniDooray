@@ -52,7 +52,7 @@ public class ProjectMemberService {
     @Transactional(readOnly = true)
     public ProjectMember getActiveMember(Long projectId, Long accountId) {
 
-        return projectMemberRepository.findByProject_IdAndAccountId(projectId, accountId)
+        return projectMemberRepository.findProjectMemberByProject_IdAndAccountId(projectId, accountId)
                 .filter(member -> !member.isDeleted())
                 .orElseThrow(() -> {
                     log.debug("[project-member service] 권한이 없는 멤버입니다 - projectId:{}, accountId:{}", projectId, accountId);

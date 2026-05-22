@@ -5,6 +5,7 @@ import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.web.server.CoWebFilterChain;
 
 import java.util.Collection;
 import java.util.List;
@@ -43,4 +44,7 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
 
         @Query("SELECT pm.auth FROM ProjectMember pm WHERE pm.project.id = ?1 AND pm.accountId = ?2")
         String getAuth(long projectId, long accountId);
+
+        @Query("SELECT pm FROM Project p JOIN ProjectMember pm ON p.id = pm.project.id WHERE p.id = ?1 AND pm.accountId = ?2")
+        Optional<ProjectMember> findProjectMemberByProject_IdAndAccountId(Long projectId, Long accountId);
 }
