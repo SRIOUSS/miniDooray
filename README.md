@@ -190,4 +190,5 @@ server:
 ## 관련 문서
 
 - [API_DOCS.md](./submit/API_DOCS.md) — Account API / Task API 백엔드 통신 명세
+- [miniDooray-team11-ERD.png](./submit/miniDooray-team11-ERD.png) - ERD
 - [SonarQube.png](./submit/SonarQube.png) — SonarQube 커버리지
