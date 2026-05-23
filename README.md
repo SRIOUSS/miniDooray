@@ -189,5 +189,5 @@ server:
 
 ## 관련 문서
 
-- [API_DOCS.md](./API_DOCS.md) — Account API / Task API 백엔드 통신 명세
-- [SonarQube.png](./SonarQube.png) — IntelliJ HTTP Client 예제 요청 모음
+- [API_DOCS.md](./submit/API_DOCS.md) — Account API / Task API 백엔드 통신 명세
+- [SonarQube.png](./submit/SonarQube.png) — SonarQube 커버리지
