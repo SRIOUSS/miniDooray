@@ -181,12 +181,6 @@ server:
 
 ---
 
-## ERD
-
-프로젝트 루트의 `miniDooray-team11-ERD.png` 참고
-
----
-
 ## 관련 문서
 
 - [API_DOCS.md](./submit/API_DOCS.md) — Account API / Task API 백엔드 통신 명세
