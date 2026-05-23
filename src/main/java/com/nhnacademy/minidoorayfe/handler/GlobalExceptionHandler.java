@@ -13,14 +13,17 @@ import org.springframework.web.client.RestClientException;
 @Slf4j
 public class GlobalExceptionHandler {
 
+    private static final String MESSAGE = "message";
+    private static final String STATUS_CODE = "statusCode";
+
     // 404 - 리소스 없음
     @ExceptionHandler(UsernameNotFoundException.class)
     public String handleUsernameNotFoundException(UsernameNotFoundException e, Model model,
                                                   HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         log.error("UsernameNotFoundException: {}", e.getMessage());
-        model.addAttribute("statusCode", 404);
-        model.addAttribute("message", "요청하신 리소스를 찾을 수 없습니다.");
+        model.addAttribute(STATUS_CODE, 404);
+        model.addAttribute(MESSAGE, "요청하신 리소스를 찾을 수 없습니다.");
         return "error/404";
     }
 
@@ -30,8 +33,8 @@ public class GlobalExceptionHandler {
                                            HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         log.error("ApiServerException: {}", e.getMessage());
-        model.addAttribute("statusCode", 500);
-        model.addAttribute("message", "서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        model.addAttribute(STATUS_CODE, 500);
+        model.addAttribute(MESSAGE, "서버에서 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         return "error/5xx";
     }
 
@@ -41,8 +44,8 @@ public class GlobalExceptionHandler {
                                             HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         log.error("RestClientException: {}", e.getMessage());
-        model.addAttribute("statusCode", 400);
-        model.addAttribute("message", e.getMessage());
+        model.addAttribute(STATUS_CODE, 400);
+        model.addAttribute(MESSAGE, e.getMessage());
         return "error/4xx";
     }
 
@@ -51,8 +54,8 @@ public class GlobalExceptionHandler {
     public String handleException(Exception e, Model model, HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         log.error("Exception: {}", e.getMessage(), e);
-        model.addAttribute("statusCode", 500);
-        model.addAttribute("message", "서버 오류가 발생했습니다.");
+        model.addAttribute(STATUS_CODE, 500);
+        model.addAttribute(MESSAGE, "서버 오류가 발생했습니다.");
         return "error/5xx";
     }
 }

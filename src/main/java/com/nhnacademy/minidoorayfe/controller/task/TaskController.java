@@ -93,7 +93,7 @@ public class TaskController {
 
         String tagNames = task.getTaskResponseDto().getTagResponseDtoList() != null
                 ? task.getTaskResponseDto().getTagResponseDtoList().stream()
-                  .map(tag -> "#" + tag.getName().replaceAll("^#+", "")) // TODO 정규표현식 써서 앞에 붙은 # 다 떼고 다시 # 하나만 붙여줌. DB에는 그냥 사용자 입력값으로 들어가는거임
+                  .map(tag -> "#" + tag.getName().replaceAll("^#+", ""))
                   .collect(Collectors.joining(", "))
                 : "";
 

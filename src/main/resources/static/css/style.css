@@ -81,10 +81,6 @@
     color: #e03131;
 }
 
-.nav a.nav-logout:hover {
-    background: #fff0f0;
-    color: #e03131;
-}
 
 /* ---------- Container ---------- */
 .container {
@@ -380,7 +376,6 @@ tbody tr:hover {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    overflow: hidden;
     position: sticky;
     top: 1rem;
     max-height: calc(100vh - 80px);

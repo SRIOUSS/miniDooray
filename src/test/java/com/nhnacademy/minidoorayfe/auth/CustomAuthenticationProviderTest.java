@@ -67,7 +67,7 @@ class CustomAuthenticationProviderTest {
         given(accountApiClient.findByUserId("testUser"))
                 .willThrow(new UsernameNotFoundException("testUser"));
         assertThatThrownBy(() -> customAuthenticationProvider.authenticate(authentication))
-                .isInstanceOf(UsernameNotFoundException.class);
+                .isInstanceOf(BadCredentialsException.class);
     }
 
     @Test

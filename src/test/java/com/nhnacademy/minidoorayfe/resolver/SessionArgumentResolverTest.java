@@ -42,7 +42,7 @@ class SessionArgumentResolverTest {
     }
 
     @Test
-    void resolveTestWhenSessionIsInDto() throws Exception {
+    void resolveTestWhenSessionIsInDto() {
         given(nativeWebRequest.getNativeRequest()).willReturn(request);
         given(request.getSession()).willReturn(session);
         SessionAccountDto sessionAccountDto = new SessionAccountDto(1L, "testUser");
@@ -54,7 +54,7 @@ class SessionArgumentResolverTest {
     }
 
     @Test
-    void resolveTestWhenSessionIsInLickedHashMap() throws Exception {
+    void resolveTestWhenSessionIsInLickedHashMap() {
         given(nativeWebRequest.getNativeRequest()).willReturn(request);
         given(request.getSession()).willReturn(session);
 
@@ -73,7 +73,7 @@ class SessionArgumentResolverTest {
     }
 
     @Test
-    void nonSessionIsReturnNull() throws Exception {
+    void nonSessionIsReturnNull() {
         given(nativeWebRequest.getNativeRequest()).willReturn(request);
         given(request.getSession()).willReturn(session);
         given(session.getAttribute(SessionConstants.SESSION_KEY)).willReturn(null);

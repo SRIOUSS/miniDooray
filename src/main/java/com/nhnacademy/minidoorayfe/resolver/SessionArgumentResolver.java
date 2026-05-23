@@ -15,7 +15,6 @@ import tools.jackson.databind.json.JsonMapper;
 
 import java.util.LinkedHashMap;
 
-// TODO 기존 SessionModelAdvice에서 발전시킨(?)
 @RequiredArgsConstructor
 public class SessionArgumentResolver implements HandlerMethodArgumentResolver {
 
@@ -27,10 +26,10 @@ public class SessionArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public @Nullable Object resolveArgument(@NonNull MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer, NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
+    public @Nullable Object resolveArgument(@NonNull MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer, NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) {
 
         HttpServletRequest req = (HttpServletRequest) webRequest.getNativeRequest();
-        HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession();
 
         Object object = session.getAttribute(SessionConstants.SESSION_KEY); // SESSION_ACCOUNT 로 꺼냄
 

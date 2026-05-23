@@ -1,5 +1,6 @@
 package com.nhnacademy.minidoorayfe.dto.auth;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,10 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@class")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = SessionAccountDto.class, name = "sessionAccount")
+})
 public class SessionAccountDto implements Serializable {
 
     // 로그인 성공 시 '세션에 저장되는 인증 정보'

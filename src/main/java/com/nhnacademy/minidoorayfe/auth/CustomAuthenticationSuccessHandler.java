@@ -25,7 +25,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     @Override
     public void onAuthenticationSuccess(@NonNull HttpServletRequest request,
-                                        HttpServletResponse response,
+                                        @NonNull HttpServletResponse response,
                                         Authentication authentication
     ) throws IOException, ServletException {
 

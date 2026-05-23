@@ -61,8 +61,7 @@ public class RedisConfig {
     @Bean
     public SessionRepositoryCustomizer<RedisIndexedSessionRepository> sessionRepositoryCustomizer(
             RedisSerializer<Object> springSessionDefaultRedisSerializer) {
-        return repository -> {
-            repository.setDefaultSerializer(springSessionDefaultRedisSerializer);
-        };
+        return repository ->
+                repository.setDefaultSerializer(springSessionDefaultRedisSerializer);
     }
 }

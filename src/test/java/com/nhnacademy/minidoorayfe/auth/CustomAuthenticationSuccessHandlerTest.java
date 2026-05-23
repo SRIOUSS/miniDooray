@@ -73,8 +73,4 @@ class CustomAuthenticationSuccessHandlerTest {
         verify(newSession).setAttribute(eq(SessionConstants.SESSION_KEY), any(SessionAccountDto.class));
         verify(loginFailureCounter).reset("127.0.0.1");
     }
-
-
-
-
 }

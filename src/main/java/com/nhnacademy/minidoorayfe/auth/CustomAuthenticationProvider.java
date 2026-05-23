@@ -34,17 +34,17 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         try {
             accountResponseDto = accountApiClient.findByUserId(userId);
         } catch (UsernameNotFoundException e) {
-            throw new UsernameNotFoundException(userId);
+            throw new BadCredentialsException("Invalid credentials");
         } catch (Exception e) {
             throw new AuthenticationServiceException("verify service error", e);
         }
 
         if (!accountResponseDto.getStatus().equals("ACTIVE")) {
-            throw new DisabledException(userId);
+            throw new DisabledException("Account is disabled");
         }
 
         if (!passwordEncoder.matches(userPassword, accountResponseDto.getUserPassword())) {
-            throw new BadCredentialsException(userId);
+            throw new BadCredentialsException("Invalid credentials");
         }
 
         return new UsernamePasswordAuthenticationToken(accountResponseDto, null, List.of()); // 비밀번호, 권한은 필요없음, 권한은 애초에 없지 ㅇㅇ

@@ -213,11 +213,11 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label class="label" for="msTitle">제목</label>
-                    <input type="text" id="msTitle" th:field="*{title}" placeholder="마일스톤 제목">
+                    <input class="form-input" type="text" id="msTitle" th:field="*{title}" placeholder="마일스톤 제목">
                 </div>
                 <div class="form-group">
                     <label class="label" for="msStatus">상태</label>
-                    <select id="msStatus" th:field="*{status}">
+                    <select class="form-input" id="msStatus" th:field="*{status}">
                         <option value="PLANNED">예정</option>
                         <option value="IN_PROGRESS">진행 중</option>
                         <option value="COMPLETED">완료</option>
@@ -226,12 +226,12 @@
                 </div>
                 <div class="form-group">
                     <label class="label" for="msDescription">설명</label>
-                    <input type="text" id="msDescription" th:field="*{description}" placeholder="설명 (선택)">
+                    <input class="form-input" type="text" id="msDescription" th:field="*{description}" placeholder="설명 (선택)">
                 </div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                     <div class="form-group" style="margin-bottom:0;">
                         <label class="label" for="dueDateDate">마감 날짜</label>
-                        <input type="date" id="dueDateDate" name="dueDateDate"
+                        <input class="form-input" type="date" id="dueDateDate" name="dueDateDate"
                                th:value="${milestoneRequestDto.dueDate != null ? #temporals.format(milestoneRequestDto.dueDate, 'yyyy-MM-dd') : ''}">
                     </div>
                     <div class="form-group" style="margin-bottom:0;">

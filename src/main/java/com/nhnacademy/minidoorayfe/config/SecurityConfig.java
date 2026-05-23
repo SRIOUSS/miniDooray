@@ -6,7 +6,6 @@ import com.nhnacademy.minidoorayfe.auth.CustomAuthenticationSuccessHandler;
 import com.nhnacademy.minidoorayfe.filter.IpBlackListFilter;
 import com.nhnacademy.minidoorayfe.filter.SessionAuthFilter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

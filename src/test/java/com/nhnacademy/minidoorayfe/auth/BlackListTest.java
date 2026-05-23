@@ -1,6 +1,5 @@
 package com.nhnacademy.minidoorayfe.auth;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +12,6 @@ import org.springframework.data.redis.core.ValueOperations;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -28,10 +26,6 @@ class BlackListTest {
 
     @InjectMocks
     BlackList blackList;
-
-    @BeforeEach
-    void setUp() {
-    }
 
     @Test
     @DisplayName("저장 성공")

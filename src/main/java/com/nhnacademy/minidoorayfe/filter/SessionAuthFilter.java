@@ -19,17 +19,16 @@ import java.util.Objects;
 
 /**
  * <만든 이유>
- *
+ * <p>
  * 우리 구조: SESSION_ACCOUNT 키로 직접 세션 관리하고 있음
  * 그래서 매 요청마다 세션에 SESSION_ACCOUNT 가 있으면 시큐리티에게 이 사람 인증됐다고 알려주는 브릿지 역할을 하는 필터임
  * SecurityConfig에 NullSecurityContextRepository 설정만 안 하면 됨
  * SessionAuthFilter가 SecurityContextHolder에 인증 정보를 넣어도 NullSecurityContextRepository가 있으면 다음 필터에서 날려버리므로
- *
+ * <p>
  * <흐름>
  * 로그인 시 -> SESSION_ACCOUNT 세션에 저장 -> 다음 요청부터 이 필터가 세션 까서 확인 -> 시큐리티에게 인증 정보 주입 -> 시큐리티가 막고 있는 페이지 접근 가능!
  */
 
-// TODO 매번 permitAll()로 다 열어줄 수도 없고, 안 그러면 또 다 로그인으로 튕기기 때문에 추가
 @Component
 @RequiredArgsConstructor
 public class SessionAuthFilter extends OncePerRequestFilter {
