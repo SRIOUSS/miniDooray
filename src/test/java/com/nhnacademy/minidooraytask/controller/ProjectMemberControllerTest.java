@@ -8,12 +8,12 @@ import com.nhnacademy.minidooraytask.member.service.ProjectMemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ProjectMemberController.class)
 @Import(CustomExceptionHandler.class)
-public class ProjectMemberControllerTest {
+class ProjectMemberControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -70,7 +70,7 @@ public class ProjectMemberControllerTest {
 
         mockMvc.perform(get("/task-api/projects/{projectId}/members", projectId)
                         .header("X-Account-Id", accountId))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class ProjectMemberControllerTest {
                         .header("X-Account-Id", accountId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -120,7 +120,7 @@ public class ProjectMemberControllerTest {
                         .header("X-Account-Id", accountId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -134,7 +134,7 @@ public class ProjectMemberControllerTest {
 
         mockMvc.perform(delete("/task-api/projects/{projectId}/members/{memberId}", projectId, memberId)
                         .header("X-Account-Id", accountId))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -149,6 +149,6 @@ public class ProjectMemberControllerTest {
 
         mockMvc.perform(delete("/task-api/projects/{projectId}/members/{memberId}", projectId, memberId)
                         .header("X-Account-Id", accountId))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 }

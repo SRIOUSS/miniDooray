@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ProjectMemberFacadeTest {
+class ProjectMemberFacadeTest {
 
     @InjectMocks
     private ProjectMemberFacade projectMemberFacade;

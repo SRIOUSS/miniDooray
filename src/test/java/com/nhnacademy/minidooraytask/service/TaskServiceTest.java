@@ -7,6 +7,7 @@ import com.nhnacademy.minidooraytask.member.domain.MembersAuth;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
 import com.nhnacademy.minidooraytask.member.repository.ProjectMemberRepository;
 import com.nhnacademy.minidooraytask.project.domain.Project;
+import com.nhnacademy.minidooraytask.project.exception.NoAuthoProjectException;
 import com.nhnacademy.minidooraytask.project.respository.ProjectRepository;
 import com.nhnacademy.minidooraytask.tag.domain.Tag;
 import com.nhnacademy.minidooraytask.tag.domain.TaskTag;
@@ -65,19 +66,19 @@ class TaskServiceTest {
         Long projectId = 1L;
         Task task1 = mock(Task.class);
         Task task2 = mock(Task.class);
-        given(taskRepository.findAllByProject_Id(projectId)).willReturn(List.of(task1, task2));
+        given(taskRepository.findAllByProject_Id(projectId, false)).willReturn(List.of(task1, task2));
 
         List<Task> result = taskService.getTasks(projectId);
 
         assertThat(result).hasSize(2);
-        then(taskRepository).should().findAllByProject_Id(projectId);
+        then(taskRepository).should().findAllByProject_Id(projectId, false);
     }
 
     @Test
     @DisplayName("프로젝트에 Task가 없으면 빈 리스트 반환")
     void getTasks_empty() {
         Long projectId = 1L;
-        given(taskRepository.findAllByProject_Id(projectId)).willReturn(List.of());
+        given(taskRepository.findAllByProject_Id(projectId, false)).willReturn(List.of());
 
         List<Task> result = taskService.getTasks(projectId);
 
@@ -120,14 +121,14 @@ class TaskServiceTest {
     }
 
     @Test
-    @DisplayName("Task 작성자 확인 - 작성자가 아니면 TaskNotFoundException 발생")
+    @DisplayName("Task 작성자 확인 - 작성자가 아니면 NoAuthoProjectException 발생")
     void checkTaskMaker_notMaker() {
         Long memberId = 2L;
         Long taskId = 1L;
         given(taskRepository.existsByIdAndAccountId(taskId, memberId)).willReturn(false);
 
         assertThatThrownBy(() -> taskService.checkTaskMaker(memberId, taskId))
-                .isInstanceOf(TaskNotFoundException.class);
+                .isInstanceOf(NoAuthoProjectException.class);
     }
 
     @Test
@@ -141,14 +142,14 @@ class TaskServiceTest {
     }
 
     @Test
-    @DisplayName("AccountId로 Task 작성자 확인 - 작성자가 아니면 TaskNotFoundException 발생")
+    @DisplayName("AccountId로 Task 작성자 확인 - 작성자가 아니면 NoAuthoProjectException 발생")
     void checkTaskMakerByAccountId_notMaker() {
         long accountId = 2L;
         long taskId = 1L;
         given(taskRepository.existsTaskByProjectMember_AccountIdAndId(accountId, taskId)).willReturn(false);
 
         assertThatThrownBy(() -> taskService.checkTaskMakerByAccountId(accountId, taskId))
-                .isInstanceOf(TaskNotFoundException.class);
+                .isInstanceOf(NoAuthoProjectException.class);
     }
 
     @Test
@@ -212,14 +213,14 @@ class TaskServiceTest {
     }
 
     @Test
-    @DisplayName("Task 삭제 - 성공")
+    @DisplayName("Task 삭제 - soft delete")
     void deleteTask_success() {
         Task task = mock(Task.class);
-        willDoNothing().given(taskRepository).delete(task);
+        given(taskRepository.save(task)).willReturn(task);
 
         taskService.deleteTask(task);
 
-        then(taskRepository).should().delete(task);
+        then(taskRepository).should().save(task);
     }
 
     @Test

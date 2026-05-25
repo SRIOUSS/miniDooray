@@ -11,7 +11,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     // 특정 프로젝트에 속한 모든 Task 목록 조회
 //    @Query("SELECT t FROM Task t WHERE t.project.id = ?1 AND (?2 = true OR t.isDeleted = false)")
-    @Query(value = "SELECT * FROM Task t WHERE t.project_id = ?1 AND (?2 = true OR t.is_deleted = false)", nativeQuery = true)
+    @Query(value = "SELECT * FROM tasks t WHERE t.project_id = ?1 AND (?2 = true OR t.is_deleted = false)", nativeQuery = true)
     List<Task> findAllByProject_Id(Long projectId, boolean isDeleted);
 
     // 특정 프로젝트에 속한 특정 Task 상세 조회 (검증용)

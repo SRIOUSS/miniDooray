@@ -8,12 +8,12 @@ import com.nhnacademy.minidooraytask.member.exception.ProjectMemberIsNotExistExc
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(CommentController.class)
 @Import(CustomExceptionHandler.class)
-public class CommentControllerTest {
+class CommentControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -47,7 +47,7 @@ public class CommentControllerTest {
                         .header("X-Account-Id", accountId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class CommentControllerTest {
                         .header("X-Account-Id", accountId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -77,11 +77,11 @@ public class CommentControllerTest {
 
         willDoNothing().given(commentFacade).updateComment(eq(taskId), eq(commentId), eq(accountId), any(CommentRequestDto.class));
 
-        mockMvc.perform(post("/task-api/tasks/{taskId}/comments/{commentId}", taskId, commentId)
+        mockMvc.perform(put("/task-api/tasks/{taskId}/comments/{commentId}", taskId, commentId)
                         .header("X-Account-Id", accountId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -95,11 +95,11 @@ public class CommentControllerTest {
         willThrow(new CommentNotFoundException("댓글이 존재하지 않습니다"))
                 .given(commentFacade).updateComment(eq(taskId), eq(commentId), eq(accountId), any(CommentRequestDto.class));
 
-        mockMvc.perform(post("/task-api/tasks/{taskId}/comments/{commentId}", taskId, commentId)
+        mockMvc.perform(put("/task-api/tasks/{taskId}/comments/{commentId}", taskId, commentId)
                         .header("X-Account-Id", accountId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -113,7 +113,7 @@ public class CommentControllerTest {
 
         mockMvc.perform(delete("/task-api/tasks/{taskId}/comments/{commentId}", taskId, commentId)
                         .header("X-Account-Id", accountId))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -128,6 +128,6 @@ public class CommentControllerTest {
 
         mockMvc.perform(delete("/task-api/tasks/{taskId}/comments/{commentId}", taskId, commentId)
                         .header("X-Account-Id", accountId))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 }

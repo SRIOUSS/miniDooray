@@ -146,11 +146,8 @@ class ProjectServiceTest {
         Long accountId = 100L;
         Project project = new Project("ttl", "descrip", accountId);
 
-        given(projectRepository.findProjectByIdAndCreateAccountId(eq(projectId), eq(accountId)))
-                .willReturn(Optional.of(project));
-
-        given(projectRepository.existsProjectByIdAndCreateAccountId(eq(projectId), eq(accountId)))
-                .willReturn(true);
+        given(projectRepository.findById(projectId)).willReturn(Optional.of(project));
+        given(projectRepository.existsProjectByIdAndCreateAccountId(projectId, accountId)).willReturn(true);
 
         projectService.deleteProject(projectId, accountId);
 

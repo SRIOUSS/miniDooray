@@ -8,8 +8,8 @@ import com.nhnacademy.minidooraytask.task.repository.TaskRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.util.List;
@@ -46,7 +46,7 @@ class TaskRepositoryTest {
         entityManager.flush();
         entityManager.clear(); // 영속성 컨텍스트 초기화
 
-        List<Task> result = taskRepository.findAllByProject_Id(project.getId());
+        List<Task> result = taskRepository.findAllByProject_Id(project.getId(), false);
         assertThat(result).hasSize(2);
         assertThat(result.stream().map(Task::getTitle)).containsExactlyInAnyOrder("태스크 1", "태스크 2");
     }

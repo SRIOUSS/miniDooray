@@ -8,12 +8,12 @@ import com.nhnacademy.minidooraytask.task.exception.TaskNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(MileStoneController.class)
 @Import(CustomExceptionHandler.class)
-public class MileStoneControllerTest {
+class MileStoneControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -47,11 +47,11 @@ public class MileStoneControllerTest {
 
         willDoNothing().given(mileStoneFacade).createMilestone(eq(taskId), eq(accountId), any(MilestoneRequestDto.class));
 
-        mockMvc.perform(post("/task-api/tasks/{taskId}/milestone", taskId)
+        mockMvc.perform(post("/task-api/tasks/{taskId}/milestones", taskId)
                         .header("X-Account-Id", accountId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -66,11 +66,11 @@ public class MileStoneControllerTest {
         willThrow(new TaskNotFoundException("태스크가 존재하지 않습니다"))
                 .given(mileStoneFacade).createMilestone(eq(taskId), eq(accountId), any(MilestoneRequestDto.class));
 
-        mockMvc.perform(post("/task-api/tasks/{taskId}/milestone", taskId)
+        mockMvc.perform(post("/task-api/tasks/{taskId}/milestones", taskId)
                         .header("X-Account-Id", accountId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -84,11 +84,11 @@ public class MileStoneControllerTest {
 
         willDoNothing().given(mileStoneFacade).updateMilestone(eq(taskId), eq(accountId), any(MilestoneRequestDto.class));
 
-        mockMvc.perform(put("/task-api/tasks/{taskId}/milestone", taskId)
+        mockMvc.perform(put("/task-api/tasks/{taskId}/milestones", taskId)
                         .header("X-Account-Id", accountId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -103,11 +103,11 @@ public class MileStoneControllerTest {
         willThrow(new TaskNotFoundException("태스크가 존재하지 않습니다"))
                 .given(mileStoneFacade).updateMilestone(eq(taskId), eq(accountId), any(MilestoneRequestDto.class));
 
-        mockMvc.perform(put("/task-api/tasks/{taskId}/milestone", taskId)
+        mockMvc.perform(put("/task-api/tasks/{taskId}/milestones", taskId)
                         .header("X-Account-Id", accountId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -118,9 +118,9 @@ public class MileStoneControllerTest {
 
         willDoNothing().given(mileStoneFacade).deleteMilestone(eq(taskId), eq(accountId));
 
-        mockMvc.perform(delete("/task-api/tasks/{taskId}/milestone", taskId)
+        mockMvc.perform(delete("/task-api/tasks/{taskId}/milestones", taskId)
                         .header("X-Account-Id", accountId))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -132,8 +132,8 @@ public class MileStoneControllerTest {
         willThrow(new TaskNotFoundException("태스크가 존재하지 않습니다"))
                 .given(mileStoneFacade).deleteMilestone(eq(taskId), eq(accountId));
 
-        mockMvc.perform(delete("/task-api/tasks/{taskId}/milestone", taskId)
+        mockMvc.perform(delete("/task-api/tasks/{taskId}/milestones", taskId)
                         .header("X-Account-Id", accountId))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 }

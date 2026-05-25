@@ -170,7 +170,6 @@ public class TagService {
             if(!createTaskTag.isEmpty()) {
                 taskTagRepository.saveAll(createTaskTag);
                 task.getTaskTagList().addAll(createTaskTag);
-//                taskTagList.forEach(tt -> tt.getTag().getTaskTagList().add(tt));
             }
         }
     }

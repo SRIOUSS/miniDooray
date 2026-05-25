@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class MilestoneFacadeTest {
+class MilestoneFacadeTest {
 
     @InjectMocks
     private MileStoneFacade mileStoneFacade;

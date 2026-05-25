@@ -1,10 +1,8 @@
 package com.nhnacademy.minidooraytask.comment.domain;
 
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
-import com.nhnacademy.minidooraytask.project.domain.ProjectRequestDto;
 import com.nhnacademy.minidooraytask.task.domain.Task;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;

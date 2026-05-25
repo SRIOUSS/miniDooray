@@ -10,12 +10,12 @@ import com.nhnacademy.minidooraytask.task.domain.TaskInfoDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -87,7 +87,7 @@ public class ProjectControllerTest {
                         .header("X-Account-Id", accountId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isOk()); // 컨트롤러 실제 응답이 200 OK라면 테스트도 맞춰야 함
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -100,7 +100,7 @@ public class ProjectControllerTest {
 
         mockMvc.perform(delete("/task-api/projects/{projectId}", projectId)
                         .header("X-Account-Id", accountId))
-                .andExpect(status().isOk()); // 204 대신 200으로 수정
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -114,6 +114,6 @@ public class ProjectControllerTest {
 
         mockMvc.perform(delete("/task-api/projects/{projectId}", projectId)
                         .header("X-Account-Id", accountId))
-                .andExpect(status().isBadRequest()); // 핸들러가 실제 400(Bad Request)을 던지고 있으므로 수정
+                .andExpect(status().isForbidden());
     }
 }
