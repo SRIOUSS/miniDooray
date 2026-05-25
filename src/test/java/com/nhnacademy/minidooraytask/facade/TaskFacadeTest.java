@@ -143,8 +143,6 @@ public class TaskFacadeTest {
 
         assertThat(result).isNotNull();
         assertThat(result.taskInfoDtoList()).hasSize(1);
-
-        // TaskInfoDto 레코드의 필드명에 따라 status() 또는 mileStoneStatus() 자동완성을 사용해주세요.
         assertThat(result.taskInfoDtoList().get(0).status()).isNull();
     }
 
@@ -163,20 +161,17 @@ public class TaskFacadeTest {
         given(mockProject.getTaskList()).willReturn(List.of(taskWithMilestone, taskWithoutMilestone, taskDeleted));
         given(mockProject.getId()).willReturn(100L);
 
-        // 1. 마일스톤이 있는 정상 태스크
         given(taskWithMilestone.isDeleted()).willReturn(false);
         given(taskWithMilestone.getId()).willReturn(1L);
         given(taskWithMilestone.getProject()).willReturn(mockProject);
         given(taskWithMilestone.getMilestone()).willReturn(mockMilestone);
         given(mockMilestone.getStatus()).willReturn(MileStoneStatus.IN_PROGRESS);
 
-        // 2. 마일스톤이 없는 정상 태스크
         given(taskWithoutMilestone.isDeleted()).willReturn(false);
         given(taskWithoutMilestone.getId()).willReturn(2L);
         given(taskWithoutMilestone.getProject()).willReturn(mockProject);
         given(taskWithoutMilestone.getMilestone()).willReturn(null);
 
-        // 3. 삭제된 태스크 (필터링 되어야 함)
         given(taskDeleted.isDeleted()).willReturn(true);
 
         Map<Long, TaskInfoListDto> result = taskFacade.createTaskInfoListDto(List.of(mockMember));
@@ -218,8 +213,6 @@ public class TaskFacadeTest {
         TaskViewDto result = taskFacade.getSpecificTask(taskId, projectId, accountId);
 
         assertThat(result).isNotNull();
-
-        // Record 방식 필드명으로 매칭 및 isEmpty() 사용
         assertThat(result.taskResponseDto().milestoneResponseDto()).isNull();
         assertThat(result.taskResponseDto().tagResponseDtoList()).isEmpty();
         assertThat(result.commentResponseDtoList()).isEmpty();
