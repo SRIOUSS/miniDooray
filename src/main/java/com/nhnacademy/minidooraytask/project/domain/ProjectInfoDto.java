@@ -1,6 +1,6 @@
 package com.nhnacademy.minidooraytask.project.domain;
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStoneStatus;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStoneStatus;
 
 import java.util.List;
 

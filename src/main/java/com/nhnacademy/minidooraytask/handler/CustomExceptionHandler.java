@@ -1,8 +1,8 @@
 package com.nhnacademy.minidooraytask.handler;
 
-import com.nhnacademy.minidooraytask.MileStone.exception.MileStoneInvalidInputException;
-import com.nhnacademy.minidooraytask.MileStone.exception.MileStoneIsExistException;
-import com.nhnacademy.minidooraytask.MileStone.exception.MileStoneIsNotExistException;
+import com.nhnacademy.minidooraytask.milestone.exception.MileStoneInvalidInputException;
+import com.nhnacademy.minidooraytask.milestone.exception.MileStoneIsExistException;
+import com.nhnacademy.minidooraytask.milestone.exception.MileStoneIsNotExistException;
 import com.nhnacademy.minidooraytask.comment.exception.CommentNotAuthorizedException;
 import com.nhnacademy.minidooraytask.comment.exception.CommentNotFoundException;
 import com.nhnacademy.minidooraytask.config.ErrorResponseDto;

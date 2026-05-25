@@ -1,8 +1,8 @@
 package com.nhnacademy.minidooraytask.task.service;
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStone;
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStoneStatus;
-import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneResponseDto;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStone;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStoneStatus;
+import com.nhnacademy.minidooraytask.milestone.domain.MilestoneResponseDto;
 import com.nhnacademy.minidooraytask.comment.domain.Comment;
 import com.nhnacademy.minidooraytask.comment.domain.CommentResponseDto;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
@@ -10,7 +10,6 @@ import com.nhnacademy.minidooraytask.member.service.ProjectMemberService;
 import com.nhnacademy.minidooraytask.project.domain.Project;
 import com.nhnacademy.minidooraytask.project.domain.ProjectInfoDto;
 import com.nhnacademy.minidooraytask.project.service.ProjectService;
-import com.nhnacademy.minidooraytask.tag.domain.Tag;
 import com.nhnacademy.minidooraytask.tag.domain.TagResponseDto;
 import com.nhnacademy.minidooraytask.tag.domain.TaskTag;
 import com.nhnacademy.minidooraytask.tag.service.TagService;

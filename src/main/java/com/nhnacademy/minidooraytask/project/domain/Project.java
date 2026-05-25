@@ -41,14 +41,17 @@ public class Project {
     @Column(name = "create_account_id", nullable = false)
     private Long createAccountId;
 
+    @Builder.Default
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
+    @Builder.Default
     @OneToMany(mappedBy = "project")
-    private List<ProjectMember> projectMemberList;
+    private List<ProjectMember> projectMemberList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "project")
-    private List<Task> taskList;
+    private List<Task> taskList = new ArrayList<>();
 
     //프로젝트를 처음 만들 때
     public Project(String title, String description, Long createAccountId) {

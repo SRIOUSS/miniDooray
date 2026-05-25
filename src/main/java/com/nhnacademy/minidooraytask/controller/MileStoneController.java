@@ -1,7 +1,7 @@
 package com.nhnacademy.minidooraytask.controller;
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneRequestDto;
-import com.nhnacademy.minidooraytask.MileStone.service.MileStoneFacade;
+import com.nhnacademy.minidooraytask.milestone.domain.MilestoneRequestDto;
+import com.nhnacademy.minidooraytask.milestone.service.MileStoneFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

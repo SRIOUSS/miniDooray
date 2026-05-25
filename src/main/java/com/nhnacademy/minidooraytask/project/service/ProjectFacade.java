@@ -1,7 +1,7 @@
 package com.nhnacademy.minidooraytask.project.service;
 
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStone;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStone;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
 import com.nhnacademy.minidooraytask.member.service.ProjectMemberService;
 import com.nhnacademy.minidooraytask.project.domain.ProjectInfoDto;
@@ -36,16 +36,16 @@ public class ProjectFacade {
         List<ProjectInfoDto> projectInfoDtos = projectMemberList.stream()
                 .map(ProjectMember::getProject)
                 .filter(p -> !p.isDeleted())
+                .filter(project -> !project.isDeleted())  // ← 이 줄 추가
                 .map(project -> new ProjectInfoDto(
-                  project.getId(),
-                    project.getTitle(),
-                    project.getStatus(),
-                    project.getTaskList().stream()
-                            .map(Task::getMilestone)
-                            .filter(Objects::nonNull)
-                            .map(MileStone::getStatus)
-                            .toList()
-
+                        project.getId(),
+                        project.getTitle(),
+                        project.getStatus(),
+                        project.getTaskList().stream()
+                                .map(Task::getMilestone)
+                                .filter(Objects::nonNull)
+                                .map(MileStone::getStatus)
+                                .toList()
                 ))
                 .toList();
 
