@@ -1,4 +1,4 @@
-package com.nhnacademy.minidooraytask.MileStone.domain;
+package com.nhnacademy.minidooraytask.milestone.domain;
 
 import java.util.List;
 

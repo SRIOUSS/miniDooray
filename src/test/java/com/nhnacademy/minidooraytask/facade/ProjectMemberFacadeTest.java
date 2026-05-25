@@ -135,4 +135,51 @@ class ProjectMemberFacadeTest {
         assertThatThrownBy(() -> projectMemberFacade.updateMember(projectId, memberId, accountId, requestDto))
                 .isInstanceOf(ProjectMemberIsNotExistException.class);
     }
+
+    @Test
+    @DisplayName("멤버 삭제 - 성공 (본인 탈퇴)")
+    void deleteMember_success_selfLeave() {
+        long projectId = 1L;
+        long memberId = 10L;
+        long accountId = 100L;
+
+        given(projectMemberService.isMemberIdEqualAccountId(memberId, accountId)).willReturn(true);
+        willDoNothing().given(projectMemberService).checkProjectMember(projectId, memberId, accountId);
+        willDoNothing().given(projectMemberService).deleteProjectMember(projectId, memberId);
+
+        projectMemberFacade.deleteMember(projectId, memberId, accountId);
+
+        then(projectMemberService).should().deleteProjectMember(projectId, memberId);
+    }
+
+    @Test
+    @DisplayName("멤버 삭제 - 성공 (관리자가 타인 삭제)")
+    void deleteMember_success_adminDelete() {
+        long projectId = 1L;
+        long memberId = 10L;
+        long accountId = 100L;
+
+        given(projectMemberService.isMemberIdEqualAccountId(memberId, accountId)).willReturn(false);
+        willDoNothing().given(projectMemberService).checkProjectMemberWithAuth(projectId, accountId, MembersAuth.ADMIN);
+        willDoNothing().given(projectMemberService).deleteProjectMember(projectId, memberId);
+
+        projectMemberFacade.deleteMember(projectId, memberId, accountId);
+
+        then(projectMemberService).should().deleteProjectMember(projectId, memberId);
+    }
+
+    @Test
+    @DisplayName("멤버 삭제 - 실패 (관리자 권한 없음)")
+    void deleteMember_fail_notAdmin() {
+        long projectId = 1L;
+        long memberId = 10L;
+        long accountId = 999L;
+
+        given(projectMemberService.isMemberIdEqualAccountId(memberId, accountId)).willReturn(false);
+        willThrow(new ProjectMemberIsNotExistException("권한이 없습니다"))
+                .given(projectMemberService).checkProjectMemberWithAuth(projectId, accountId, MembersAuth.ADMIN);
+
+        assertThatThrownBy(() -> projectMemberFacade.deleteMember(projectId, memberId, accountId))
+                .isInstanceOf(ProjectMemberIsNotExistException.class);
+    }
 }

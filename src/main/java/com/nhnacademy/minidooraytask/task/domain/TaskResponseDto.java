@@ -1,6 +1,6 @@
 package com.nhnacademy.minidooraytask.task.domain;
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneResponseDto;
+import com.nhnacademy.minidooraytask.milestone.domain.MilestoneResponseDto;
 import com.nhnacademy.minidooraytask.tag.domain.TagResponseDto;
 
 import java.time.LocalDateTime;

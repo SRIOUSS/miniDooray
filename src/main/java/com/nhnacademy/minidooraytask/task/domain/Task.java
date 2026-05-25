@@ -1,11 +1,10 @@
 package com.nhnacademy.minidooraytask.task.domain;
 
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStone;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStone;
 import com.nhnacademy.minidooraytask.comment.domain.Comment;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
 import com.nhnacademy.minidooraytask.project.domain.Project;
-import com.nhnacademy.minidooraytask.tag.domain.Tag;
 import com.nhnacademy.minidooraytask.tag.domain.TaskTag;
 import com.nhnacademy.minidooraytask.task.exception.TaskValidInputException;
 import jakarta.persistence.*;

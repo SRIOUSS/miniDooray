@@ -1,18 +1,13 @@
 package com.nhnacademy.minidooraytask.task.service;
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStone;
-import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneResponseDto;
-import com.nhnacademy.minidooraytask.MileStone.repository.MileStoneRepository;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStone;
+import com.nhnacademy.minidooraytask.milestone.domain.MilestoneResponseDto;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
 import com.nhnacademy.minidooraytask.member.exception.ProjectMemberIsNotExistException;
-import com.nhnacademy.minidooraytask.member.repository.ProjectMemberRepository;
 import com.nhnacademy.minidooraytask.project.domain.Project;
 import com.nhnacademy.minidooraytask.project.exception.NoAuthoProjectException;
-import com.nhnacademy.minidooraytask.project.respository.ProjectRepository;
 import com.nhnacademy.minidooraytask.tag.domain.TagResponseDto;
 import com.nhnacademy.minidooraytask.tag.domain.TaskTag;
-import com.nhnacademy.minidooraytask.tag.repository.TagRepository;
-import com.nhnacademy.minidooraytask.tag.repository.TaskTagRepository;
 import com.nhnacademy.minidooraytask.task.domain.Task;
 import com.nhnacademy.minidooraytask.task.domain.TaskRequestDto;
 import com.nhnacademy.minidooraytask.task.domain.TaskResponseDto;

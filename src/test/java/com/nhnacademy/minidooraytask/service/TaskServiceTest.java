@@ -1,8 +1,8 @@
 package com.nhnacademy.minidooraytask.service;
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStone;
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStoneStatus;
-import com.nhnacademy.minidooraytask.MileStone.repository.MileStoneRepository;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStone;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStoneStatus;
+import com.nhnacademy.minidooraytask.milestone.repository.MileStoneRepository;
 import com.nhnacademy.minidooraytask.member.domain.MembersAuth;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
 import com.nhnacademy.minidooraytask.member.repository.ProjectMemberRepository;

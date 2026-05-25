@@ -1,7 +1,7 @@
 package com.nhnacademy.minidooraytask.project.service;
 
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStone;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStone;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
 import com.nhnacademy.minidooraytask.member.service.ProjectMemberService;
 import com.nhnacademy.minidooraytask.project.domain.ProjectInfoDto;

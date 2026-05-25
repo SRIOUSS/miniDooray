@@ -166,4 +166,73 @@ class ProjectServiceTest {
         assertThatThrownBy(() -> projectService.deleteProject(projectId, accountId))
                 .isInstanceOf(ProjectNotFoundException.class);
     }
+
+    @Test
+    @DisplayName("프로젝트 상세 조회 - 성공 (getProjectById)")
+    void getProjectById_success() {
+        Long projectId = 1L;
+        Project project = new Project("제목", "설명", 100L);
+        given(projectRepository.findById(projectId)).willReturn(Optional.of(project));
+
+        ProjectResponseDto result = projectService.getProjectById(projectId);
+
+        assertThat(result.getTitle()).isEqualTo("제목");
+    }
+
+    @Test
+    @DisplayName("프로젝트 상세 조회 - 실패 (getProjectById)")
+    void getProjectById_fail() {
+        Long projectId = 1L;
+        given(projectRepository.findById(projectId)).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> projectService.getProjectById(projectId))
+                .isInstanceOf(ProjectNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("프로젝트 조회 (exGetProjectById) - 성공")
+    void exGetProjectById_success() {
+        Long projectId = 1L;
+        Project project = new Project("제목", "설명", 100L);
+        given(projectRepository.findById(projectId)).willReturn(Optional.of(project));
+
+        Project result = projectService.exGetProjectById(projectId);
+
+        assertThat(result).isEqualTo(project);
+    }
+
+    @Test
+    @DisplayName("프로젝트 조회 (exGetProjectById) - 실패")
+    void exGetProjectById_fail() {
+        Long projectId = 1L;
+        given(projectRepository.findById(projectId)).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> projectService.exGetProjectById(projectId))
+                .isInstanceOf(ProjectNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("프로젝트 수정 - 실패 (존재하지 않음)")
+    void updateProject_fail_notFound() {
+        Long projectId = 1L;
+        ProjectRequestDto request = new ProjectRequestDto("새제목", "새설명", ProjectStatus.DORMANT);
+        given(projectRepository.findById(projectId)).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> projectService.updateProject(projectId, request))
+                .isInstanceOf(ProjectNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("프로젝트 삭제 - 실패 (권한 없음)")
+    void deleteProject_fail_noAuth() {
+        Long projectId = 1L;
+        Long accountId = 999L;
+        Project project = new Project("제목", "설명", 100L);
+
+        given(projectRepository.findById(projectId)).willReturn(Optional.of(project));
+        given(projectRepository.existsProjectByIdAndCreateAccountId(projectId, accountId)).willReturn(false);
+
+        assertThatThrownBy(() -> projectService.deleteProject(projectId, accountId))
+                .isInstanceOf(NoAuthoProjectException.class);
+    }
 }

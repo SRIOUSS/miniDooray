@@ -1,5 +1,6 @@
 package com.nhnacademy.minidooraytask.service;
 
+import com.nhnacademy.minidooraytask.member.domain.MembersAuth;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
 import com.nhnacademy.minidooraytask.member.exception.ProjectMemberIsNotExistException;
 import com.nhnacademy.minidooraytask.member.repository.ProjectMemberRepository;
@@ -7,6 +8,7 @@ import com.nhnacademy.minidooraytask.project.domain.Project;
 import com.nhnacademy.minidooraytask.tag.domain.Tag;
 import com.nhnacademy.minidooraytask.tag.domain.TagCreateRequestDto;
 import com.nhnacademy.minidooraytask.tag.domain.TagResponseDto;
+import com.nhnacademy.minidooraytask.tag.domain.TaskTag;
 import com.nhnacademy.minidooraytask.tag.exception.AlreadyTagExistException;
 import com.nhnacademy.minidooraytask.tag.repository.TagRepository;
 import com.nhnacademy.minidooraytask.tag.repository.TaskTagRepository;
@@ -127,6 +129,204 @@ class TagServiceTest {
 
         then(tagRepository).should().findAllByNameIn(anySet());
         then(tagRepository).should().saveAll(anyList());
+        then(taskTagRepository).should().saveAll(anyList());
+    }
+
+    @Test
+    @DisplayName("태그 조회 - 성공")
+    void getTags_success() {
+        Long projectId = 1L;
+        Long accountId = 100L;
+
+        ProjectMember mockMember = mock(ProjectMember.class);
+        given(mockMember.isDeleted()).willReturn(false);
+        given(projectMemberRepository.findByProject_IdAndAccountId(projectId, accountId))
+                .willReturn(Optional.of(mockMember));
+
+        Tag tag = new Tag("태그1");
+        ReflectionTestUtils.setField(tag, "id", 1L);
+        given(tagRepository.findAllByProjectId(projectId)).willReturn(List.of(tag));
+
+        List<com.nhnacademy.minidooraytask.tag.domain.TagResponseDto> result = tagService.getTags(projectId, accountId);
+
+        assertThat(result).hasSize(1);
+        assertThat(result.getFirst().name()).isEqualTo("태그1");
+    }
+
+    @Test
+    @DisplayName("태그 조회 - 실패 (프로젝트 멤버 아님)")
+    void getTags_fail_notMember() {
+        Long projectId = 1L;
+        Long accountId = 999L;
+
+        given(projectMemberRepository.findByProject_IdAndAccountId(projectId, accountId))
+                .willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> tagService.getTags(projectId, accountId))
+                .isInstanceOf(com.nhnacademy.minidooraytask.member.exception.ProjectMemberIsNotExistException.class);
+    }
+
+    @Test
+    @DisplayName("태그 수정 - 성공")
+    void updateTag_success() {
+        Long projectId = 1L;
+        Long tagId = 10L;
+        Long accountId = 100L;
+
+        ProjectMember mockMember = mock(ProjectMember.class);
+        given(mockMember.isDeleted()).willReturn(false);
+        given(projectMemberRepository.findByProject_IdAndAccountId(projectId, accountId))
+                .willReturn(Optional.of(mockMember));
+
+        Tag tag = new Tag("기존태그");
+        ReflectionTestUtils.setField(tag, "id", tagId);
+        given(tagRepository.findById(tagId)).willReturn(Optional.of(tag));
+
+        tagService.updateTag(projectId, tagId, accountId, new com.nhnacademy.minidooraytask.tag.domain.TagUpdateRequestDto("수정태그"));
+
+        assertThat(tag.getName()).isEqualTo("수정태그");
+    }
+
+    @Test
+    @DisplayName("태그 수정 - 실패 (태그 없음)")
+    void updateTag_fail_notFound() {
+        Long projectId = 1L;
+        Long tagId = 10L;
+        Long accountId = 100L;
+
+        ProjectMember mockMember = mock(ProjectMember.class);
+        given(mockMember.isDeleted()).willReturn(false);
+        given(projectMemberRepository.findByProject_IdAndAccountId(projectId, accountId))
+                .willReturn(Optional.of(mockMember));
+        given(tagRepository.findById(tagId)).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> tagService.updateTag(projectId, tagId, accountId, new com.nhnacademy.minidooraytask.tag.domain.TagUpdateRequestDto("수정태그")))
+                .isInstanceOf(com.nhnacademy.minidooraytask.tag.exception.TagIsNotExistException.class);
+    }
+
+    @Test
+    @DisplayName("태그 삭제 - 성공")
+    void deleteTag_success() {
+        Long projectId = 1L;
+        Long tagId = 10L;
+        Long accountId = 100L;
+
+        ProjectMember mockMember = mock(ProjectMember.class);
+        given(mockMember.isDeleted()).willReturn(false);
+        given(projectMemberRepository.findByProject_IdAndAccountId(projectId, accountId))
+                .willReturn(Optional.of(mockMember));
+        given(tagRepository.existsById(tagId)).willReturn(true);
+
+        tagService.deleteTag(projectId, tagId, accountId);
+
+        then(taskTagRepository).should().deleteAllByTag_Id(tagId);
+        then(tagRepository).should().deleteById(tagId);
+    }
+
+    @Test
+    @DisplayName("태그 삭제 - 실패 (태그 없음)")
+    void deleteTag_fail_notFound() {
+        Long projectId = 1L;
+        Long tagId = 10L;
+        Long accountId = 100L;
+
+        ProjectMember mockMember = mock(ProjectMember.class);
+        given(mockMember.isDeleted()).willReturn(false);
+        given(projectMemberRepository.findByProject_IdAndAccountId(projectId, accountId))
+                .willReturn(Optional.of(mockMember));
+        given(tagRepository.existsById(tagId)).willReturn(false);
+
+        assertThatThrownBy(() -> tagService.deleteTag(projectId, tagId, accountId))
+                .isInstanceOf(com.nhnacademy.minidooraytask.tag.exception.TagIsNotExistException.class);
+    }
+
+    @Test
+    @DisplayName("findOrCreateTag - 기존 태그 반환")
+    void findOrCreateTag_existing() {
+        Tag existing = new Tag("기존태그");
+        given(tagRepository.findByName("기존태그")).willReturn(Optional.of(existing));
+
+        Tag result = tagService.findOrCreateTag("기존태그");
+        assertThat(result.getName()).isEqualTo("기존태그");
+    }
+
+    @Test
+    @DisplayName("findOrCreateTag - 새 태그 생성")
+    void findOrCreateTag_new() {
+        given(tagRepository.findByName("신규태그")).willReturn(Optional.empty());
+        Tag newTag = new Tag("신규태그");
+        given(tagRepository.save(any(Tag.class))).willReturn(newTag);
+
+        Tag result = tagService.findOrCreateTag("신규태그");
+        assertThat(result.getName()).isEqualTo("신규태그");
+    }
+
+    @Test
+    @DisplayName("권한 검증 실패 - 삭제된 멤버")
+    void addTag_fail_deletedMember() {
+        Long projectId = 1L;
+        Long accountId = 100L;
+        TagCreateRequestDto request = new TagCreateRequestDto("태그");
+
+        ProjectMember mockMember = mock(ProjectMember.class);
+        given(mockMember.isDeleted()).willReturn(true);
+        given(projectMemberRepository.findByProject_IdAndAccountId(projectId, accountId))
+                .willReturn(Optional.of(mockMember));
+
+        assertThatThrownBy(() -> tagService.addTag(projectId, accountId, request))
+                .isInstanceOf(ProjectMemberIsNotExistException.class);
+    }
+
+    @Test
+    @DisplayName("connectTag - 기존 태그 해제 후 새 태그 추가")
+    void connectTag_existingTagDisconnectAndAddNew() {
+        Project project = new Project("t", "d", 1L);
+        ProjectMember member = new ProjectMember(project, 1L, MembersAuth.MEMBER);
+        Task task = new Task(project, member, "태스크", "내용");
+
+        Tag existingTag = new Tag("기존태그");
+        ReflectionTestUtils.setField(existingTag, "id", 1L);
+        TaskTag existingTaskTag = new TaskTag(task, existingTag);
+        ReflectionTestUtils.setField(existingTaskTag, "id", 1L);
+        task.getTaskTagList().add(existingTaskTag);
+
+        List<String> inputTags = List.of("새태그");
+
+        given(tagRepository.findAllByNameIn(anySet())).willReturn(new ArrayList<>());
+        Tag newTag = new Tag("새태그");
+        ReflectionTestUtils.setField(newTag, "id", 2L);
+        given(tagRepository.saveAll(anyList())).willReturn(List.of(newTag));
+
+        tagService.connectTag(task, inputTags);
+
+        then(taskTagRepository).should().deleteAll(anyList());
+        then(tagRepository).should().saveAll(anyList());
+        then(taskTagRepository).should().saveAll(anyList());
+    }
+
+    @Test
+    @DisplayName("connectTag - 기존 태그 유지 + 이미 존재하는 태그로 새 연결")
+    void connectTag_keepExistingAndConnectAlreadyExistingTag() {
+        Project project = new Project("t", "d", 1L);
+        ProjectMember member = new ProjectMember(project, 1L, MembersAuth.MEMBER);
+        Task task = new Task(project, member, "태스크", "내용");
+
+        Tag existingTag = new Tag("기존태그");
+        ReflectionTestUtils.setField(existingTag, "id", 1L);
+        TaskTag existingTaskTag = new TaskTag(task, existingTag);
+        ReflectionTestUtils.setField(existingTaskTag, "id", 1L);
+        task.getTaskTagList().add(existingTaskTag);
+
+        // 기존태그는 유지, DB에 이미 있는 "기존태그2"를 새로 추가
+        List<String> inputTags = List.of("기존태그", "기존태그2");
+
+        Tag dbTag = new Tag("기존태그2");
+        ReflectionTestUtils.setField(dbTag, "id", 3L);
+        given(tagRepository.findAllByNameIn(anySet())).willReturn(List.of(dbTag));
+
+        tagService.connectTag(task, inputTags);
+
+        then(taskTagRepository).should().deleteAll(anyList());
         then(taskTagRepository).should().saveAll(anyList());
     }
 }

@@ -1,8 +1,8 @@
-package com.nhnacademy.minidooraytask.MileStone.domain;
+package com.nhnacademy.minidooraytask.milestone.domain;
 
 import java.time.LocalDateTime;
 
-public record MilestoneCreateRequestDto(
+public record MilestoneRequestDto(
         String title,
         String description,
         MileStoneStatus status,

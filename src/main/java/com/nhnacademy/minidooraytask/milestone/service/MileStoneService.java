@@ -1,9 +1,9 @@
-package com.nhnacademy.minidooraytask.MileStone.service;
+package com.nhnacademy.minidooraytask.milestone.service;
 
-import com.nhnacademy.minidooraytask.MileStone.domain.*;
-import com.nhnacademy.minidooraytask.MileStone.exception.MileStoneIsExistException;
-import com.nhnacademy.minidooraytask.MileStone.exception.MileStoneIsNotExistException;
-import com.nhnacademy.minidooraytask.MileStone.repository.MileStoneRepository;
+import com.nhnacademy.minidooraytask.milestone.domain.*;
+import com.nhnacademy.minidooraytask.milestone.exception.MileStoneIsExistException;
+import com.nhnacademy.minidooraytask.milestone.exception.MileStoneIsNotExistException;
+import com.nhnacademy.minidooraytask.milestone.repository.MileStoneRepository;
 import com.nhnacademy.minidooraytask.task.domain.Task;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

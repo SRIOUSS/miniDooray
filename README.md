@@ -83,7 +83,7 @@ src/main/java/com/nhnacademy/minidooraytask/
 
 ## API 명세
 
-전체 API 명세는 [API_SPEC.md](./API_SPEC.md)를 참고하세요.
+전체 API 명세는 [API_SPEC.md](submit/API_SPEC.md)를 참고하세요.
 
 ### 엔드포인트 요약
 

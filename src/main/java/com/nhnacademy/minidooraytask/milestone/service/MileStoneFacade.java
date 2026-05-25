@@ -1,6 +1,6 @@
-package com.nhnacademy.minidooraytask.MileStone.service;
+package com.nhnacademy.minidooraytask.milestone.service;
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneRequestDto;
+import com.nhnacademy.minidooraytask.milestone.domain.MilestoneRequestDto;
 import com.nhnacademy.minidooraytask.task.domain.Task;
 import com.nhnacademy.minidooraytask.task.service.TaskService;
 import lombok.RequiredArgsConstructor;

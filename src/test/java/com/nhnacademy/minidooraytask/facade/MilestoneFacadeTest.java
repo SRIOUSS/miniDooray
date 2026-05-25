@@ -1,10 +1,10 @@
 package com.nhnacademy.minidooraytask.facade;
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStoneStatus;
-import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneRequestDto;
-import com.nhnacademy.minidooraytask.MileStone.exception.MileStoneIsExistException;
-import com.nhnacademy.minidooraytask.MileStone.service.MileStoneFacade;
-import com.nhnacademy.minidooraytask.MileStone.service.MileStoneService;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStoneStatus;
+import com.nhnacademy.minidooraytask.milestone.domain.MilestoneRequestDto;
+import com.nhnacademy.minidooraytask.milestone.exception.MileStoneIsExistException;
+import com.nhnacademy.minidooraytask.milestone.service.MileStoneFacade;
+import com.nhnacademy.minidooraytask.milestone.service.MileStoneService;
 import com.nhnacademy.minidooraytask.task.domain.Task;
 import com.nhnacademy.minidooraytask.task.exception.TaskNotFoundException;
 import com.nhnacademy.minidooraytask.task.service.TaskService;

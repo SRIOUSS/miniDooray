@@ -1,8 +1,8 @@
 package com.nhnacademy.minidooraytask.controller;
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStoneStatus;
-import com.nhnacademy.minidooraytask.MileStone.domain.MilestoneRequestDto;
-import com.nhnacademy.minidooraytask.MileStone.service.MileStoneFacade;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStoneStatus;
+import com.nhnacademy.minidooraytask.milestone.domain.MilestoneRequestDto;
+import com.nhnacademy.minidooraytask.milestone.service.MileStoneFacade;
 import com.nhnacademy.minidooraytask.handler.CustomExceptionHandler;
 import com.nhnacademy.minidooraytask.task.exception.TaskNotFoundException;
 import org.junit.jupiter.api.DisplayName;

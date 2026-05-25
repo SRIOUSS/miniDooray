@@ -1,4 +1,4 @@
-package com.nhnacademy.minidooraytask.MileStone.exception;
+package com.nhnacademy.minidooraytask.milestone.exception;
 
 public class MileStoneInvalidInputException extends RuntimeException {
     public MileStoneInvalidInputException(String message) {

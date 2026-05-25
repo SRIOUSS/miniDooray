@@ -1,7 +1,7 @@
 package com.nhnacademy.minidooraytask.facade;
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStone;
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStoneStatus;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStone;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStoneStatus;
 import com.nhnacademy.minidooraytask.member.domain.ProjectMember;
 import com.nhnacademy.minidooraytask.member.service.ProjectMemberService;
 import com.nhnacademy.minidooraytask.project.domain.Project;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.mock;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TaskFacade.class)
-public class TaskFacadeTest {
+class TaskFacadeTest {
 
     @Autowired
     private TaskFacade taskFacade;
@@ -218,5 +218,46 @@ public class TaskFacadeTest {
         assertThat(result.commentResponseDtoList()).isEmpty();
 
         then(projectMemberService).should(never()).getMemberMapWithUserIdByMemberId(any());
+    }
+
+    @Test
+    @DisplayName("Facade: 프로젝트 Task 목록 조회 - 성공")
+    void getTaskInfoList_success() {
+        long projectId = 1L;
+        long accountId = 2L;
+
+        Project mockProject = mock(Project.class);
+        ProjectMember mockMember = mock(ProjectMember.class);
+
+        willDoNothing().given(projectMemberService).checkProjectMember(projectId, accountId);
+        given(projectMemberService.getProjectMemberByAccountId(accountId)).willReturn(List.of(mockMember));
+        given(mockMember.getProject()).willReturn(mockProject);
+        given(mockProject.getId()).willReturn(projectId);
+        given(mockProject.getTaskList()).willReturn(Collections.emptyList());
+
+        TaskInfoListDto result = taskFacade.getTaskInfoList(projectId, accountId);
+
+        assertThat(result).isNull();
+        then(projectMemberService).should().checkProjectMember(projectId, accountId);
+        then(projectMemberService).should().getProjectMemberByAccountId(accountId);
+    }
+
+    @Test
+    @DisplayName("Facade: 내 Task 조회 - 마일스톤 있는 경우 (삼항 연산자 true 분기 커버)")
+    void getMyTasks_withMilestone() {
+        long accountId = 1L;
+        Task mockTask = mock(Task.class);
+        MileStone mockMilestone = mock(MileStone.class);
+
+        given(mockTask.getId()).willReturn(10L);
+        given(mockTask.getTitle()).willReturn("마일스톤 있는 작업");
+        given(mockTask.getMilestone()).willReturn(mockMilestone);
+        given(mockMilestone.getStatus()).willReturn(MileStoneStatus.IN_PROGRESS);
+
+        given(taskService.getMytasks(accountId)).willReturn(List.of(mockTask));
+
+        TaskInfoListDto result = taskFacade.getMyTasks(accountId);
+
+        assertThat(result.taskInfoDtoList().get(0).status()).isEqualTo(MileStoneStatus.IN_PROGRESS);
     }
 }

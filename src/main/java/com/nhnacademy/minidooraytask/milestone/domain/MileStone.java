@@ -1,6 +1,6 @@
-package com.nhnacademy.minidooraytask.MileStone.domain;
+package com.nhnacademy.minidooraytask.milestone.domain;
 
-import com.nhnacademy.minidooraytask.MileStone.exception.MileStoneInvalidInputException;
+import com.nhnacademy.minidooraytask.milestone.exception.MileStoneInvalidInputException;
 import com.nhnacademy.minidooraytask.task.domain.Task;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

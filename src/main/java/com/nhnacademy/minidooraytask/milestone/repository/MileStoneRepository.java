@@ -1,7 +1,7 @@
-package com.nhnacademy.minidooraytask.MileStone.repository;
+package com.nhnacademy.minidooraytask.milestone.repository;
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStone;
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStoneListProjection;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStone;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStoneListProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

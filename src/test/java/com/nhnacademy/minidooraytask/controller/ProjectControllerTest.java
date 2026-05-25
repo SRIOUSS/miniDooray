@@ -1,6 +1,6 @@
 package com.nhnacademy.minidooraytask.controller;
 
-import com.nhnacademy.minidooraytask.MileStone.domain.MileStoneStatus;
+import com.nhnacademy.minidooraytask.milestone.domain.MileStoneStatus;
 import com.nhnacademy.minidooraytask.handler.CustomExceptionHandler;
 import com.nhnacademy.minidooraytask.project.domain.*;
 import com.nhnacademy.minidooraytask.project.exception.NoAuthoProjectException;
