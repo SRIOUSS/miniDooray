@@ -36,16 +36,16 @@ public class ProjectFacade {
         List<ProjectInfoDto> projectInfoDtos = projectMemberList.stream()
                 .map(ProjectMember::getProject)
                 .filter(p -> !p.isDeleted())
+                .filter(project -> !project.isDeleted())  // ← 이 줄 추가
                 .map(project -> new ProjectInfoDto(
-                  project.getId(),
-                    project.getTitle(),
-                    project.getStatus(),
-                    project.getTaskList().stream()
-                            .map(Task::getMilestone)
-                            .filter(Objects::nonNull)
-                            .map(MileStone::getStatus)
-                            .toList()
-
+                        project.getId(),
+                        project.getTitle(),
+                        project.getStatus(),
+                        project.getTaskList().stream()
+                                .map(Task::getMilestone)
+                                .filter(Objects::nonNull)
+                                .map(MileStone::getStatus)
+                                .toList()
                 ))
                 .toList();
 

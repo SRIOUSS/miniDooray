@@ -104,7 +104,9 @@ public class Task {
         this.content = content;
     }
 
+
     public void isDelete() {
         this.isDeleted = true;
     }
+
 }
