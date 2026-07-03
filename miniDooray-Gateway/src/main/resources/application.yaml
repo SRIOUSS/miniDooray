@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: miniDooray-Gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          x-forwarded:
+            enabled: true
+server:
+  port: 8000
