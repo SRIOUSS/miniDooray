@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>프로젝트 목록 - miniDooray</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="nav">
+    <a th:href="@{/projects}" class="nav-logo">
+        <div class="nav-logo-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+        </div>
+        <span class="nav-logo-text">miniDooray</span>
+    </a>
+    <a th:href="@{/projects}">프로젝트</a>
+    <a th:href="@{/mypage}">마이페이지</a>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="nav-logout">로그아웃</button>
+    </form>
+</nav>
+
+<div class="container">
+    <div class="page-header">
+        <h1>프로젝트 목록</h1>
+        <a th:href="@{/projects/new}" class="btn btn-primary">+ 프로젝트 생성</a>
+    </div>
+
+    <div class="card">
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>제목</th>
+                    <th>상태</th>
+                    <th>관리</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${projectView == null or projectView.projectInfoDtoList == null or #lists.isEmpty(projectView.projectInfoDtoList)}">
+                    <td colspan="4" class="empty-state">프로젝트가 없습니다.</td>
+                </tr>
+                <th:block th:if="${projectView != null and projectView.projectInfoDtoList != null}">
+                    <tr th:each="project : ${projectView.projectInfoDtoList}">
+                        <td th:text="${project.id}"></td>
+                        <td>
+                            <a th:href="@{/projects/{projectId}(projectId=${project.id})}"
+                               th:text="${project.title}"></a>
+                        </td>
+                        <td>
+                        <span th:with="s=${project.status?.name()?.toLowerCase()}"
+                              th:classappend="${s == 'active' ? 'badge-active' : (s == 'dormant' ? 'badge-dormant' : 'badge-terminated')}"
+                              class="badge"
+                              th:text="${project.status}"></span>
+                        </td>
+                        <td style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+                            <a th:href="@{/projects/{projectId}/edit(projectId=${project.id})}"
+                               class="btn-table btn-table-edit">수정</a>
+                            <form th:action="@{/projects/{projectId}(projectId=${project.id})}"
+                                  method="post">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn-table btn-table-delete">삭제</button>
+                            </form>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

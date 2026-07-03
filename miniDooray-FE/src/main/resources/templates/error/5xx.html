@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>서버 오류 - miniDooray</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .error-wrap {
+            min-height: calc(100vh - 52px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .error-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 3rem 2.5rem;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
+        .error-code {
+            font-size: 88px;
+            font-weight: 700;
+            color: #e03131;
+            line-height: 1;
+            letter-spacing: -4px;
+        }
+        .error-icon-wrap {
+            margin: 1.25rem auto 0;
+            width: 56px;
+            height: 56px;
+            background: #fff0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .error-title {
+            font-size: 19px;
+            font-weight: 600;
+            color: #222;
+            margin: 1.25rem 0 0.5rem;
+        }
+        .error-msg {
+            font-size: 14px;
+            color: #888;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+        .btn-danger {
+            background: #e03131;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.15s;
+            font-family: inherit;
+        }
+        .btn-danger:hover {
+            background: #c92a2a;
+            text-decoration: none;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav">
+    <a th:href="@{/projects}" class="nav-logo">
+        <div class="nav-logo-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+        </div>
+        <span class="nav-logo-text">miniDooray</span>
+    </a>
+    <a th:href="@{/projects}">프로젝트</a>
+    <a th:href="@{/mypage}">마이페이지</a>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="nav-logout">로그아웃</button>
+    </form>
+</nav>
+
+<div class="error-wrap">
+    <div class="error-card">
+        <div class="error-code" th:text="${statusCode} ?: '5xx'">5xx</div>
+        <div class="error-icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+                 stroke="#e03131" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+                <line x1="9" y1="9" x2="15" y2="9"/>
+                <line x1="9" y1="12" x2="12" y2="12"/>
+            </svg>
+        </div>
+        <h1 class="error-title">서버 오류가 발생했습니다</h1>
+        <p class="error-msg" th:text="${message} ?: '일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'">
+            일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.
+        </p>
+        <a th:href="@{/projects}" class="btn-danger">홈으로 돌아가기</a>
+    </div>
+</div>
+
+</body>
+</html>

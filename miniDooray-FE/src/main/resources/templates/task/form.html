@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>태스크 생성 - miniDooray</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="nav">
+    <a th:href="@{/projects}" class="nav-logo">
+        <div class="nav-logo-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+        </div>
+        <span class="nav-logo-text">miniDooray</span>
+    </a>
+    <a th:href="@{/projects}">프로젝트</a>
+    <a th:href="@{/mypage}">마이페이지</a>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="nav-logout">로그아웃</button>
+    </form>
+</nav>
+
+<div class="container">
+
+    <div class="breadcrumb">
+        <a th:href="@{/projects}">프로젝트 목록</a>
+        <span>/</span>
+        <a th:href="@{/projects/{projectId}(projectId=${projectId})}" th:text="'프로젝트 #' + ${projectId}">프로젝트</a>
+        <span>/</span>
+        <span>태스크 생성</span>
+    </div>
+
+    <div class="page-header">
+        <h1>태스크 생성</h1>
+    </div>
+
+    <div class="card">
+        <form th:action="@{/projects/{projectId}/tasks(projectId=${projectId})}"
+              th:object="${taskRequestDto}"
+              method="post">
+
+            <div class="form-group">
+                <label class="label" for="title">제목 <span class="required">*</span></label>
+                <input class="form-input" type="text" id="title" th:field="*{title}" placeholder="태스크 제목">
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="content">내용</label>
+                <textarea class="form-input" id="content" th:field="*{content}" placeholder="태스크 내용"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="tagNameList">태그</label>
+                <input class="form-input" type="text" id="tagNameList" name="tagNameList"
+                       placeholder="태그 입력 (쉼표로 구분) ex) tag1, tag2">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">생성</button>
+                <a th:href="@{/projects/{projectId}/tasks(projectId=${projectId})}" class="btn btn-secondary">취소</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

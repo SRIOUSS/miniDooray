@@ -1,0 +1,611 @@
+/* =============================================
+   miniDooray - style.css
+   앱 내부 전용 스타일
+   (공통 스타일은 base.css 참고)
+   ============================================= */
+
+/* ---------- Nav ---------- */
+.nav {
+    background: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0 2rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.nav .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    margin-right: 1.5rem;
+}
+
+.nav .nav-logo-icon {
+    width: 28px;
+    height: 28px;
+    background: #3366FF;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav .nav-logo-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: white;
+}
+
+.nav .nav-logo-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: #3366FF;
+    letter-spacing: -0.5px;
+}
+
+.nav a {
+    color: #555;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.nav a:hover {
+    background: #f0f4ff;
+    color: #3366FF;
+    text-decoration: none;
+}
+
+.nav .nav-logout {
+    margin-left: auto;
+    color: #888;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 4px;
+}
+
+.nav .nav-logout:hover {
+    background: #fff0f0;
+    color: #e03131;
+}
+
+
+/* ---------- Container ---------- */
+.container {
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+/* ---------- Page Header ---------- */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.page-header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #222;
+}
+
+/* ---------- Card ---------- */
+.card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    margin-bottom: 1.5rem;
+}
+
+.card h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 1.25rem;
+}
+
+.card h2 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin: 1.5rem 0 0.75rem;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.card h2:first-child {
+    margin-top: 0;
+}
+
+.card p {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 6px;
+}
+
+/* ---------- 폼 확장 (앱 전용) ---------- */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="datetime-local"],
+form input[type="date"],
+form input[type="time"],
+form textarea,
+form select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+    color: #222;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="password"]:focus,
+form input[type="datetime-local"]:focus,
+form input[type="date"]:focus,
+form input[type="time"]:focus,
+form textarea:focus,
+form select:focus {
+    border-color: #3366FF;
+    box-shadow: 0 0 0 3px rgba(51,102,255,0.1);
+}
+
+form textarea {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+form label {
+    font-size: 12px;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 12px;
+    font-weight: 500;
+}
+
+form label:first-child {
+    margin-top: 0;
+}
+
+/* ---------- 버튼 확장 (앱 전용) ---------- */
+button,
+.btn {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: inherit;
+}
+
+.btn-primary {
+    padding: 10px 20px;
+}
+
+.btn-secondary {
+    background: #f5f5f5;
+    color: #555;
+    border: 1px solid #ddd;
+}
+
+.btn-secondary:hover {
+    background: #ebebeb;
+}
+
+button:not(.btn-primary):not(.btn-secondary) {
+    background: #fff;
+    color: #e03131;
+    border: 1px solid #e03131;
+}
+
+button:not(.btn-primary):not(.btn-secondary):hover {
+    background: #fff5f5;
+}
+
+.form-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 1.25rem;
+}
+
+/* ---------- 테이블 ---------- */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    font-size: 14px;
+}
+
+thead tr {
+    border-bottom: 2px solid #e0e0e0;
+}
+
+th {
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    background: #fafafa;
+}
+
+td {
+    padding: 11px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+    vertical-align: middle;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background: #fafbff;
+}
+
+/* ---------- 섹션 ---------- */
+.section {
+    margin-bottom: 2rem;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.section-header h2 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* ---------- 댓글 ---------- */
+.comment-item {
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+}
+
+.comment-meta {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 6px;
+}
+
+.comment-content {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* ---------- 빈 상태 ---------- */
+.empty-state {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: #aaa;
+    font-size: 14px;
+}
+
+/* ---------- 인라인 폼 ---------- */
+.inline-form {
+    display: inline;
+}
+
+.inline-form button {
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+/* ---------- 유틸리티 ---------- */
+.link-muted {
+    color: #888;
+    font-size: 13px;
+}
+
+/* ---------- 상태 뱃지 ---------- */
+.badge {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.badge-active    { background: #e6f9f0; color: #1a8a4a; }
+.badge-dormant   { background: #fff8e1; color: #9a6700; }
+.badge-terminated{ background: #f5f5f5; color: #888; }
+
+.badge-planned    { background: #f5f5f5; color: #777; }
+.badge-in-progress{ background: #e8eeff; color: #3366FF; }
+.badge-completed  { background: #e6f9f0; color: #1a8a4a; }
+.badge-cancelled  { background: #fff0f0; color: #e03131; }
+
+/* ---------- 태스크 사이드바 ---------- */
+.task-sidebar {
+    width: 190px;
+    flex-shrink: 0;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+}
+
+.task-sidebar-header {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 11px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    background: #fafafa;
+}
+
+.task-sidebar-item {
+    display: block;
+    padding: 8px 14px;
+    font-size: 12px;
+    color: #444;
+    text-decoration: none;
+    border-bottom: 1px solid #f5f5f5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: background 0.1s, color 0.1s;
+}
+
+.task-sidebar-item:last-child {
+    border-bottom: none;
+}
+
+.task-sidebar-item:hover {
+    background: #f5f7ff;
+    color: #3366FF;
+    text-decoration: none;
+}
+
+.task-sidebar-item.active {
+    background: #eef2ff;
+    color: #3366FF;
+    font-weight: 600;
+    border-left: 3px solid #3366FF;
+    padding-left: 11px;
+}
+
+/* ---------- 테이블 버튼 통일 ---------- */
+.btn-table {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: inherit;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+
+.btn-table-edit {
+    background: #f5f5f5;
+    color: #555;
+    border: 1px solid #ddd;
+}
+
+.btn-table-edit:hover {
+    background: #ebebeb;
+    text-decoration: none;
+}
+
+.btn-table-delete {
+    background: #fff;
+    color: #e03131;
+    border: 1px solid #e03131;
+}
+
+.btn-table-delete:hover {
+    background: #fff5f5;
+}
+
+/* ---------- 마일스톤 사이드 위젯 ---------- */
+.milestone-widget {
+    width: 220px;
+    flex-shrink: 0;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    overflow: hidden;
+    position: sticky;
+    top: 1rem;
+}
+
+.ms-top {
+    padding: 12px 14px;
+    cursor: pointer;
+}
+
+.ms-top:hover {
+    background: #fafbff;
+}
+
+.ms-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.ms-chevron {
+    font-size: 10px;
+    color: #bbb;
+    display: inline-block;
+    transition: transform 0.2s;
+}
+
+.milestone-widget:hover .ms-chevron,
+.milestone-widget.ms-open .ms-chevron {
+    transform: rotate(180deg);
+}
+
+.ms-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
+    margin-top: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ms-detail {
+    display: none;
+    padding: 10px 14px 12px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 12px;
+    color: #555;
+    user-select: text;
+}
+
+.milestone-widget:hover .ms-detail,
+.milestone-widget.ms-open .ms-detail {
+    display: block;
+}
+
+/* ---------- 모달 ---------- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-dialog {
+    background: #fff;
+    border-radius: 8px;
+    width: 460px;
+    max-width: 92vw;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.modal-header h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+    margin: 0;
+}
+
+.modal-close {
+    background: none !important;
+    border: none !important;
+    font-size: 18px;
+    color: #aaa;
+    cursor: pointer;
+    padding: 0 2px;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: #333;
+    background: none !important;
+}
+
+.modal-body {
+    padding: 18px 20px;
+}
+
+.modal-footer {
+    padding: 12px 20px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+/* ---------- 브레드크럼 ---------- */
+.breadcrumb {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.breadcrumb a {
+    color: #888;
+}
+
+.breadcrumb a:hover {
+    color: #3366FF;
+    text-decoration: none;
+}
+
+.breadcrumb span {
+    color: #ccc;
+}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>프로젝트 상세 - miniDooray</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<!--/* @thymesVar id="tasks" type="com.nhnacademy.minidoorayfe.dto.task.TaskInfoListDto" */-->
+<!--/* @thymesVar id="members" type="com.nhnacademy.minidoorayfe.dto.member.MemberInfoListDto" */-->
+<!--/* @thymesVar id="projectId" type="java.lang.Long" */-->
+<nav class="nav">
+    <a th:href="@{/projects}" class="nav-logo">
+        <div class="nav-logo-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+        </div>
+        <span class="nav-logo-text">miniDooray</span>
+    </a>
+    <a th:href="@{/projects}">프로젝트</a>
+    <a th:href="@{/mypage}">마이페이지</a>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="nav-logout">로그아웃</button>
+    </form>
+</nav>
+
+<div class="container">
+
+    <div class="breadcrumb">
+        <a th:href="@{/projects}">프로젝트 목록</a>
+        <span>/</span>
+        <span th:text="'프로젝트 #' + ${projectId}">프로젝트 상세</span>
+    </div>
+
+    <!-- 태스크 목록 -->
+    <div class="section">
+        <div class="section-header">
+            <h2>태스크 목록</h2>
+            <a th:href="@{/projects/{projectId}/tasks/new(projectId=${projectId})}"
+               class="btn btn-primary">+ 태스크 생성</a>
+        </div>
+        <div class="card">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>제목</th>
+                        <th>마일스톤 상태</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${tasks == null or tasks.taskInfoDtoList == null or #lists.isEmpty(tasks.taskInfoDtoList)}">
+                        <td colspan="3" class="empty-state">태스크가 없습니다.</td>
+                    </tr>
+                    <th:block th:if="${tasks != null and tasks.taskInfoDtoList != null}">
+                        <tr th:each="task : ${tasks.taskInfoDtoList}">
+                            <td th:text="${task.id}"></td>
+                            <td>
+                                <a th:href="@{/projects/{projectId}/tasks/{taskId}(projectId=${projectId}, taskId=${task.id})}"
+                                   th:text="${task.title}"></a>
+                            </td>
+                            <td>
+                                <span th:if="${task.status != null}"
+                                      th:with="s=${task.status.name().toLowerCase().replace('_', '-')}"
+                                      th:classappend="${'badge-' + s}"
+                                      class="badge"
+                                      th:text="${task.status}"></span>
+                                <span th:if="${task.status == null}" style="color:#ccc; font-size:12px;">없음</span>
+                            </td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 멤버 목록 -->
+    <div class="section">
+        <div class="section-header">
+            <h2>멤버 목록</h2>
+            <a th:href="@{/projects/{projectId}/members/new(projectId=${projectId})}"
+               class="btn btn-primary">+ 멤버 추가</a>
+        </div>
+        <div class="card">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>userId</th>
+                        <th>권한</th>
+                        <th>가입일</th>
+                        <th>관리</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${members == null or members.memberInfoDtoList == null or #lists.isEmpty(members.memberInfoDtoList)}">
+                        <td colspan="5" class="empty-state">멤버가 없습니다.</td>
+                    </tr>
+                    <th:block th:if="${members != null}">
+                        <tr th:each="member : ${members.memberInfoDtoList}">
+                            <td th:text="${member.memberId}"></td>
+                            <td th:text="${member.userId}"></td>
+                            <td th:text="${member.auth}"></td>
+                            <td th:text="${member.joinedAt != null ? #temporals.format(member.joinedAt, 'yyyy-MM-dd HH:mm') : '-'}"></td>
+                            <td>
+                                <form th:action="@{/projects/{projectId}/members/{memberId}(projectId=${projectId}, memberId=${member.memberId})}"
+                                      method="post" style="display:inline-flex; gap:6px; align-items:center;">
+                                    <input type="hidden" name="_method" value="PUT">
+                                    <select name="auth" aria-label="권한 선택"
+                                            style="width:auto; padding:5px 8px; margin:0;">
+                                        <option value="MEMBER">MEMBER</option>
+                                        <option value="ADMIN">ADMIN</option>
+                                    </select>
+                                    <button type="submit" class="btn-primary" style="padding:5px 10px; font-size:12px;">
+                                        권한 변경
+                                    </button>
+                                </form>
+                                <form th:action="@{/projects/{projectId}/members/{memberId}(projectId=${projectId}, memberId=${member.memberId})}"
+                                      method="post" class="inline-form" style="margin-left:4px;">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" style="padding:5px 10px; font-size:12px;">삭제</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

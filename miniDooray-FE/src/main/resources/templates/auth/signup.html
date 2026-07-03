@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 - miniDooray</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+</head>
+<body>
+
+<div class="card">
+    <div class="logo-area">
+        <a th:href="@{/login}" class="logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="7" height="7" rx="1"/>
+                    <rect x="14" y="3" width="7" height="7" rx="1"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1"/>
+                    <rect x="14" y="14" width="7" height="7" rx="1"/>
+                </svg>
+            </div>
+            <div class="logo-text">miniDooray</div>
+        </a>
+    </div>
+
+    <p class="page-title">회원가입</p>
+    <p class="page-sub">새 계정을 만들어 시작하세요</p>
+
+    <form th:action="@{/signup}" th:object="${signUpFormDto}" method="post" id="signupForm">
+        <div class="form-group">
+            <label class="label" for="userId">아이디 <span class="required">*</span></label>
+            <input class="form-input" th:classappend="${#fields.hasErrors('userId')} ? 'error'"
+                   type="text" id="userId" th:field="*{userId}" placeholder="영문, 숫자 4~20자"/>
+            <div th:if="${#fields.hasErrors('userId')}" class="error-msg" th:errors="*{userId}"></div>
+            <div id="userIdMsg" class="hint"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="label" for="userPassword">비밀번호 <span class="required">*</span></label>
+            <input class="form-input" th:classappend="${#fields.hasErrors('userPassword')} ? 'error'"
+                   type="password" id="userPassword" th:field="*{userPassword}" placeholder="8자 이상"/>
+            <div th:if="${#fields.hasErrors('userPassword')}" class="error-msg" th:errors="*{userPassword}"></div>
+            <div id="passwordHint" class="hint">영문, 숫자, 특수문자 포함 8자 이상</div>
+        </div>
+
+        <div class="form-group">
+            <label class="label" for="userName">이름 <span class="required">*</span></label>
+            <input class="form-input" th:classappend="${#fields.hasErrors('userName')} ? 'error'"
+                   type="text" id="userName" th:field="*{userName}" placeholder="실명 입력"/>
+            <div th:if="${#fields.hasErrors('userName')}" class="error-msg" th:errors="*{userName}"></div>
+        </div>
+
+        <div class="form-group">
+            <label class="label" for="userEmail">이메일 <span class="required">*</span></label>
+            <input class="form-input" th:classappend="${#fields.hasErrors('userEmail')} ? 'error'"
+                   type="email" id="userEmail" th:field="*{userEmail}" placeholder="example@company.com"/>
+            <div th:if="${#fields.hasErrors('userEmail')}" class="error-msg" th:errors="*{userEmail}"></div>
+        </div>
+
+        <button type="submit" class="btn-primary">회원가입</button>
+    </form>
+
+    <div class="bottom-link">
+        이미 계정이 있으신가요? <a th:href="@{/login}">로그인</a>
+    </div>
+</div>
+
+<script>
+    // 아이디 중복 체크 (포커스 벗어날 때)
+    document.getElementById('userId').addEventListener('blur', function () {
+        const userId = this.value.trim();
+        const msg = document.getElementById('userIdMsg');
+
+        if (!userId) {
+            msg.textContent = '';
+            return;
+        }
+
+        fetch('/check-userid?userId=' + encodeURIComponent(userId))
+            .then(res => res.json())
+            .then(data => {
+                if (data.exists) {
+                    msg.textContent = '이미 사용 중인 아이디입니다';
+                    msg.style.color = '#e03131';
+                } else {
+                    msg.textContent = '사용 가능한 아이디입니다';
+                    msg.style.color = '#3366FF';
+                }
+            });
+    });
+
+    // 비밀번호 형식 검증 (입력할 때마다)
+    document.getElementById('userPassword').addEventListener('input', function () {
+        const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+        const hint = document.getElementById('passwordHint');
+
+        if (!this.value) {
+            hint.textContent = '영문, 숫자, 특수문자 포함 8자 이상';
+            hint.style.color = '#aaa';
+        } else if (regex.test(this.value)) {  // ← 부정 제거
+            hint.textContent = '사용 가능한 비밀번호입니다';
+            hint.style.color = '#3366FF';
+        } else {
+            hint.textContent = '영문, 숫자, 특수문자 포함 8자 이상이어야 합니다';
+            hint.style.color = '#e03131';
+        }
+    });
+
+    // 폼 제출 시 중복 아이디면 막기
+    document.getElementById('signupForm').addEventListener('submit', function (e) {
+        const msg = document.getElementById('userIdMsg');
+        if (msg.style.color === 'rgb(224, 49, 49)') {
+            e.preventDefault();
+            alert('아이디 중복을 확인해주세요');
+        }
+    });
+</script>
+
+</body>
+</html>

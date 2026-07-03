@@ -1,0 +1,117 @@
+/* =============================================
+   miniDooray - auth.css
+   로그인 / 회원가입 전용 스타일
+   (공통 스타일은 base.css 참고)
+   ============================================= */
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+}
+
+/* ---------- 카드 ---------- */
+.card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 2.5rem 2rem;
+    width: 360px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ---------- 로고 ---------- */
+.logo-area {
+    text-align: center;
+    margin-bottom: 1.75rem;
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    background: #3366FF;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+}
+
+.logo-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: #3366FF;
+    letter-spacing: -0.5px;
+}
+
+/* ---------- 페이지 타이틀 ---------- */
+.page-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: #222;
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.page-sub {
+    font-size: 13px;
+    color: #888;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* ---------- 버튼 (auth 전용 너비) ---------- */
+.btn-primary {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+}
+
+/* ---------- 하단 링크 ---------- */
+.links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 1rem;
+}
+
+.links a {
+    font-size: 12px;
+    color: #888;
+}
+
+.links a:hover {
+    color: #3366FF;
+}
+
+.links .accent {
+    color: #3366FF;
+}
+
+.bottom-link {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 12px;
+    color: #888;
+}
+
+.bottom-link a {
+    color: #3366FF;
+}
+
+.bottom-link a:hover {
+    text-decoration: underline;
+}

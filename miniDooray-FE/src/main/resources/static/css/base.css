@@ -1,0 +1,101 @@
+/* =============================================
+   miniDooray - base.css
+   auth.css / style.css 공통 기반 스타일
+   ============================================= */
+
+/* ---------- Reset ---------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f5f5;
+    min-height: 100vh;
+    color: #222;
+}
+
+/* ---------- 폼 공통 ---------- */
+.form-group {
+    margin-bottom: 12px;
+}
+
+.label {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+    font-weight: 500;
+}
+
+.required {
+    color: #3366FF;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+    color: #222;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+}
+
+.form-input::placeholder {
+    color: #bbb;
+    font-size: 13px;
+}
+
+.form-input:focus {
+    border-color: #3366FF;
+    box-shadow: 0 0 0 3px rgba(51, 102, 255, 0.1);
+}
+
+.form-input.error {
+    border-color: #e03131;
+}
+
+.error-msg {
+    font-size: 12px;
+    color: #e03131;
+    margin-top: 4px;
+}
+
+.hint {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 4px;
+}
+
+/* ---------- 버튼 ---------- */
+.btn-primary {
+    background: #3366FF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: inherit;
+}
+
+.btn-primary:hover {
+    background: #1a4fd6;
+}
+
+/* ---------- 링크 ---------- */
+a {
+    color: #3366FF;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
